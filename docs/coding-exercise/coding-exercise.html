@@ -2,12 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.40">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-01-21">
 
-<title>R Coding Exercise – Asmith Joseph Data Analysis Portfolio</title>
+<title>Module3_MADA – Asmith Joseph Data Analysis Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -35,10 +70,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ddd961a2510921635943dfbbd19534c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -67,6 +102,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -131,7 +195,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">R Coding Exercise</h1>
+<h1 class="title">Module3_MADA</h1>
 </div>
 
 
@@ -139,6 +203,12 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2025-01-21</p>
+    </div>
+  </div>
   
     
   </div>
@@ -148,9 +218,769 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Placeholder file for the future R coding exercise.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installing the dslabs package because I did not have it in my library</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># MJ: code isn't rendering with this line so I made it a comment</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("dslabs")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading the dslabs package</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'dslabs' was built under R version 4.4.2</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the help function page to assist in obtaining the gapminder dataset from the dslabs package</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(<span class="st">"gapminder"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>starting httpd help server ... done</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># loading the dslabs package and gapminder dataset</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"gapminder"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the  str() to view the structure of the dataset</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   10545 obs. of  9 variables:
+ $ country         : Factor w/ 185 levels "Albania","Algeria",..: 1 2 3 4 5 6 7 8 9 10 ...
+ $ year            : int  1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...
+ $ infant_mortality: num  115.4 148.2 208 NA 59.9 ...
+ $ life_expectancy : num  62.9 47.5 36 63 65.4 ...
+ $ fertility       : num  6.19 7.65 7.32 4.43 3.11 4.55 4.82 3.45 2.7 5.57 ...
+ $ population      : num  1636054 11124892 5270844 54681 20619075 ...
+ $ gdp             : num  NA 1.38e+10 NA NA 1.08e+11 ...
+ $ continent       : Factor w/ 5 levels "Africa","Americas",..: 4 1 1 2 2 3 2 5 4 3 ...
+ $ region          : Factor w/ 22 levels "Australia and New Zealand",..: 19 11 10 2 15 21 2 1 22 21 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the  summary() to obtain a statistical summary of the dataset</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                country           year      infant_mortality life_expectancy
+ Albania            :   57   Min.   :1960   Min.   :  1.50   Min.   :13.20  
+ Algeria            :   57   1st Qu.:1974   1st Qu.: 16.00   1st Qu.:57.50  
+ Angola             :   57   Median :1988   Median : 41.50   Median :67.54  
+ Antigua and Barbuda:   57   Mean   :1988   Mean   : 55.31   Mean   :64.81  
+ Argentina          :   57   3rd Qu.:2002   3rd Qu.: 85.10   3rd Qu.:73.00  
+ Armenia            :   57   Max.   :2016   Max.   :276.90   Max.   :83.90  
+ (Other)            :10203                  NA's   :1453                    
+   fertility       population             gdp               continent   
+ Min.   :0.840   Min.   :3.124e+04   Min.   :4.040e+07   Africa  :2907  
+ 1st Qu.:2.200   1st Qu.:1.333e+06   1st Qu.:1.846e+09   Americas:2052  
+ Median :3.750   Median :5.009e+06   Median :7.794e+09   Asia    :2679  
+ Mean   :4.084   Mean   :2.701e+07   Mean   :1.480e+11   Europe  :2223  
+ 3rd Qu.:6.000   3rd Qu.:1.523e+07   3rd Qu.:5.540e+10   Oceania : 684  
+ Max.   :9.220   Max.   :1.376e+09   Max.   :1.174e+13                  
+ NA's   :187     NA's   :185         NA's   :2972                       
+             region    
+ Western Asia   :1026  
+ Eastern Africa : 912  
+ Western Africa : 912  
+ Caribbean      : 741  
+ South America  : 684  
+ Southern Europe: 684  
+ (Other)        :5586  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the class() to check the type of object gapminder is consist of </span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ading the dplyr package into R session so i can  make its functions available. This package ispart of the tidyverse and is specifically designed for data manipulation and transformation, which will assist in providing fuctions to better work with data frames. </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## in the code below we are exploring some of the categories the  of African Data from the gapminder dataset located in the dslabs package in Rstudio</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#I started by creating two new objects from the `africadata` dataset:</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#- **`InfantLife`**: This object contains only the columns `infant_mortality` and `life_expectancy`.</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#- **`PoppLife`**: This object contains only the columns `population` and `life_expectancy`.</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#I use the `str()` function to examine the structure of each object and the `summary()` function to get descriptive statistics.</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">### Code and Results</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We want to Filter only African countries and assign to a new object new object/variable called africadata. So this code is doing that task. </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>africadata <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">"Africa"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># We want to View the structure of the africadata object. The str() command is doing that task.</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(africadata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2907 obs. of  9 variables:
+ $ country         : Factor w/ 185 levels "Albania","Algeria",..: 2 3 18 22 26 27 29 31 32 33 ...
+ $ year            : int  1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...
+ $ infant_mortality: num  148 208 187 116 161 ...
+ $ life_expectancy : num  47.5 36 38.3 50.3 35.2 ...
+ $ fertility       : num  7.65 7.32 6.28 6.62 6.29 6.95 5.65 6.89 5.84 6.25 ...
+ $ population      : num  11124892 5270844 2431620 524029 4829291 ...
+ $ gdp             : num  1.38e+10 NA 6.22e+08 1.24e+08 5.97e+08 ...
+ $ continent       : Factor w/ 5 levels "Africa","Americas",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ region          : Factor w/ 22 levels "Australia and New Zealand",..: 11 10 20 17 20 5 10 20 10 10 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we are abtaining a summary of the africadata object.</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(africadata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         country          year      infant_mortality life_expectancy
+ Algeria     :  57   Min.   :1960   Min.   : 11.40   Min.   :13.20  
+ Angola      :  57   1st Qu.:1974   1st Qu.: 62.20   1st Qu.:48.23  
+ Benin       :  57   Median :1988   Median : 93.40   Median :53.98  
+ Botswana    :  57   Mean   :1988   Mean   : 95.12   Mean   :54.38  
+ Burkina Faso:  57   3rd Qu.:2002   3rd Qu.:124.70   3rd Qu.:60.10  
+ Burundi     :  57   Max.   :2016   Max.   :237.40   Max.   :77.60  
+ (Other)     :2565                  NA's   :226                     
+   fertility       population             gdp               continent   
+ Min.   :1.500   Min.   :    41538   Min.   :4.659e+07   Africa  :2907  
+ 1st Qu.:5.160   1st Qu.:  1605232   1st Qu.:8.373e+08   Americas:   0  
+ Median :6.160   Median :  5570982   Median :2.448e+09   Asia    :   0  
+ Mean   :5.851   Mean   : 12235961   Mean   :9.346e+09   Europe  :   0  
+ 3rd Qu.:6.860   3rd Qu.: 13888152   3rd Qu.:6.552e+09   Oceania :   0  
+ Max.   :8.450   Max.   :182201962   Max.   :1.935e+11                  
+ NA's   :51      NA's   :51          NA's   :637                        
+                       region   
+ Eastern Africa           :912  
+ Western Africa           :912  
+ Middle Africa            :456  
+ Northern Africa          :342  
+ Southern Africa          :285  
+ Australia and New Zealand:  0  
+ (Other)                  :  0  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using the Africadata object containing only infant_mortality and life_expectancy, I am creating two new object called InfantLife</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>InfantLife <span class="ot">&lt;-</span> africadata <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(infant_mortality, life_expectancy)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">#using the Africadata object containing only population, life_expectancy, I am creating two new object called PoppLife Create </span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>PoppLife <span class="ot">&lt;-</span> africadata <span class="sc">%&gt;%</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(population, life_expectancy)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Verifying the first few rows of both objects to verify</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(InfantLife)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  infant_mortality life_expectancy
+1            148.2           47.50
+2            208.0           35.98
+3            186.9           38.29
+4            115.5           50.34
+5            161.3           35.21
+6            145.1           40.58</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PoppLife)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  population life_expectancy
+1   11124892           47.50
+2    5270844           35.98
+3    2431620           38.29
+4     524029           50.34
+5    4829291           35.21
+6    2786740           40.58</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># I want to View the structure of the InfantLife and  PoppLife to ensure the number of rows and columns . The str() command is doing that task.</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(InfantLife)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2907 obs. of  2 variables:
+ $ infant_mortality: num  148 208 187 116 161 ...
+ $ life_expectancy : num  47.5 36 38.3 50.3 35.2 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(PoppLife)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2907 obs. of  2 variables:
+ $ population     : num  11124892 5270844 2431620 524029 4829291 ...
+ $ life_expectancy: num  47.5 36 38.3 50.3 35.2 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the summary() function  to obtain a statistical summary of the InfantLife object. the summary will give a detailed idea of  (min, median, max, etc.)</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(InfantLife)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> infant_mortality life_expectancy
+ Min.   : 11.40   Min.   :13.20  
+ 1st Qu.: 62.20   1st Qu.:48.23  
+ Median : 93.40   Median :53.98  
+ Mean   : 95.12   Mean   :54.38  
+ 3rd Qu.:124.70   3rd Qu.:60.10  
+ Max.   :237.40   Max.   :77.60  
+ NA's   :226                     </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the summary() function  to obtain a statistical summary of the PoppLife objec. the summary will give a detailed idea of  (min, median, max, etc).</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(PoppLife)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   population        life_expectancy
+ Min.   :    41538   Min.   :13.20  
+ 1st Qu.:  1605232   1st Qu.:48.23  
+ Median :  5570982   Median :53.98  
+ Mean   : 12235961   Mean   :54.38  
+ 3rd Qu.: 13888152   3rd Qu.:60.10  
+ Max.   :182201962   Max.   :77.60  
+ NA's   :51                         </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># I originally ran the code for the plot and I received theses error msg:Warning: Removed 226 rows containing missing values or values outside the scale range (geom_point()).Warning: Removed 51 rows containing missing values or values outside the scale range (geom_point()). so in order revolve the missing rows/values outside of the plot so took those measures - codes below-&gt; </span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                                                                                                                                                           <span class="co"># First I Checked for missing values in the infant_mortality and life_expectancy columns</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(InfantLife<span class="sc">$</span>infant_mortality))  <span class="co"># Count missing values in infant_mortality</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 226</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(InfantLife<span class="sc">$</span>life_expectancy))   <span class="co"># Count missing values in life_expectancy</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Second I Checked for missing values in the population and life_expectancy columns</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(PoppLife<span class="sc">$</span>population))          <span class="co"># Count missing values in population</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 51</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(PoppLife<span class="sc">$</span>life_expectancy))     <span class="co"># Count missing values in life_expectancy</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Third I removed the rows with missing values in InfantLife</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>InfantLife <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(InfantLife)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove rows with missing values in PoppLife</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>PoppLife <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(PoppLife)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="co"># I then verified the range of infant_mortality and life_expectancy</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(InfantLife<span class="sc">$</span>infant_mortality, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  11.4 237.4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(InfantLife<span class="sc">$</span>life_expectancy, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13.2 77.6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># I also verified the range of population and life_expectancy</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(PoppLife<span class="sc">$</span>population, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]     41538 182201962</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(PoppLife<span class="sc">$</span>life_expectancy, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13.2 77.6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># I Filtered out extreme values for better visualization</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>InfantLife <span class="ot">&lt;-</span> InfantLife <span class="sc">%&gt;%</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(infant_mortality <span class="sc">&lt;=</span> <span class="dv">200</span>)  <span class="co"># Example: Focus on infant mortality ≤ 200</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>PoppLife <span class="ot">&lt;-</span> PoppLife <span class="sc">%&gt;%</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(population <span class="sc">&gt;</span> <span class="dv">0</span>)  <span class="co"># Ensure population is positive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove missing values from datasets</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>InfantLife <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(InfantLife)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>PoppLife <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(PoppLife)</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 1: Life expectancy as a function of infant mortality</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(InfantLife, <span class="fu">aes</span>(<span class="at">x =</span> infant_mortality, <span class="at">y =</span> life_expectancy)) <span class="sc">+</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"pink"</span>) <span class="sc">+</span>  <span class="co"># Plot points</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Life Expectancy vs Infant Mortality"</span>,</span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Infant Mortality (per 1000 live births)"</span>,</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Life Expectancy (years)"</span></span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="coding-exercise_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 2: Life expectancy as a function of population size (log scale for x-axis)</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(PoppLife, <span class="fu">aes</span>(<span class="at">x =</span> population, <span class="at">y =</span> life_expectancy)) <span class="sc">+</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span>  <span class="co"># Plot points</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span>  <span class="co"># Set the x-axis to a log scale</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Life Expectancy vs Population Size (Log Scale)"</span>,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Population (log scale)"</span>,</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Life Expectancy (years)"</span></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="coding-exercise_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Taking a look at a sample of the africadata dataset</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(africadata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       country year infant_mortality life_expectancy fertility population
+1      Algeria 1960            148.2           47.50      7.65   11124892
+2       Angola 1960            208.0           35.98      7.32    5270844
+3        Benin 1960            186.9           38.29      6.28    2431620
+4     Botswana 1960            115.5           50.34      6.62     524029
+5 Burkina Faso 1960            161.3           35.21      6.29    4829291
+6      Burundi 1960            145.1           40.58      6.95    2786740
+          gdp continent          region
+1 13828152297    Africa Northern Africa
+2          NA    Africa   Middle Africa
+3   621797131    Africa  Western Africa
+4   124460933    Africa Southern Africa
+5   596612183    Africa  Western Africa
+6   341126765    Africa  Eastern Africa</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking data for a specific country (Nigeria)</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>africadata <span class="sc">%&gt;%</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"Nigeria"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, year, infant_mortality, life_expectancy, population)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   country year infant_mortality life_expectancy population
+1  Nigeria 1960            165.0           40.39   45211614
+2  Nigeria 1961               NA           41.00   46144154
+3  Nigeria 1962            182.6           41.61   47117859
+4  Nigeria 1963            181.4           42.19   48128460
+5  Nigeria 1964            195.4           42.75   49169819
+6  Nigeria 1965            191.0           43.29   50238569
+7  Nigeria 1966            186.8           43.81   51336375
+8  Nigeria 1967            182.6           38.31   52468593
+9  Nigeria 1968            178.2           33.47   53640547
+10 Nigeria 1969            173.7           31.63   54859201
+11 Nigeria 1970            168.9           41.79   56131844
+12 Nigeria 1971            164.1           46.56   57453734
+13 Nigeria 1972            159.2           47.16   58829319
+14 Nigeria 1973            154.1           47.77   60285453
+15 Nigeria 1974            149.2           48.38   61857023
+16 Nigeria 1975            144.4           49.00   63565598
+17 Nigeria 1976            139.9           49.62   65426976
+18 Nigeria 1977            135.8           50.24   67425435
+19 Nigeria 1978            132.2           50.84   69512233
+20 Nigeria 1979            129.3           51.42   71619216
+21 Nigeria 1980            127.0           51.95   73698096
+22 Nigeria 1981            125.4           52.41   75729572
+23 Nigeria 1982            124.4           52.80   77729802
+24 Nigeria 1983            123.9           53.12   79729311
+25 Nigeria 1984            123.9           53.36   81775215
+26 Nigeria 1985            124.3           53.54   83901570
+27 Nigeria 1986            124.9           53.67   86118043
+28 Nigeria 1987            125.4           53.78   88412917
+29 Nigeria 1988            125.8           53.88   90773613
+30 Nigeria 1989            126.0           53.98   93179755
+31 Nigeria 1990            125.9           54.10   95617345
+32 Nigeria 1991            125.8           54.30   98085436
+33 Nigeria 1992            125.5           54.40  100592458
+34 Nigeria 1993            125.1           54.50  103145093
+35 Nigeria 1994            124.4           54.90  105753088
+36 Nigeria 1995            123.4           55.00  108424822
+37 Nigeria 1996            121.9           55.00  111164651
+38 Nigeria 1997            119.9           55.00  113975055
+39 Nigeria 1998            117.5           55.10  116860691
+40 Nigeria 1999            114.8           55.20  119826231
+41 Nigeria 2000            112.0           55.20  122876723
+42 Nigeria 2001            109.0           55.40  126014935
+43 Nigeria 2002            105.9           55.30  129246283
+44 Nigeria 2003            102.9           55.60  132581484
+45 Nigeria 2004             99.8           56.10  136033321
+46 Nigeria 2005             96.6           56.80  139611303
+47 Nigeria 2006             93.4           57.40  143318011
+48 Nigeria 2007             90.3           58.30  147152502
+49 Nigeria 2008             87.3           59.20  151115683
+50 Nigeria 2009             84.3           60.30  155207145
+51 Nigeria 2010             81.5           61.20  159424742
+52 Nigeria 2011             78.8           62.00  163770669
+53 Nigeria 2012             76.2           62.60  168240403
+54 Nigeria 2013             73.8           63.30  172816517
+55 Nigeria 2014             71.5           63.70  177475986
+56 Nigeria 2015             69.4           64.60  182201962
+57 Nigeria 2016               NA           65.51         NA</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#There is a clear negative correlation in the Life Expectancy vs Infant Mortality plot: as infant mortality increases, life expectancy decreases. This reflects how poor healthcare, sanitation, and poverty impact life expectancy. The streaks in the plot occur because the dataset includes repeated measurements for each country across multiple years. Over time, as a country’s infant mortality rate and life expectancy change, the points form smooth, line-like patterns.</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="co">#In the Life Expectancy vs Population Size plot, we observe a positive correlation: countries with larger populations tend to have higher life expectancies. Larger populations are often associated with better infrastructure, stronger economies, and advanced healthcare. The x-axis uses a logarithmic scale to display the wide range of population sizes better, preventing smaller populations from being compressed. Streaks also appear here, reflecting population growth over time and overlapping trends for countries with similar trajectories.</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="co">#These streaks arise because each country has multiple rows in the dataset, one for each year, with metrics like life expectancy, infant mortality, and population changing gradually. For example, Nigeria has 57 rows of data from 1960 onward.</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="co">#This illustrates how Nigeria’s population grows steadily while its life expectancy and infant mortality rates change gradually. These patterns repeat for other countries, forming the streaks observed in both plots.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">#More data processing</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking which years have missing values for infant_mortality</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>missing_by_year <span class="ot">&lt;-</span> africadata <span class="sc">%&gt;%</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">missing_values =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(infant_mortality)))  <span class="co"># Count missing values per year</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="co"># checking to see the years with missing data</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(missing_by_year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 57 × 2
+    year missing_values
+   &lt;int&gt;          &lt;int&gt;
+ 1  1960             10
+ 2  1961             17
+ 3  1962             16
+ 4  1963             16
+ 5  1964             15
+ 6  1965             14
+ 7  1966             13
+ 8  1967             11
+ 9  1968             11
+10  1969              7
+# ℹ 47 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering data for the year 2000</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>africa_2000 <span class="ot">&lt;-</span> africadata <span class="sc">%&gt;%</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2000</span>)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the structure and summary of the new object</span></span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(africa_2000)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   51 obs. of  9 variables:
+ $ country         : Factor w/ 185 levels "Albania","Algeria",..: 2 3 18 22 26 27 29 31 32 33 ...
+ $ year            : int  2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 ...
+ $ infant_mortality: num  33.9 128.3 89.3 52.4 96.2 ...
+ $ life_expectancy : num  73.3 52.3 57.2 47.6 52.6 46.7 54.3 68.4 45.3 51.5 ...
+ $ fertility       : num  2.51 6.84 5.98 3.41 6.59 7.06 5.62 3.7 5.45 7.35 ...
+ $ population      : num  31183658 15058638 6949366 1736579 11607944 ...
+ $ gdp             : num  5.48e+10 9.13e+09 2.25e+09 5.63e+09 2.61e+09 ...
+ $ continent       : Factor w/ 5 levels "Africa","Americas",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ region          : Factor w/ 22 levels "Australia and New Zealand",..: 11 10 20 17 20 5 10 20 10 10 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(africa_2000)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         country        year      infant_mortality life_expectancy
+ Algeria     : 1   Min.   :2000   Min.   : 12.30   Min.   :37.60  
+ Angola      : 1   1st Qu.:2000   1st Qu.: 60.80   1st Qu.:51.75  
+ Benin       : 1   Median :2000   Median : 80.30   Median :54.30  
+ Botswana    : 1   Mean   :2000   Mean   : 78.93   Mean   :56.36  
+ Burkina Faso: 1   3rd Qu.:2000   3rd Qu.:103.30   3rd Qu.:60.00  
+ Burundi     : 1   Max.   :2000   Max.   :143.30   Max.   :75.00  
+ (Other)     :45                                                  
+   fertility       population             gdp               continent 
+ Min.   :1.990   Min.   :    81154   Min.   :2.019e+08   Africa  :51  
+ 1st Qu.:4.150   1st Qu.:  2304687   1st Qu.:1.274e+09   Americas: 0  
+ Median :5.550   Median :  8799165   Median :3.238e+09   Asia    : 0  
+ Mean   :5.156   Mean   : 15659800   Mean   :1.155e+10   Europe  : 0  
+ 3rd Qu.:5.960   3rd Qu.: 17391242   3rd Qu.:8.654e+09   Oceania : 0  
+ Max.   :7.730   Max.   :122876723   Max.   :1.329e+11                
+                                                                      
+                       region  
+ Eastern Africa           :16  
+ Western Africa           :16  
+ Middle Africa            : 8  
+ Northern Africa          : 6  
+ Southern Africa          : 5  
+ Australia and New Zealand: 0  
+ (Other)                  : 0  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#More plotting</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  Life Expectancy vs Infant Mortality (Year 2000) --&gt; Plot 1</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(africa_2000, <span class="fu">aes</span>(<span class="at">x =</span> infant_mortality, <span class="at">y =</span> life_expectancy)) <span class="sc">+</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"pink"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span>  <span class="co"># Plot points with transparency</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Life Expectancy vs Infant Mortality (Year 2000)"</span>,</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Infant Mortality (per 1000 live births)"</span>,</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Life Expectancy (years)"</span></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="coding-exercise_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  Life Expectancy vs Population Size (Year 2000) --&gt; Plot 2</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(africa_2000, <span class="fu">aes</span>(<span class="at">x =</span> population, <span class="at">y =</span> life_expectancy)) <span class="sc">+</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span>  <span class="co"># Plot points with transparency</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span>  <span class="co"># Use a log scale for population</span></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Life Expectancy vs Population Size (Year 2000)"</span>,</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Population (log scale)"</span>,</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Life Expectancy (years)"</span></span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="coding-exercise_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Simple model fits</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  Life Expectancy as the outcome, Infant Mortality as the predictor --&gt; Fit 1</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(life_expectancy <span class="sc">~</span> infant_mortality, <span class="at">data =</span> africa_2000)</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Printing the summary of model Fit 1</span></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = life_expectancy ~ infant_mortality, data = africa_2000)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-22.6651  -3.7087   0.9914   4.0408   8.6817 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      71.29331    2.42611  29.386  &lt; 2e-16 ***
+infant_mortality -0.18916    0.02869  -6.594 2.83e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.221 on 49 degrees of freedom
+Multiple R-squared:  0.4701,    Adjusted R-squared:  0.4593 
+F-statistic: 43.48 on 1 and 49 DF,  p-value: 2.826e-08</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  Life Expectancy as the outcome, Population Size as the predictor --&gt; Fit 2</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(life_expectancy <span class="sc">~</span> population, <span class="at">data =</span> africa_2000)</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Printing summary of model Fit 2</span></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = life_expectancy ~ population, data = africa_2000)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-18.429  -4.602  -2.568   3.800  18.802 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 5.593e+01  1.468e+00  38.097   &lt;2e-16 ***
+population  2.756e-08  5.459e-08   0.505    0.616    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 8.524 on 49 degrees of freedom
+Multiple R-squared:  0.005176,  Adjusted R-squared:  -0.01513 
+F-statistic: 0.2549 on 1 and 49 DF,  p-value: 0.6159</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Models and Results</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="co">#I fit two linear regression models to quantify the relationships between life expectancy and two predictors: infant mortality and population size. Based on the output this is what I observed </span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a><span class="do">### The 1st model: Life Expectancy vs Infant Mortality</span></span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a><span class="co">#- The slope (\( \beta_1 = -0.189 \)) shows that for every additional infant death per 1,000 live births, life expectancy decreases by approximately 0.19 years.</span></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a><span class="co">#- The \ (p \)-value (\ (2.83 \times 10^ {-8} \)) indicates this relationship is highly significant.</span></span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="co">#- The \ (R^2 = 0.47 \) shows that 47% of the variability in life expectancy is explained by infant mortality.</span></span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a><span class="do">### 2nd Model: Life Expectancy vs Population Size</span></span>
+<span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a><span class="co">#- The slope (\ (\beta_1 = 2.76 \times 10^ {-8} \)) is negligible, and the \ (p \)-value (\( 0.616 \)) indicates no significant relationship.</span></span>
+<span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a><span class="co">#- The \ (R^2 = 0.0052 \) confirms that population size does not explain variability in life expectancy.</span></span>
+<span id="cb69-15"><a href="#cb69-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-16"><a href="#cb69-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-17"><a href="#cb69-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-18"><a href="#cb69-18" aria-hidden="true" tabindex="-1"></a><span class="do">### Conclusion</span></span>
+<span id="cb69-19"><a href="#cb69-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Infant mortality is a strong and significant predictor of life expectancy, while population size shows no meaningful relationship. These results highlight the importance of addressing healthcare and living conditions to improve life expectancy rather than focusing on population size.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="part-2" class="level1">
+<h1>Part 2</h1>
+<p>This section contributed by Murphy John.</p>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load dataset "olives"</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>olive <span class="ot">&lt;-</span> dslabs<span class="sc">::</span>olive</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="co"># view olive structure</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(olive)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   572 obs. of  10 variables:
+ $ region     : Factor w/ 3 levels "Northern Italy",..: 3 3 3 3 3 3 3 3 3 3 ...
+ $ area       : Factor w/ 9 levels "Calabria","Coast-Sardinia",..: 5 5 5 5 5 5 5 5 5 5 ...
+ $ palmitic   : num  10.75 10.88 9.11 9.66 10.51 ...
+ $ palmitoleic: num  0.75 0.73 0.54 0.57 0.67 0.49 0.66 0.61 0.6 0.55 ...
+ $ stearic    : num  2.26 2.24 2.46 2.4 2.59 2.68 2.64 2.35 2.39 2.13 ...
+ $ oleic      : num  78.2 77.1 81.1 79.5 77.7 ...
+ $ linoleic   : num  6.72 7.81 5.49 6.19 6.72 6.78 6.18 7.34 7.09 6.33 ...
+ $ linolenic  : num  0.36 0.31 0.31 0.5 0.5 0.51 0.49 0.39 0.46 0.26 ...
+ $ arachidic  : num  0.6 0.61 0.63 0.78 0.8 0.7 0.56 0.64 0.83 0.52 ...
+ $ eicosenoic : num  0.29 0.29 0.29 0.35 0.46 0.44 0.29 0.35 0.33 0.3 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view olive summary</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(olive)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            region                 area        palmitic      palmitoleic    
+ Northern Italy:151   South-Apulia   :206   Min.   : 6.10   Min.   :0.1500  
+ Sardinia      : 98   Inland-Sardinia: 65   1st Qu.:10.95   1st Qu.:0.8775  
+ Southern Italy:323   Calabria       : 56   Median :12.01   Median :1.1000  
+                      Umbria         : 51   Mean   :12.32   Mean   :1.2609  
+                      East-Liguria   : 50   3rd Qu.:13.60   3rd Qu.:1.6925  
+                      West-Liguria   : 50   Max.   :17.53   Max.   :2.8000  
+                      (Other)        : 94                                   
+    stearic          oleic          linoleic        linolenic     
+ Min.   :1.520   Min.   :63.00   Min.   : 4.480   Min.   :0.0000  
+ 1st Qu.:2.050   1st Qu.:70.00   1st Qu.: 7.707   1st Qu.:0.2600  
+ Median :2.230   Median :73.03   Median :10.300   Median :0.3300  
+ Mean   :2.289   Mean   :73.12   Mean   : 9.805   Mean   :0.3189  
+ 3rd Qu.:2.490   3rd Qu.:76.80   3rd Qu.:11.807   3rd Qu.:0.4025  
+ Max.   :3.750   Max.   :84.10   Max.   :14.700   Max.   :0.7400  
+                                                                  
+   arachidic       eicosenoic    
+ Min.   :0.000   Min.   :0.0100  
+ 1st Qu.:0.500   1st Qu.:0.0200  
+ Median :0.610   Median :0.1700  
+ Mean   :0.581   Mean   :0.1628  
+ 3rd Qu.:0.700   3rd Qu.:0.2800  
+ Max.   :1.050   Max.   :0.5800  
+                                 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get region levels</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(olive<span class="sc">$</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Southern Italy Sardinia       Northern Italy
+Levels: Northern Italy Sardinia Southern Italy</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get area levels</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(olive<span class="sc">$</span>area)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] North-Apulia    Calabria        South-Apulia    Sicily         
+[5] Inland-Sardinia Coast-Sardinia  Umbria          East-Liguria   
+[9] West-Liguria   
+9 Levels: Calabria Coast-Sardinia East-Liguria ... West-Liguria</code></pre>
+</div>
+</div>
+<p>The <code>olive</code> dataset contains information on the composition in percentage of eight fatty acids (palmitic, palmitoleic, stearic, oleic, linoleic, linolenic, arachidic, eicosenoic) found in the lipid fraction of 572 Italian olive oils. Olive oils are categorized by general region (Northern Italy, Sardinia, Southern Italy) and area of Italy.</p>
+</section>
+<section id="data-processing" class="level2">
+<h2 class="anchored" data-anchor-id="data-processing">Data processing</h2>
+<p>Suppose we want to look at the breakdown of eicosenoic composition by region. First, create a new dataset with only the <code>region</code> and <code>eicosenoic</code> variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># condense the data to include only information about eicosenoic and region</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>olive_red1 <span class="ot">&lt;-</span> olive <span class="sc">%&gt;%</span></span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(region, eicosenoic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="data-exploration">Data exploration</h2>
+<p>Make a plot of <code>eicosenoic</code> by region.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot eicosenoic by region</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(olive_red1<span class="sc">$</span>region, olive_red1<span class="sc">$</span>eicosenoic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="coding-exercise_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There appears to be distinct differences in eicosenic by region. Fit a linear regression model using <code>region</code> as a predictor of <code>eicosenoic</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit regression model using region as a predictor of eicosenoic</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(eicosenoic <span class="sc">~</span> region, <span class="at">data =</span> olive_red1)</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a><span class="co"># summarize model</span></span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = eicosenoic ~ region, data = olive_red1)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.173220 -0.013220  0.000265  0.010612  0.306780 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           0.0197351  0.0051523   3.830 0.000142 ***
+regionSardinia       -0.0003473  0.0082127  -0.042 0.966280    
+regionSouthern Italy  0.2534847  0.0062415  40.613  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.06331 on 569 degrees of freedom
+Multiple R-squared:  0.7986,    Adjusted R-squared:  0.7979 
+F-statistic:  1128 on 2 and 569 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>The coefficient estimate for the Sardinia region is <span class="math inline">\(-0.00035\)</span> with a corresponding p-value of <span class="math inline">\(0.966\)</span>, which suggests that olive oil from this region does not differ from the reference region level, Northern Italy, in <code>eicisenoic</code> composition.</p>
+<p>The coefficient estimate for the region Southern Italy is <span class="math inline">\(0.253\)</span> with a corresponding p-value of <span class="math inline">\(&lt;0.001\)</span>, which suggests that olive oil from this region has increased <code>eicisenoic</code> composition over the reference region level, Northern Italy.</p>
+<p>Now, look at eicosenoic composition by oleic composition, stratified by region.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a dataset with region, oleic, and eicosenoic</span></span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>olive_red2 <span class="ot">&lt;-</span> olive <span class="sc">%&gt;%</span></span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(region, oleic, eicosenoic)</span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(olive_red2<span class="sc">$</span>oleic, olive<span class="sc">$</span>eicosenoic, <span class="at">col =</span> olive<span class="sc">$</span>region)</span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, </span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">unique</span>(olive<span class="sc">$</span>region), </span>
+<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">unique</span>(olive<span class="sc">$</span>region), </span>
+<span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch=</span><span class="dv">1</span>,</span>
+<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex =</span> <span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="coding-exercise_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There are distinct clusters by region observed in the data. Specifically, in olive oil from Southern Italy, there seems to be increased eicosenic composition over Sardinia and Northern Italy. Additionally, there appears to be a positive association between oleic composition and eicoenic composition in Southern Italy.</p>
+<p>Fit a regression model using <code>oleic</code> as a predictor of <code>eicosenoic</code> in the region of Southern Italy.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter data to include only oil from Southern Italy</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>olive_red3 <span class="ot">&lt;-</span> olive_red2 <span class="sc">%&gt;%</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"Southern Italy"</span>)</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="co"># fit regression model using oleic as a predictor of eicosenoic in oil from Southern Italy</span></span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(eicosenoic <span class="sc">~</span> oleic, <span class="at">data =</span> olive_red3)</span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a><span class="co"># summarize model</span></span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = eicosenoic ~ oleic, data = olive_red3)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.167244 -0.056046 -0.005071  0.050180  0.237070 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -0.369575   0.089526  -4.128 4.67e-05 ***
+oleic        0.009053   0.001259   7.188 4.63e-12 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.078 on 321 degrees of freedom
+Multiple R-squared:  0.1387,    Adjusted R-squared:  0.136 
+F-statistic: 51.67 on 1 and 321 DF,  p-value: 4.625e-12</code></pre>
+</div>
+</div>
+<p>The coefficient estimate for <code>oleic</code> composition is <span class="math inline">\(0.009\)</span> with a corresponding p-value of <span class="math inline">\(&lt;0.001\)</span>, which suggests that in olive oil from Southern Italy, there is a small positive association between <code>oleic</code> composition and <code>eicisenoic</code> composition.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -235,6 +1065,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -345,6 +1177,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
+      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

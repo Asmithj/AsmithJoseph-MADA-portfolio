@@ -3,19 +3,19 @@
 
 /* Make all the text on the website smaller */
 body {
-  font-size: 14px; /* You can make it even smaller by changing 14px to 12px */
+  font-size: 18px; /* You can make it even smaller by changing 14px to 12px */
 }
 
 /* Make headings smaller */
 h1 {
-  font-size: 26px; /* Change the size of main headings */
+  font-size: 38px; /* Change the size of main headings */
 }
 
 h2 {
-  font-size: 20px; /* Change the size of subheadings */
+  font-size: 30px; /* Change the size of subheadings */
 }
 
 /* Make paragraph text smaller */
 p {
-  font-size: 14px; /* Change the size of paragraph text */
+  font-size: 20px; /* Change the size of paragraph text */
 }

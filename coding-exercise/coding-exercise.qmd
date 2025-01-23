@@ -15,7 +15,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 # Installing the dslabs package because I did not have it in my library
-install.packages("dslabs")
+# MJ: code isn't rendering with this line so I made it a comment
+#install.packages("dslabs")
 
 ```
 
@@ -313,15 +314,93 @@ summary(fit2)
 
 
 
+# Part 2
 
+This section contributed by Murphy John.
 
+## Setup
 
+```{r}
+# load dataset "olives"
+olive <- dslabs::olive
 
+# view olive structure
+str(olive)
 
+# view olive summary
+summary(olive)
 
+# get region levels
+unique(olive$region)
 
+# get area levels
+unique(olive$area)
+```
 
+The `olive` dataset contains information on the composition in percentage of eight fatty acids (palmitic, palmitoleic, stearic, oleic, linoleic, linolenic, arachidic, eicosenoic) found in the lipid fraction of 572 Italian olive oils. Olive oils are categorized by general region (Northern Italy, Sardinia, Southern Italy) and area of Italy.
 
+## Data processing
 
+Suppose we want to look at the breakdown of eicosenoic composition by region. First, create a new dataset with only the `region` and `eicosenoic` variables.
 
-Placeholder file for the future R coding exercise.
+```{r}
+# condense the data to include only information about eicosenoic and region
+olive_red1 <- olive %>%
+  select(region, eicosenoic)
+```
+
+## Data exploration
+
+Make a plot of `eicosenoic` by region.
+
+```{r}
+# plot eicosenoic by region
+plot(olive_red1$region, olive_red1$eicosenoic)
+```
+
+There appears to be distinct differences in eicosenic by region. Fit a linear regression model using `region` as a predictor of `eicosenoic`.
+
+```{r}
+# fit regression model using region as a predictor of eicosenoic
+fit1 <- lm(eicosenoic ~ region, data = olive_red1)
+
+# summarize model
+summary(fit1)
+```
+
+The coefficient estimate for the Sardinia region is $-0.00035$ with a corresponding p-value of $0.966$, which suggests that olive oil from this region does not differ from the reference region level, Northern Italy, in `eicisenoic` composition. 
+
+The coefficient estimate for the region Southern Italy is $0.253$ with a corresponding p-value of $<0.001$, which suggests that olive oil from this region has increased `eicisenoic` composition over the reference region level, Northern Italy.
+
+Now, look at eicosenoic composition by oleic composition, stratified by region.
+
+```{r}
+# create a dataset with region, oleic, and eicosenoic
+olive_red2 <- olive %>%
+  select(region, oleic, eicosenoic)
+
+plot(olive_red2$oleic, olive$eicosenoic, col = olive$region)
+legend("topleft", 
+       legend = unique(olive$region), 
+       col = unique(olive$region), 
+       pch=1,
+       cex = 0.7)
+```
+
+There are distinct clusters by region observed in the data. Specifically, in olive oil from Southern Italy, there seems to be increased eicosenic composition over Sardinia and Northern Italy. Additionally, there appears to be a positive association between oleic composition and eicoenic composition in Southern Italy.
+
+Fit a regression model using `oleic` as a predictor of `eicosenoic` in the region of Southern Italy.
+
+```{r}
+# filter data to include only oil from Southern Italy
+olive_red3 <- olive_red2 %>%
+  filter(region == "Southern Italy")
+
+# fit regression model using oleic as a predictor of eicosenoic in oil from Southern Italy
+fit2 <- lm(eicosenoic ~ oleic, data = olive_red3)
+
+# summarize model
+summary(fit2)
+```
+
+The coefficient estimate for `oleic` composition is $0.009$ with a corresponding p-value of $<0.001$, which suggests that in olive oil from Southern Italy, there is a small positive association between `oleic` composition and `eicisenoic` composition.
