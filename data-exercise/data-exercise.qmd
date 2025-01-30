@@ -7,7 +7,7 @@ format: html
 
 ## Welcome to the Data Exercise!
 
-This is a Quarto file created on GitHub.
+
 
 
 ```{r}
@@ -60,19 +60,16 @@ VaccineData <- VaccineData %>%
     TODAYS_DATE = mdy(TODAYS_DATE)
   )
 
-# Check structure after conversion
+# Checking structure after conversion
 str(VaccineData)
 
 ```
 
 
 
-
-
-
 ```{r}
 
-# Now we are checking for missing values 
+# Now I am checking for missing values 
 # Count missing values per column
 missing_counts <- colSums(is.na(VaccineData))
 
@@ -83,16 +80,16 @@ missing_counts[missing_counts > 0]
 
 
 ```{r}
-# Define the columns we originally wanted to drop
+# Defining the columns we originally wanted to drop
 columns_to_drop <- c("ER_VISIT", "BIRTH_DEFECT", "OFC_VISIT", "ER_ED_VISIT", "DATEDIED", "LAB_DATA")
 
-# Keep only the columns that exist in VaccineData
+# Keeping only the columns that exist in VaccineData
 columns_to_drop <- columns_to_drop[columns_to_drop %in% colnames(VaccineData)]
 
-# Drop only the valid columns
+# Dropping only the valid columns
 VaccineData <- VaccineData %>% select(-all_of(columns_to_drop))
 
-# Verify the new dataset structure
+# Verifying the new dataset structure
 colnames(VaccineData)
 
 
@@ -101,17 +98,17 @@ colnames(VaccineData)
 
 
 ```{r}
-# Drop rows where AGE_YRS or STATE is missing (since these are critical for analysis)
+# Dropping rows where AGE_YRS or STATE is missing (since these are critical for analysis)
 VaccineData <- VaccineData %>%
   filter(!is.na(AGE_YRS) & !is.na(STATE))
 
 
 
-# Replace missing AGE_YRS with the median value
+# Replacing missing AGE_YRS with the median value
 VaccineData$AGE_YRS[is.na(VaccineData$AGE_YRS)] <- median(VaccineData$AGE_YRS, na.rm = TRUE)
 
 
-# Replace missing STATE values with "Unknown"
+# Replacing missing STATE values with "Unknown"
 VaccineData$STATE[is.na(VaccineData$STATE)] <- "Unknown"
 
 
@@ -159,6 +156,201 @@ str(VaccineData)
 
 
 
+
+
+
+```{r}
+# Now that I have done with the cleaning process, which included: missing values, date & categorical variables formatted corrcetly, no extreme outliers or duplicates records. I will now proceed to explore the data by focusing on patterns, trends, and distributions using summary statistics and visualizations.
+
+
+# Summary of numeric columns
+summary(select(VaccineData, AGE_YRS, HOSPDAYS, NUMDAYS, FORM_VERS))
+
+```
+
+
+
+
+```{r}
+#Visualization of Age Distribution of Patients
+library(ggplot2)
+
+ggplot(VaccineData, aes(x = AGE_YRS)) +
+  geom_histogram(binwidth = 5, fill = "steelblue", color = "black") +
+  labs(title = "Age Distribution of Patients",
+       x = "Age (years)",
+       y = "Count") +
+  theme_minimal()
+
+```
+
+
+
+
+
+```{r}
+# I want to explore the data more. First I am doing an age group analysis to find out whether or not certain age groups more likely to report adverse effects.
+# Load required libraries
+library(dplyr)
+library(ggplot2)
+
+# Creating age groups
+VaccineData <- VaccineData %>%
+  mutate(AgeGroup = case_when(
+    AGE_YRS < 18 ~ "Child (0-17)",
+    AGE_YRS >= 18 & AGE_YRS <= 40 ~ "Young Adult (18-40)",
+    AGE_YRS > 40 & AGE_YRS <= 60 ~ "Middle-aged (41-60)",
+    AGE_YRS > 60 ~ "Elderly (60+)"
+  ))
+
+# Counting reports per age group
+AgeDistribution <- VaccineData %>%
+  group_by(AgeGroup) %>%
+  summarise(Count = n())
+
+# Ploting the distribution
+ggplot(AgeDistribution, aes(x = AgeGroup, y = Count, fill = AgeGroup)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Distribution of Adverse Events by Age Group",
+       x = "Age Group",
+       y = "Number of Reports") +
+  theme_minimal()
+
+```
+
+
+
+```{r}
+# A second Exploratory Data Analysis to identify whether men or women more likely to report adverse effects.
+# Count reports by sex
+SexDistribution <- VaccineData %>%
+  group_by(SEX) %>%
+  summarise(Count = n())
+
+# Plot the distribution
+ggplot(SexDistribution, aes(x = SEX, y = Count, fill = SEX)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Distribution of Adverse Events by Sex",
+       x = "Sex",
+       y = "Number of Reports") +
+  theme_minimal()
+
+```
+
+
+
+```{r}
+print(SexDistribution)
+```
+
+
+
+
+```{r}
+# Simplify CUR_ILL categories
+VaccineData <- VaccineData %>%
+  mutate(CUR_ILL_Grouped = case_when(
+    grepl("asthma|respiratory|bronchitis", CUR_ILL, ignore.case = TRUE) ~ "Respiratory",
+    grepl("diabetes", CUR_ILL, ignore.case = TRUE) ~ "Diabetes",
+    grepl("hypertension|high blood pressure", CUR_ILL, ignore.case = TRUE) ~ "Hypertension",
+    grepl("cancer", CUR_ILL, ignore.case = TRUE) ~ "Cancer",
+    grepl("allergy|allergies", CUR_ILL, ignore.case = TRUE) ~ "Allergies",
+    grepl("arthritis", CUR_ILL, ignore.case = TRUE) ~ "Arthritis",
+    is.na(CUR_ILL) ~ "No Known Condition",
+    TRUE ~ "Other"
+  ))
+
+
+
+
+
+
+# Count hospitalization cases by grouped pre-existing conditions
+IllnessImpact <- VaccineData %>%
+  group_by(CUR_ILL_Grouped, HOSPITAL) %>%
+  summarise(Count = n())
+
+# Print the table
+print(IllnessImpact)
+
+
+```
+
+
+
+
+
+```{r}
+# Plot impact of pre-existing conditions on hospitalization
+ggplot(IllnessImpact, aes(x = CUR_ILL_Grouped, y = Count, fill = HOSPITAL)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Impact of Pre-existing Illness on Hospitalization",
+       x = "Pre-existing Condition",
+       y = "Number of Cases",
+       fill = "Hospitalized") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+
+
+
+```{r}
+# Create a contingency table
+sex_hospital_table <- table(VaccineData$SEX, VaccineData$HOSPITAL)
+
+# Run chi-square test
+chisq.test(sex_hospital_table)
+
+```
+
+
+
+
+```{r}
+# Count hospitalizations by sex
+SexHospitalization <- VaccineData %>%
+  group_by(SEX, HOSPITAL) %>%
+  summarise(Count = n(), .groups = "drop")
+
+# Plot hospitalization rates by sex
+ggplot(SexHospitalization, aes(x = SEX, y = Count, fill = HOSPITAL)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Hospitalization by Sex",
+       x = "Sex",
+       y = "Number of Cases",
+       fill = "Hospitalized") +
+  theme_minimal()
+
+```
+
+
+
+
+```{r}
+# Creating a contingency table
+illness_hospital_table <- table(VaccineData$CUR_ILL_Grouped, VaccineData$HOSPITAL)
+
+# Run chi-square test
+chisq.test(illness_hospital_table)
+
+```
+
+
+
+
+
+```{r}
+# Logistic Regression Model
+hospitalization_model <- glm(HOSPITAL ~ AGE_YRS + SEX + NUMDAYS + CUR_ILL_Grouped,
+                             data = model_data,
+                             family = "binomial")
+
+# Print model summary
+summary(hospitalization_model)
+
+```
 
 
 
