@@ -1,0 +1,171 @@
+---
+title: "Data Exercise"
+author: "Asmith Joseph"
+date: 1/30/2025
+format: html
+---
+
+## Welcome to the Data Exercise!
+
+This is a Quarto file created on GitHub.
+
+
+```{r}
+
+# Uploading the data. We are using the the Vaccine Adverse Event Reporting System (VAERS) dataset
+VaccineData <- read.csv("C:/Users/ajose35/Desktop/VaccineData.csv")
+
+# Using the readr package for better performance to read the csv file
+library(readr)
+VaccineData <- read_csv("C:/Users/ajose35/Desktop/VaccineData.csv")
+
+```
+
+
+
+```{r}
+#Looking at the structure of the data to verify where there issues and start the cleaning process
+
+# Viewieng the dataset
+View(VaccineData)
+
+
+problems(VaccineData)
+
+spec(VaccineData)  
+
+str(VaccineData)  
+```
+
+
+
+```{r}
+# There are several issues, such as dates need conversion to proper format, missing values and so on. So I am starting the cleaning process. 
+# Printing column names to check if they match what we are trying to mutate
+colnames(VaccineData)
+
+
+# Loading some of the  necessary libraries
+library(dplyr)
+library(lubridate)
+
+# Converting character dates to proper Date format
+VaccineData <- VaccineData %>%
+  mutate(
+    RECVDATE = mdy(RECVDATE),   # Convert from MM/DD/YYYY to Date
+    RPT_DATE = mdy(RPT_DATE),
+    VAX_DATE = mdy(VAX_DATE),
+    ONSET_DATE = mdy(ONSET_DATE),
+    DATEDIED = mdy(DATEDIED),
+    TODAYS_DATE = mdy(TODAYS_DATE)
+  )
+
+# Check structure after conversion
+str(VaccineData)
+
+```
+
+
+
+
+
+
+```{r}
+
+# Now we are checking for missing values 
+# Count missing values per column
+missing_counts <- colSums(is.na(VaccineData))
+
+# Show only columns with missing values
+missing_counts[missing_counts > 0]
+
+```
+
+
+```{r}
+# Define the columns we originally wanted to drop
+columns_to_drop <- c("ER_VISIT", "BIRTH_DEFECT", "OFC_VISIT", "ER_ED_VISIT", "DATEDIED", "LAB_DATA")
+
+# Keep only the columns that exist in VaccineData
+columns_to_drop <- columns_to_drop[columns_to_drop %in% colnames(VaccineData)]
+
+# Drop only the valid columns
+VaccineData <- VaccineData %>% select(-all_of(columns_to_drop))
+
+# Verify the new dataset structure
+colnames(VaccineData)
+
+
+```
+
+
+
+```{r}
+# Drop rows where AGE_YRS or STATE is missing (since these are critical for analysis)
+VaccineData <- VaccineData %>%
+  filter(!is.na(AGE_YRS) & !is.na(STATE))
+
+
+
+# Replace missing AGE_YRS with the median value
+VaccineData$AGE_YRS[is.na(VaccineData$AGE_YRS)] <- median(VaccineData$AGE_YRS, na.rm = TRUE)
+
+
+# Replace missing STATE values with "Unknown"
+VaccineData$STATE[is.na(VaccineData$STATE)] <- "Unknown"
+
+
+
+colSums(is.na(VaccineData))
+
+
+```
+
+
+
+```{r}
+# I am dropping columns with too many missing values. specifically over 80% missing.
+# Defining the  threshold for missing values (70%)
+threshold <- 0.8 * nrow(VaccineData)
+
+# Identifying columns with excessive missing values
+cols_to_drop <- names(VaccineData)[colSums(is.na(VaccineData)) > threshold]
+
+# Dropping columns ONLY if there are any that meet the threshold
+if (length(cols_to_drop) > 0) {
+  VaccineData <- VaccineData %>% select(-all_of(cols_to_drop))
+}
+
+# Printing remaining column names to confirm
+colnames(VaccineData)
+
+```
+
+
+
+```{r}
+# Print the dropped columns
+print(cols_to_drop)
+
+# Count how many columns were removed
+length(cols_to_drop)
+
+
+
+str(VaccineData)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
