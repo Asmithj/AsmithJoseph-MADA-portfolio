@@ -7,8 +7,16 @@ Welcome to **Asmith's website** and *Data analysis Portfolio.*
 #### **Bonjour et Bienvenue! My name is Asmith Joseph, and I am a third-year Ph.D. student specializing in Infectious Disease Epidemiology in the Department of Epidemiology & Biostatistics at the University of Georgia.
 
 #This website showcases my work in data analysis, research, and projects related to infectious diseases, epidemiology, and biostatistics. Feel free to explore using the menu bar above, where you’ll find:
+<<<<<<< HEAD
       # Research highlights and interests
       #  Thank you for visiting, and I hope you enjoy exploring my work! !**
+=======
+
+#Research highlights and interests
+#Insights into my journey as an infectious disease epidemiologist
+
+Thank you for visiting, and I hope you enjoy exploring my work! !**
+>>>>>>> origin/main
 
 -   Please use the `Menu Bar` above to look around.
 -   Have fun!
