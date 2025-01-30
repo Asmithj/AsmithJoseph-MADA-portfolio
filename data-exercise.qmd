@@ -1,0 +1,10 @@
+---
+title: "Data Exercise"
+author: "Your Name"
+date: today
+format: html
+---
+
+## Welcome to the Data Exercise!
+
+This is a Quarto file created on GitHub.
