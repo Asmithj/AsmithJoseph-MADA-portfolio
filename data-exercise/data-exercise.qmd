@@ -8,8 +8,6 @@ format: html
 ## Welcome to the Data Exercise!
 
 
-
-
 ```{r}
 
 # Uploading the data. We are using the the Vaccine Adverse Event Reporting System (VAERS) dataset
@@ -327,7 +325,6 @@ ggplot(SexHospitalization, aes(x = SEX, y = Count, fill = HOSPITAL)) +
 
 
 
-
 ```{r}
 # Creating a contingency table
 illness_hospital_table <- table(VaccineData$CUR_ILL_Grouped, VaccineData$HOSPITAL)
@@ -336,8 +333,6 @@ illness_hospital_table <- table(VaccineData$CUR_ILL_Grouped, VaccineData$HOSPITA
 chisq.test(illness_hospital_table)
 
 ```
-
-
 
 
 
