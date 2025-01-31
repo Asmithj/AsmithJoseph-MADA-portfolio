@@ -454,4 +454,25 @@ summary(recovery_model)
 ```
 
 
+# **Conclusion**
+#### This analysis explored factors influencing recovery from vaccine adverse events using VAERS data and logistic regression.                             
+
+#### Key findings:                                                                                                                                             1) Age negatively impacts recovery (older individuals recover less, p < 2e-16).                                                                            2) Males recover slightly more than females (p = 1.88e-10).                                                                                                3) Longer symptom duration reduces recovery probability (p = 1.44e-14).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
