@@ -11,14 +11,10 @@ format: html
 ```{r}
 
 # Uploading the data. We are using the the Vaccine Adverse Event Reporting System (VAERS) dataset
+library(readr)
 VaccineData <- read.csv("C:/Users/ajose35/Desktop/VaccineData.csv")
 
-# Using the readr package for better performance to read the csv file
-library(readr)
-VaccineData <- read_csv("C:/Users/ajose35/Desktop/VaccineData.csv")
-
 ```
-
 
 
 ```{r}
@@ -28,12 +24,10 @@ VaccineData <- read_csv("C:/Users/ajose35/Desktop/VaccineData.csv")
 View(VaccineData)
 
 
-problems(VaccineData)
-
-spec(VaccineData)  
 
 str(VaccineData)  
 ```
+
 
 
 
@@ -78,7 +72,7 @@ missing_counts[missing_counts > 0]
 
 
 ```{r}
-# Defining the columns we originally wanted to drop
+# Defining the columns I originally wanted to drop
 columns_to_drop <- c("ER_VISIT", "BIRTH_DEFECT", "OFC_VISIT", "ER_ED_VISIT", "DATEDIED", "LAB_DATA")
 
 # Keeping only the columns that exist in VaccineData
@@ -119,12 +113,19 @@ colSums(is.na(VaccineData))
 
 
 ```{r}
-# I am dropping columns with too many missing values. specifically over 80% missing.
+# I am dropping columns with too many missing values. specifically over 70% missing.
 # Defining the  threshold for missing values (70%)
-threshold <- 0.8 * nrow(VaccineData)
 
-# Identifying columns with excessive missing values
+"HOSPITAL" %in% colnames(VaccineData) 
+
+
+threshold <- 0.7 * nrow(VaccineData)
+
+# Identifying columns with excessive missing values (excluding "HOSPITAL")
 cols_to_drop <- names(VaccineData)[colSums(is.na(VaccineData)) > threshold]
+
+# Remove "HOSPITAL" from the drop list if it appears
+cols_to_drop <- setdiff(cols_to_drop, "HOSPITAL")  
 
 # Dropping columns ONLY if there are any that meet the threshold
 if (length(cols_to_drop) > 0) {
@@ -133,6 +134,7 @@ if (length(cols_to_drop) > 0) {
 
 # Printing remaining column names to confirm
 colnames(VaccineData)
+
 
 ```
 
@@ -162,7 +164,8 @@ str(VaccineData)
 
 
 # Summary of numeric columns
-summary(select(VaccineData, AGE_YRS, HOSPDAYS, NUMDAYS, FORM_VERS))
+summary(select(VaccineData, AGE_YRS, NUMDAYS, FORM_VERS))  #
+
 
 ```
 
@@ -325,25 +328,67 @@ ggplot(SexHospitalization, aes(x = SEX, y = Count, fill = HOSPITAL)) +
 
 
 
-```{r}
-# Creating a contingency table
-illness_hospital_table <- table(VaccineData$CUR_ILL_Grouped, VaccineData$HOSPITAL)
 
-# Run chi-square test
-chisq.test(illness_hospital_table)
+
+
+
+
+
+
+
+
+
+```{r}
+#On this last section we want to identify "What factors influence the likelihood of recovery from a vaccine adverse event?"
+
+summary(select(VaccineData, AGE_YRS, NUMDAYS, FORM_VERS))
+
+table(VaccineData$SEX)
+
+table(VaccineData$RECOVD, useNA = "ifany")  # Shows how many "Y", "N", and missing values exist
+
+table(VaccineData$SEX, VaccineData$RECOVD)
+
+```
+
+
+
+
+
+
+```{r}
+#Plotting Histogram of Age Distribution
+library(ggplot2)
+
+ggplot(VaccineData, aes(x = AGE_YRS)) +
+  geom_histogram(binwidth = 5, fill = "steelblue", color = "black") +
+  labs(title = "Age Distribution of Patients", x = "Age (years)", y = "Count") +
+  theme_minimal()
+
+```
+
+
+
+
+
+
+```{r}
+#Plotting a Bar Chart of  Recovery Status by Gender
+ggplot(VaccineData, aes(x = SEX, fill = RECOVD)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Recovery Status by Gender", x = "Sex", y = "Count") +
+  theme_minimal()
 
 ```
 
 
 
 ```{r}
-# Logistic Regression Model
-hospitalization_model <- glm(HOSPITAL ~ AGE_YRS + SEX + NUMDAYS + CUR_ILL_Grouped,
-                             data = model_data,
-                             family = "binomial")
-
-# Print model summary
-summary(hospitalization_model)
+# Plotting a Boxplot of Age vs. Recovery
+ggplot(VaccineData, aes(x = RECOVD, y = AGE_YRS, fill = RECOVD)) +
+  geom_boxplot() +
+  labs(title = "Age Distribution by Recovery Status", x = "Recovery", y = "Age (Years)") +
+  theme_minimal()
 
 ```
 
@@ -353,6 +398,54 @@ summary(hospitalization_model)
 
 
 
+```{r}
+#Plotting a Boxplot of  Symptom Duration vs. Recovery
+ggplot(VaccineData, aes(x = RECOVD, y = NUMDAYS, fill = RECOVD)) +
+  geom_boxplot() +
+  labs(title = "Symptom Duration by Recovery Status", x = "Recovery", y = "Days Until Recovery") +
+  theme_minimal()
+
+```
+
+
+
+
+```{r}
+# Selecting relevant variables for the model 
+model_data <- VaccineData %>%
+  select(RECOVD, AGE_YRS, SEX, NUMDAYS) %>%
+  filter(!is.na(RECOVD) & !is.na(AGE_YRS) & !is.na(SEX) & !is.na(NUMDAYS)) %>%
+  filter(RECOVD %in% c("Y", "N"))  # Remove "U" (unknown values)
+
+# Converting categorical variables to factors
+model_data <- model_data %>%
+  mutate(RECOVD = as.factor(RECOVD),
+         SEX = as.factor(SEX))
+
+# Checking dataset summary
+str(model_data)
+table(model_data$RECOVD)  # Ensure we have two classes (Y/N)
+
+```
+
+
+
+
+```{r}
+# Fitting a Logistic Regression Model to identify "What factors influence the likelihood of recovery from a vaccine adverse event?"
+#Older individuals are less likely to recover.
+#Males are slightly more likely to recover than females.
+#Longer symptom duration reduces recovery probability
+
+
+recovery_model <- glm(RECOVD ~ AGE_YRS + SEX + NUMDAYS,
+                      data = model_data,
+                      family = "binomial")
+
+# Print Model Summary
+summary(recovery_model)
+
+```
 
 
 
