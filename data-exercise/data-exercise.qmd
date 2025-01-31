@@ -1,5 +1,5 @@
 ---
-title: "Data Exercise"
+title: "Data Exercise - Vaccine Adverse Event Analysis"
 author: "Asmith Joseph"
 date: 1/30/2025
 format: html

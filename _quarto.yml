@@ -15,7 +15,7 @@ website:
           - text: "R Coding Exercise"
             file: coding-exercise/coding-exercise.qmd
           - text: "Vaccine Adverse Event Analysis"
-            file: data-exercise.qmd
+            file: data-exercise/data-exercise.qmd
             
             
             
