@@ -8,8 +8,14 @@ format: html
 ## Welcome to the Data Exercise!
 
 
-```{r}
 
+# **Introduction: Vaccine Adverse Event Analysis**
+#### Vaccination is one of the most effective public health measures to prevent infectious diseases. However, like any medical intervention, vaccines can sometimes lead to adverse events, ranging from mild side effects to severe complications. This analysis explores data from the Vaccine Adverse Event Reporting System (VAERS) to understand trends, patterns, and factors influencing adverse vaccine reactions.
+
+
+# **Data Import & Loading**
+```{r}
+# **2. Data Import & Loading**! 
 # Uploading the data. We are using the the Vaccine Adverse Event Reporting System (VAERS) dataset
 library(readr)
 VaccineData <- read.csv("C:/Users/ajose35/Desktop/VaccineData.csv")
@@ -17,6 +23,7 @@ VaccineData <- read.csv("C:/Users/ajose35/Desktop/VaccineData.csv")
 ```
 
 
+# **Initial Data Exploration**
 ```{r}
 #Looking at the structure of the data to verify where there issues and start the cleaning process
 
@@ -30,7 +37,7 @@ str(VaccineData)
 
 
 
-
+# **Data Cleaning & Preprocessing**
 ```{r}
 # There are several issues, such as dates need conversion to proper format, missing values and so on. So I am starting the cleaning process. 
 # Printing column names to check if they match what we are trying to mutate
@@ -171,7 +178,7 @@ summary(select(VaccineData, AGE_YRS, NUMDAYS, FORM_VERS))  #
 
 
 
-
+# **Visualization of Age Distribution of Patients**
 ```{r}
 #Visualization of Age Distribution of Patients
 library(ggplot2)
@@ -187,8 +194,7 @@ ggplot(VaccineData, aes(x = AGE_YRS)) +
 
 
 
-
-
+# **Exploratory Data Analysis**
 ```{r}
 # I want to explore the data more. First I am doing an age group analysis to find out whether or not certain age groups more likely to report adverse effects.
 # Load required libraries
@@ -209,6 +215,15 @@ AgeDistribution <- VaccineData %>%
   group_by(AgeGroup) %>%
   summarise(Count = n())
 
+
+
+```
+
+
+
+# **Visualization**
+
+```{r}
 # Ploting the distribution
 ggplot(AgeDistribution, aes(x = AgeGroup, y = Count, fill = AgeGroup)) +
   geom_bar(stat = "identity") +
@@ -216,10 +231,7 @@ ggplot(AgeDistribution, aes(x = AgeGroup, y = Count, fill = AgeGroup)) +
        x = "Age Group",
        y = "Number of Reports") +
   theme_minimal()
-
 ```
-
-
 
 ```{r}
 # A second Exploratory Data Analysis to identify whether men or women more likely to report adverse effects.
@@ -332,12 +344,6 @@ ggplot(SexHospitalization, aes(x = SEX, y = Count, fill = HOSPITAL)) +
 
 
 
-
-
-
-
-
-
 ```{r}
 #On this last section we want to identify "What factors influence the likelihood of recovery from a vaccine adverse event?"
 
@@ -430,7 +436,7 @@ table(model_data$RECOVD)  # Ensure we have two classes (Y/N)
 
 
 
-
+# **Predictive Modeling: Logistic Regression for Recovery**
 ```{r}
 # Fitting a Logistic Regression Model to identify "What factors influence the likelihood of recovery from a vaccine adverse event?"
 #Older individuals are less likely to recover.
