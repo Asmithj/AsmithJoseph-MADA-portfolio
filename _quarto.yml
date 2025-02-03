@@ -16,6 +16,8 @@ website:
             file: coding-exercise/coding-exercise.qmd
           - text: "Vaccine Adverse Event Analysis"
             file: data-exercise/data-exercise.qmd
+          - text: "Exercise 5/Processing Data.CDC"
+            file: cdcdata-exercise/cdcdata-exercise.qmd
             
             
             
