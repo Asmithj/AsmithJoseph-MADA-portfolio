@@ -5,7 +5,19 @@ date: "02/02/2025"
 output: html_document
 ---
 
-  
+
+
+install.packages(c("httr", "jsonlite", "readr"), dependencies = TRUE)
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = "C:/Users/ajose35/Desktop/L'ecole/MADA-course/AsmithJoseph-MADA-portfolio")
+```
+
+
+
 # Data Source Description
 
 The National Artesunate for Severe Malaria Program Case Report Data (April - December 2019) provides deidentified patient data on individuals receiving intravenous (IV) artesunate, the first-line treatment for severe malaria. Collected through the Centers for Disease Control and Prevention (CDC), this dataset contains 197 observations and 119 clinical variables, detailing malaria diagnosis methods, organ dysfunction indicators, laboratory values, and treatment responses. Each patient is assigned a unique ParticipantID, which allows linkage to related datasets, including Artesunate Dosing Data, Follow-On Antimalarial Dosing Data, and Microscopy (Parasitemia) Data. The dataset, last updated on April 10, 2020, is publicly available on the CDC open data portal (https://data.cdc.gov/Global-Health/National-Artesunate-for-Severe-Malaria-Program-Cas/igaz-icki/about_data). Key variables include Dx (diagnosis method), IV_parasitemia (malaria confirmation), IV_shock (shock status), IV_ards (Acute Respiratory Distress Syndrome), IV_ARF (Acute Renal Failure), and IV_DIC (Disseminated Intravascular Coagulation). Additionally, it includes a Data Dictionary and a Guide to NASMP Datasets, offering comprehensive documentation for analysis.
@@ -15,7 +27,6 @@ The National Artesunate for Severe Malaria Program Case Report Data (April - Dec
 # Explanations of Downloading and saving the dataset. See below for the code!
 
 To work with this dataset, the first step is I download the dataset from the CDC Open Data Portal in CSV format. This is done by defining the dataset’s URL and using R’s read_csv() function to import it into a dataframe. Once the data is loaded, the head() function is used to preview the first few rows, and the View() function allows for manual inspection in RStudio’s data viewer. After confirming that the dataset has been successfully retrieved, the next step is to save it locally for easier access. To do this, a local file path is specified, ensuring that the dataset is stored in a designated folder on the computer. The write_csv() function is then used to save the dataframe as a CSV file in the specified directory. 
-
 
 
 # Downloading the data.
