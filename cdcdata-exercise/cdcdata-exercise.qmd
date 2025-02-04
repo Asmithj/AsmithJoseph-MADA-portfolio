@@ -22,7 +22,6 @@ To work with this dataset, the first step is I download the dataset from the CDC
 ```{r}
 #Installing necessary libraries to read the OData Atom XML feed (It is a is a structured XML document used for exposing and consuming data via OData APIs)
 # Installing necessary libraries to read the OData Atom XML feed
-install.packages(c("httr", "jsonlite", "readr"))
 
 # Load libraries
 library(httr)
