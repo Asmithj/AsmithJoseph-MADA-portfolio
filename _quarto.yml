@@ -16,17 +16,16 @@ website:
             file: coding-exercise/coding-exercise.qmd
           - text: "Vaccine Adverse Event Analysis"
             file: data-exercise/data-exercise.qmd
-          - text: "Exercise 5/Processing Data.CDC"
+          - text: "Exercise 5: Processing Data (CDC)"
             file: cdcdata-exercise/cdcdata-exercise.qmd
-            
-            
-            
+
     right:
-      - icon: github 
-        href: https://github.com/Asmithj/AsmithJoseph-MADA-portfolio      
+      - icon: github
+        href: "https://github.com/Asmithj/AsmithJoseph-MADA-portfolio"      
+
 format:
   html:
     theme: cosmo
     highlight: monokai
     css: styles.css
-    toc: FALSE
+    toc: false
