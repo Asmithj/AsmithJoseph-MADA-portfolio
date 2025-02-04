@@ -19,6 +19,15 @@ You don't need to have exactly these sections, but the content covering those se
 This uses MS Word as output format. [See here](https://quarto.org/docs/output-formats/ms-word.html) for more information. You can switch to other formats, like html or pdf. See [the Quarto documentation](https://quarto.org/) for other formats.
 
 
+
+
+#1.Load Required Libraries
+install.packages("janitor")      # For cleaning column names
+install.packages("lubridate")    # For working with dates
+
+
+
+
 ```{r, echo=FALSE, message=FALSE}
 # load a few R packages
 library(here)
@@ -29,9 +38,7 @@ library(knitr)
 
 
 ```{r}
-#1.Load Required Libraries
-install.packages("janitor")      # For cleaning column names
-install.packages("lubridate")    # For working with dates
+
 
 # Load libraries
 library(tidyverse)

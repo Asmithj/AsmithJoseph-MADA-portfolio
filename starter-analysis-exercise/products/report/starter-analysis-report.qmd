@@ -1,7 +1,7 @@
 ---
 title: "Manuscript/Report Template for a Data Analysis Project"
 subtitle: ""
-author: Your Name
+author: Asmith Joseph
 date: today
 format:
   html:
