@@ -7,15 +7,15 @@ output: html_document
 
   
 # Data Source Description
-```{r}
+
 The National Artesunate for Severe Malaria Program Case Report Data (April - December 2019) provides deidentified patient data on individuals receiving intravenous (IV) artesunate, the first-line treatment for severe malaria. Collected through the Centers for Disease Control and Prevention (CDC), this dataset contains 197 observations and 119 clinical variables, detailing malaria diagnosis methods, organ dysfunction indicators, laboratory values, and treatment responses. Each patient is assigned a unique ParticipantID, which allows linkage to related datasets, including Artesunate Dosing Data, Follow-On Antimalarial Dosing Data, and Microscopy (Parasitemia) Data. The dataset, last updated on April 10, 2020, is publicly available on the CDC open data portal (https://data.cdc.gov/Global-Health/National-Artesunate-for-Severe-Malaria-Program-Cas/igaz-icki/about_data). Key variables include Dx (diagnosis method), IV_parasitemia (malaria confirmation), IV_shock (shock status), IV_ards (Acute Respiratory Distress Syndrome), IV_ARF (Acute Renal Failure), and IV_DIC (Disseminated Intravascular Coagulation). Additionally, it includes a Data Dictionary and a Guide to NASMP Datasets, offering comprehensive documentation for analysis.
-```
+
 
   
 # Explanations of Downloading and saving the dataset. See below for the code!
-```{r}
+
 To work with this dataset, the first step is I download the dataset from the CDC Open Data Portal in CSV format. This is done by defining the dataset’s URL and using R’s read_csv() function to import it into a dataframe. Once the data is loaded, the head() function is used to preview the first few rows, and the View() function allows for manual inspection in RStudio’s data viewer. After confirming that the dataset has been successfully retrieved, the next step is to save it locally for easier access. To do this, a local file path is specified, ensuring that the dataset is stored in a designated folder on the computer. The write_csv() function is then used to save the dataframe as a CSV file in the specified directory. 
-```
+
 
 
 # Downloading the data.
@@ -69,11 +69,10 @@ head(df)
 
 
 # Explanations of Exploratory/Descriptive Data Analysis. See below for the code!
-```{r}
+
 To explore the dataset, I begin by loading necessary libraries such as dplyr, ggplot2, readr, and tidyr to facilitate data manipulation and visualization. The initial data exploration involves viewing the first few rows using head(cdcMalaria), checking the structure with str(cdcMalaria), and generating summary statistics with summary(cdcMalaria). Next, I create summary tables for categorical variables, selecting relevant columns such as "Dx" and "FO_appropriate" and computing the percentage distribution of each category using a function that groups the data and calculates proportions. For continuous variables, a summary table is generated that includes mean, standard deviation, minimum, quartiles (25%, 50%, 75%), and maximum values, while handling missing data by excluding NA values. 
 Moving on to visualizations, bar charts are generated for categorical variables, where ggplot2 is used to plot distributions with bars representing percentages of each category. Similarly, histograms with density curves are created for continuous variables to visualize their distributions, with bins set to 20 and a density line overlayed in red. Since the dataset contains multiple numeric variables, only the first five continuous variables are plotted to keep visualizations manageable. 
 
-```
 
 
 # Data exploration through tables
