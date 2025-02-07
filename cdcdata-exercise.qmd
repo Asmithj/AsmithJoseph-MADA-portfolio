@@ -13,7 +13,7 @@ install.packages(c("httr", "jsonlite", "readr"), dependencies = TRUE)
 
 
 ```{r setup, include=FALSE}
-knitr::opts_knit$set(root.dir = "C:/Users/ajose35/Desktop/Ecole/MADA-course/AsmithJoseph-MADA-portfolio")
+knitr::opts_knit$set(root.dir = "C:/Users/ajose35/Desktop/L'ecole/MADA-course/AsmithJoseph-MADA-portfolio")
 ```
 
 
@@ -61,7 +61,8 @@ library(readr)
 csv_url <- "https://data.cdc.gov/api/views/igaz-icki/rows.csv"
 
 # Define the local file path 
-local_path <- "C:\\Users\\ajose35\\Desktop\\L'ecole\\MADA-course\\cdc_data.csv"
+local_path <- "C:\\Users\\ajose35\\Desktop\\Ecole\\MADA-course\\AsmithJoseph-MADA-portfolio\\cdcdata-exercise\\cdc_data.csv"
+
 
 # Download and save the CSV file
 df <- read_csv(csv_url)
