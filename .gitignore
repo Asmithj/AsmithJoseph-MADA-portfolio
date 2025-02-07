@@ -8,3 +8,20 @@
 .DS_Store
 
 /.quarto/
+
+
+
+# Ignore Windows system files
+NTUSER.*
+AppData/
+OneDrive/
+Desktop/
+Documents/
+Downloads/
+Saved Games/
+Videos/
+Pictures/
+Searches/
+Thumbs.db
+.DS_Store
+*.log
