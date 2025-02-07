@@ -53,27 +53,27 @@ View(cdcMalaria)
 ```
 
 ```{r}
-# How I change the data file forma to csv and then save it to my local computer.
 # Load required library
 library(readr)
 
 # Define the CSV URL
 csv_url <- "https://data.cdc.gov/api/views/igaz-icki/rows.csv"
 
-# Define the local file path 
-local_path <- "C:\\Users\\ajose35\\Desktop\\L'ecole\\MADA-course\\cdc_data.csv"
+# Define the local file path using double backslashes
+local_path <- "C:\\Users\\ajose35\\Desktop\\Ecole\\MADA-course\\AsmithJoseph-MADA-portfolio\\cdcdata-exercise\\cdc_data.csv"
+
+# Alternative: Using forward slashes
+# local_path <- "C:/Users/ajose35/Desktop/Ecole/MADA-course/AsmithJoseph-MADA-portfolio/cdcdata-exercise/cdc_data.csv"
 
 # Download and save the CSV file
-df <- read_csv(csv_url)
+download.file(csv_url, local_path)
 
-# Save to the specified directory
-write_csv(df, local_path)
+# Read the CSV file (Optional step to check if it downloaded correctly)
+df <- read_csv(local_path)
 
-# Confirm the file was saved
-print(paste("CSV file saved at:", local_path))
-
-# View the first few rows
+# Print first few rows
 head(df)
+
 ```
 
 
