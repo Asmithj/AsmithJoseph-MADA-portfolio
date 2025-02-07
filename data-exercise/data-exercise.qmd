@@ -17,8 +17,21 @@ format: html
 ```{r}
 # **2. Data Import & Loading**! 
 # Uploading the data. We are using the the Vaccine Adverse Event Reporting System (VAERS) dataset
+# Load required library
 library(readr)
-VaccineData <- read.csv("C:/Users/ajose35/Desktop/VaccineData.csv")
+
+# Define the correct file path
+file_path <- "C:/Users/ajose35/Desktop/Ecole/MADA-course/AsmithJoseph-MADA-portfolio/data-exercise/VaccineData.csv"
+
+# Load the data
+VaccineData <- read_csv(file_path)
+
+# Display first few rows
+head(VaccineData)
+
+# Optional: View the dataset in RStudio
+View(VaccineData)
+
 
 ```
 
