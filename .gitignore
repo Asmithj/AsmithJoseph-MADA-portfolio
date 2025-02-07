@@ -25,3 +25,32 @@ Searches/
 Thumbs.db
 .DS_Store
 *.log
+
+
+# Ignore Windows system files
+NTUSER.*
+ntuser.*
+OneDrive/
+AppData/
+Backup/
+IntelGraphicsProfiles/
+.viminfo
+.lesshst
+*.log
+*.blf
+*.regtrans-ms
+
+# Ignore user directories
+3D Objects/
+Contacts/
+Desktop/
+Documents/
+Downloads/
+Favorites/
+Links/
+Music/
+Pictures/
+Saved Games/
+Searches/
+Videos/
+
