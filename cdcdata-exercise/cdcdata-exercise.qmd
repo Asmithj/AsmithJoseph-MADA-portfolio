@@ -176,7 +176,7 @@ for (var in numeric_vars[1:5]) {  # Use column names from the original dataset
 
 ############################################## 
 
-## This part was contributed to by Murtaza Yaqubi.
+## This part was contributed by Murtaza Yaqubi.
 
 It’s a good practice to install and load the necessary packages for analysis.
 
