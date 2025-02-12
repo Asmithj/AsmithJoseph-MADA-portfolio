@@ -21,7 +21,7 @@ The data was pulled from [FiveThirtyEight Data](https://data.fivethirtyeight.com
 
 
 
-#nInitial AI Prompt
+# Initial AI Prompt
 My Prompt:
 
 I am undertaking a project to replicate a graph from an online article. Here’s how we'll proceed: 1) I will provide the link to the article, 2) share the dataset, and 3) upload an image of the original graph. Your task is to recreate the graph in RStudio, mirroring the original in terms of variables, colors, and styles. I will be available throughout the process to help with any adjustments you need to make.
@@ -234,6 +234,9 @@ airline_data_fixed <- airline_data_fixed %>%
 
 
 ```{r}
+# Load required package for margin units
+library(grid)
+
 # Create the scatter plot with corrected airline positions
 fatalities_plot <- ggplot(airline_data_fixed, aes(x = fatal_85_99, y = fatal_00_14)) +
   
@@ -280,8 +283,8 @@ fatalities_plot <- ggplot(airline_data_fixed, aes(x = fatal_85_99, y = fatal_00_
     # Background color
     plot.background = element_rect(fill = "gray95", color = NA),
     
-    # Adjust margins for axis spacing
-    plot.margin = margin(20, 20, 30, 20)
+    # Adjust margins for axis spacing (Fix: Convert to unit format)
+    plot.margin = unit(c(20, 20, 30, 20), "pt")  # Use "pt" for points
   ) +
   
   # Set x and y axis limits to match the original graph
@@ -290,6 +293,7 @@ fatalities_plot <- ggplot(airline_data_fixed, aes(x = fatal_85_99, y = fatal_00_
 
 # Print the corrected plot
 print(fatalities_plot)
+
 ```
 
 
@@ -327,9 +331,10 @@ library(here)
 library(tidyverse)
 library(ggrepel)
 library(showtext)
+library(grid)  # For margin fixes
 
-# Enable the Atlas Grotesk font
-font_add_google("Montserrat", "AtlasGrotesk")  
+# Enable Google Font (Alternative to Atlas Grotesk)
+font_add_google("Montserrat", "montserrat")
 showtext_auto()
 
 # Define the file path using `here`
@@ -363,7 +368,8 @@ label_airlines <- c("Kenya Airways", "Malaysia Airlines", "China Airlines", "Pak
 
 # Create label column for only the selected airlines
 airline_data_fixed <- airline_data_fixed %>%
-  mutate(label = ifelse(airline %in% label_airlines, airline, NA))
+  mutate(label = ifelse(airline %in% label_airlines, airline, NA)) %>%
+  mutate(label = ifelse(is.na(label), "", label))  # Fix missing label issue
 
 # Create the scatter plot with corrected airline positions
 fatalities_plot <- ggplot(airline_data_fixed, aes(x = fatal_85_99, y = fatal_00_14)) +
@@ -371,13 +377,13 @@ fatalities_plot <- ggplot(airline_data_fixed, aes(x = fatal_85_99, y = fatal_00_
   # Scatter points (Black dots)
   geom_point(color = "black", size = 3, alpha = 0.8) +
   
-  # Flat Red regression line (Ends slightly after 1000)
-  geom_smooth(method = "lm", formula = y ~ 1, color = "red", se = FALSE, size = 1.5, fullrange = FALSE) +
+  # Flat Red regression line (Ensuring a flat trend)
+  geom_smooth(method = "lm", formula = y ~ 1, color = "red", se = FALSE, linewidth = 1.5, fullrange = TRUE) +
   
-  # Airline Labels (Positioned directly next to their respective dots)
+  # Airline Labels (Fix Overlap Issues)
   geom_text_repel(aes(label = label),
                   size = 4.5,  
-                  family = "AtlasGrotesk",
+                  family = "montserrat",  # Updated font
                   fontface = "bold",
                   hjust = 0,  # Align text to the right
                   nudge_x = 15,  # Move labels slightly right of dots for precision
@@ -397,7 +403,7 @@ fatalities_plot <- ggplot(airline_data_fixed, aes(x = fatal_85_99, y = fatal_00_
   # Match FiveThirtyEight theme
   theme_minimal() +
   theme(
-    text = element_text(family = "AtlasGrotesk"),
+    text = element_text(family = "montserrat"),  # Use the correct font
     plot.title = element_text(size = 18, face = "bold"),
     plot.subtitle = element_text(size = 12, color = "gray30"),
     axis.title = element_text(size = 14),
@@ -412,7 +418,7 @@ fatalities_plot <- ggplot(airline_data_fixed, aes(x = fatal_85_99, y = fatal_00_
     plot.background = element_rect(fill = "gray95", color = NA),
     
     # Adjust margins for axis spacing
-    plot.margin = margin(20, 20, 30, 20)
+    plot.margin = unit(c(20, 20, 30, 20), "pt")  # Fix margin issue
   ) +
   
   # Set x and y axis limits to match the original graph
@@ -422,7 +428,14 @@ fatalities_plot <- ggplot(airline_data_fixed, aes(x = fatal_85_99, y = fatal_00_
 # Print the corrected plot
 print(fatalities_plot)
 
+
 ```
+
+
+
+
+
+
 
 
 
