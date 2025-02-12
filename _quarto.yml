@@ -1,6 +1,6 @@
 project: 
   type: website
-  output-dir: docs  # Ensure this is correct for GitHub Pages
+  output-dir: docs  
 
 website:
   title: "Asmith Joseph Data Analysis Portfolio"

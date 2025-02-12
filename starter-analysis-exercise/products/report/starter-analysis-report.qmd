@@ -1,5 +1,5 @@
 ---
-title: "Manuscript/Report Template for a Data Analysis Project"
+title: "starter-analysis-exercise"
 subtitle: ""
 author: Asmith Joseph
 date: today
@@ -11,11 +11,6 @@ format:
 bibliography: ../dataanalysis-template-references.bib
 csl: ../apa.csl
 ---
-
-The structure below is one possible setup for a data analysis project (including the course project). For a manuscript, adjust as needed. 
-You don't need to have exactly these sections, but the content covering those sections should be addressed.
-
-This uses MS Word as output format. [See here](https://quarto.org/docs/output-formats/ms-word.html) for more information. You can switch to other formats, like html or pdf. See [the Quarto documentation](https://quarto.org/) for other formats.
 
 
 ```{r, echo=FALSE, message=FALSE}
