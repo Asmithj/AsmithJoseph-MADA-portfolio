@@ -10,14 +10,14 @@ output: html_document
 Visualization Exercise : Replicating the FiveThirtyEight Fatalities Graph using AI Assistance
 
 
-The objective of this exercise is to replicate a FiveThirtyEight graph that visualizes airline fatalities adjusted for seat availability and distance traveled between 1985-99 and 2000-14.I obtained the article from https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/ . 
-
+The objective of this exercise is to replicate a FiveThirtyEight graph that visualizes airline fatalities adjusted for seat availability and distance traveled between 1985-99 and 2000-14. I obtained the article from [FiveThirtyEight](https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/).
 
 The FiveThirtyEight article suggests that past crashes are not the best indicator of an airline's current safety. Instead, it recommends evaluating airlines based on their overall incident rates, including non-fatal ones, which provide a more consistent safety measure. The analysis also notes that airlines from wealthier countries typically have better safety records due to stricter standards and regulations. A composite "safety score" calculated using data on incidents and fatalities helps rank airlines, with significant variations in safety observed across different carriers and time periods.
 
-Full article for more details here:  https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/
+Full article for more details [here](https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/).
 
-The data was pulled from https://data.fivethirtyeight.com/
+The data was pulled from [FiveThirtyEight Data](https://data.fivethirtyeight.com/).
+
 
 
 
