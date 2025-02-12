@@ -1,6 +1,6 @@
 project: 
   type: website
-  output-dir: docs
+  output-dir: docs  # Ensure this is correct for GitHub Pages
 
 website:
   title: "Asmith Joseph Data Analysis Portfolio"
@@ -19,7 +19,7 @@ website:
           - text: "Exercise 5: Processing Data (CDC)"
             file: cdcdata-exercise/cdcdata-exercise.qmd
           - text: "Presenting Data and Results"
-            file: presentation-exercise/presentation-exercise.qmd
+            file: presentation-exercise/presentation-exercise.qmd  
 
     right:
       - icon: github
@@ -29,5 +29,5 @@ format:
   html:
     theme: cosmo
     highlight: monokai
-    css: styles.css
+    css: styles.css  # Ensure this file exists
     toc: false
