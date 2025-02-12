@@ -19,7 +19,7 @@ website:
           - text: "Exercise 5: Processing Data (CDC)"
             file: cdcdata-exercise/cdcdata-exercise.qmd
           - text: "Presenting Data and Results"
-            file: presentation-exercise/presentation-exercise.qmd  
+            file: presentation-exercise/presentation-exercise.qmd
           - text: "Synthetic Data Exercise"
             file: synthetic-data-exercise/synthetic-data-exercise.qmd 
 
