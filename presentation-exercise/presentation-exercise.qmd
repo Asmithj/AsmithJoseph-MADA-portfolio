@@ -18,6 +18,18 @@ Full article for more details [here](https://fivethirtyeight.com/features/should
 
 The data was pulled from [FiveThirtyEight Data](https://data.fivethirtyeight.com/).
 
+```{r}
+# Original graph: 
+knitr::include_graphics("C:\\Users\\ajose35\\Desktop\\Ecole\\MADA-course\\AsmithJoseph-MADA-portfolio\\presentation-exercise\\Original graph.png")
+
+
+# Replicate Graph 
+knitr::include_graphics("C:\\Users\\ajose35\\Desktop\\Ecole\\MADA-course\\AsmithJoseph-MADA-portfolio\\presentation-exercise\\Replicate Graph.png")
+
+
+```
+
+
 
 
 
