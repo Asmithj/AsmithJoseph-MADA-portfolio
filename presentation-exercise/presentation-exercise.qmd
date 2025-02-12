@@ -575,7 +575,6 @@ gt_table <- airline_table %>%
 
 # Print the table
 gt_table
-
 ```
 
 
