@@ -3,20 +3,37 @@ title: "Presentation Exercise"
 author: "Asmith Joseph"
 date: "02/11/2025"
 output: html_document
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-  
 # Introduction
-Visualization Exercise : Replicating the FiveThirtyEight Fatalities Graph using AI Assistance
 
+Visualization Exercise : Replicating the FiveThirtyEight Fatalities
+Graph using AI Assistance
 
-The objective of this exercise is to replicate a FiveThirtyEight graph that visualizes airline fatalities adjusted for seat availability and distance traveled between 1985-99 and 2000-14. I obtained the article from [FiveThirtyEight](https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/).
+The objective of this exercise is to replicate a FiveThirtyEight graph
+that visualizes airline fatalities adjusted for seat availability and
+distance traveled between 1985-99 and 2000-14. I obtained the article
+from
+[FiveThirtyEight](https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/).
 
-The FiveThirtyEight article suggests that past crashes are not the best indicator of an airline's current safety. Instead, it recommends evaluating airlines based on their overall incident rates, including non-fatal ones, which provide a more consistent safety measure. The analysis also notes that airlines from wealthier countries typically have better safety records due to stricter standards and regulations. A composite "safety score" calculated using data on incidents and fatalities helps rank airlines, with significant variations in safety observed across different carriers and time periods.
+The FiveThirtyEight article suggests that past crashes are not the best
+indicator of an airline's current safety. Instead, it recommends
+evaluating airlines based on their overall incident rates, including
+non-fatal ones, which provide a more consistent safety measure. The
+analysis also notes that airlines from wealthier countries typically
+have better safety records due to stricter standards and regulations. A
+composite "safety score" calculated using data on incidents and
+fatalities helps rank airlines, with significant variations in safety
+observed across different carriers and time periods.
 
-Full article for more details [here](https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/).
+Full article for more details
+[here](https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/).
 
-The data was pulled from [FiveThirtyEight Data](https://data.fivethirtyeight.com/).
+The data was pulled from [FiveThirtyEight
+Data](https://data.fivethirtyeight.com/).
 
 ```{r}
 # Original graph: 
@@ -29,27 +46,31 @@ knitr::include_graphics("C:\\Users\\ajose35\\Desktop\\Ecole\\MADA-course\\Asmith
 
 ```
 
-
-
-
-
 # Initial AI Prompt
+
 My Prompt:
 
-I am undertaking a project to replicate a graph from an online article. Here’s how we'll proceed: 1) I will provide the link to the article, 2) share the dataset, and 3) upload an image of the original graph. Your task is to recreate the graph in RStudio, mirroring the original in terms of variables, colors, and styles. I will be available throughout the process to help with any adjustments you need to make.
+I am undertaking a project to replicate a graph from an online article.
+Here’s how we'll proceed: 1) I will provide the link to the article, 2)
+share the dataset, and 3) upload an image of the original graph. Your
+task is to recreate the graph in RStudio, mirroring the original in
+terms of variables, colors, and styles. I will be available throughout
+the process to help with any adjustments you need to make.
 
 AI Response:
 
-Understood! Please provide the dataset, and I will generate RStudio code to replicate the FiveThirtyEight visualization.
-
+Understood! Please provide the dataset, and I will generate RStudio code
+to replicate the FiveThirtyEight visualization.
 
 # Data Loading & Initial Visualization
+
 User Prompt:
 
-Load the dataset using the here package in R.
-Read and clean the data to extract only relevant columns.
+Load the dataset using the here package in R. Read and clean the data to
+extract only relevant columns.
 
 I Response & Code:
+
 ```{r}
 # Load required libraries
 if (!requireNamespace("here", quietly = TRUE)) install.packages("here")
@@ -74,19 +95,16 @@ airline_data_clean <- airline_data %>%
 
 ```
 
-
-
 # First Attempt at the Graph
+
 My Prompt:
 
 Generate a scatter plot where:
 
-X-axis: Fatalities (1985-99)
-Y-axis: Fatalities (2000-14)
-Dots: Represent airlines
-Trend Line: Add a flat red regression line (like in the original graph)
-Label specific airlines (Kenya Airways, Malaysia Airlines, China Airlines, Pakistan International, and Avianca)
-
+X-axis: Fatalities (1985-99) Y-axis: Fatalities (2000-14) Dots:
+Represent airlines Trend Line: Add a flat red regression line (like in
+the original graph) Label specific airlines (Kenya Airways, Malaysia
+Airlines, China Airlines, Pakistan International, and Avianca)
 
 # Load the data.
 
@@ -105,8 +123,6 @@ airline_data <- read_csv(data_path)
 # Check the first few rows of the dataset
 head(airline_data)
 ```
-
-
 
 # Data Preparation
 
@@ -131,34 +147,27 @@ sum(is.na(airline_data_clean))
 
 ```
 
-
-
-
 # First Attempt at the Graph
+
 My Prompt:
 
 Generate a scatter plot where:
 
-X-axis: Fatalities (1985-99)
-Y-axis: Fatalities (2000-14)
-Dots: Represent airlines
-Trend Line: Add a flat red regression line (like in the original graph)
-Label specific airlines (Kenya Airways, Malaysia Airlines, China Airlines, Pakistan International, and Avianca)
+X-axis: Fatalities (1985-99) Y-axis: Fatalities (2000-14) Dots:
+Represent airlines Trend Line: Add a flat red regression line (like in
+the original graph) Label specific airlines (Kenya Airways, Malaysia
+Airlines, China Airlines, Pakistan International, and Avianca)
 
-
-
-#Correcting Airline Positions
-My  Prompt:
+#Correcting Airline Positions My Prompt:
 
 Adjust airline fatality positions to match the original graph.
 
-Kenya Airways should be at (0, 1375)
-Malaysia Airlines should have two dots at (0, 750) and (0, 500)
-China Airlines & Pakistan International should be aligned at the same X-axis value.
-Avianca should be slightly past 1000.
+Kenya Airways should be at (0, 1375) Malaysia Airlines should have two
+dots at (0, 750) and (0, 500) China Airlines & Pakistan International
+should be aligned at the same X-axis value. Avianca should be slightly
+past 1000.
 
-
-#  Create Graph 1 (Fatalities) --> (1st attempt)
+# Create Graph 1 (Fatalities) --\> (1st attempt)
 
 ```{r}
 # Create the first scatter plot
@@ -192,9 +201,7 @@ print(fatalities_plot)
 
 ```
 
-
-
-#  Create Graph 1 (Fatalities) --> (2nd  attempt)
+# Create Graph 1 (Fatalities) --\> (2nd attempt)
 
 ```{r}
 # Load libraries
@@ -208,8 +215,6 @@ font_add_google("Montserrat", "AtlasGrotesk")  # Alternative if Atlas Grotesk is
 showtext_auto()
 
 ```
-
-
 
 ```{r}
 # Rename columns for clarity
@@ -241,9 +246,6 @@ airline_data_fixed <- airline_data_fixed %>%
 
 
 ```
-
-
-
 
 ```{r}
 # Load required package for margin units
@@ -308,29 +310,30 @@ print(fatalities_plot)
 
 ```
 
+# 
 
+My prompt:
 
-# ##########################################################################################################################################################
+Let's proceed with the following revisions and adjustments to your
+graph:
 
-My prompt: 
+Adjust the positions of airline fatalities to match those in the
+original graph:
 
-Let's proceed with the following revisions and adjustments to your graph:
+Place Kenya Airways at coordinates (0, 1375). Position Malaysia Airlines
+with two dots at coordinates (0, 750) and (0, 500). Align China Airlines
+and Pakistan International on the same X-axis. Set Avianca slightly past
+the 1000 mark on the X-axis. Change the font to Atlas Grotesk for all
+text elements.
 
-Adjust the positions of airline fatalities to match those in the original graph:
+Adjust the label positions to ensure they sit right next to the
+corresponding dot.
 
-Place Kenya Airways at coordinates (0, 1375).
-Position Malaysia Airlines with two dots at coordinates (0, 750) and (0, 500).
-Align China Airlines and Pakistan International on the same X-axis.
-Set Avianca slightly past the 1000 mark on the X-axis.
-Change the font to Atlas Grotesk for all text elements.
+Modify the grid color to light gray, replicating the style of
+FiveThirtyEight.
 
-Adjust the label positions to ensure they sit right next to the corresponding dot.
-
-Modify the grid color to light gray, replicating the style of FiveThirtyEight.
-
-Add a shaded gray area at the bottom of the graph, incorporating the FiveThirtyEight logo and source text for attribution.
-
-
+Add a shaded gray area at the bottom of the graph, incorporating the
+FiveThirtyEight logo and source text for attribution.
 
 ```{r}
 # Load required libraries
@@ -443,33 +446,45 @@ print(fatalities_plot)
 
 ```
 
+# My Prompt:
 
+Identify the differences between Graph 1 the original and the replicate
 
+AI Response:
 
+In the original graph, the labels for China Airlines and Pakistan
+International need vertical adjustments for accuracy; they're positioned
+too closely in the replicated graph. The red trend line should be flat
+and end slightly past 1000, not extending too far as in the replication.
+For Kenya Airways, the dot should align on the first y-grid line with
+the label rightly spaced to the right—current positioning is off.
+Malaysia Airlines' labels need to accurately reflect their placement
+next to the first major y-grid line. Avianca's dot, closer to 1000 in
+the original, is too far right in the replication and needs adjustment.
+Generally, labels in the replicated graph are too close to the dots
+compared to the original, where they are more spaced out, requiring
+overall spacing corrections.
 
-
-
-
-
-# My Prompt: 
-
-Identify the differences between Graph 1 the original and the replicate 
-
-
-AI Response: 
-
-In the original graph, the labels for China Airlines and Pakistan International need vertical adjustments for accuracy; they're positioned too closely in the replicated graph. The red trend line should be flat and end slightly past 1000, not extending too far as in the replication. For Kenya Airways, the dot should align on the first y-grid line with the label rightly spaced to the right—current positioning is off. Malaysia Airlines' labels need to accurately reflect their placement next to the first major y-grid line. Avianca's dot, closer to 1000 in the original, is too far right in the replication and needs adjustment. Generally, labels in the replicated graph are too close to the dots compared to the original, where they are more spaced out, requiring overall spacing corrections.
-
-
-# #####################################################################################################################################################
+# 
 
 # (Part 2) Creating the Airline Safety Table
-To build this table, I selected key variables on incidents, fatal accidents, and fatalities for the periods 1985-1999 and 2000-2014, filtering the data to highlight the 15 airlines with the highest total fatalities.
 
-Using gt(), I structured the table by adding a bold title, formatted headers, and spanning columns for the two time periods. Airline names were bolded for emphasis, and numerical values were simplified for better readability. To enhance insights, I applied color-coded conditional formatting, using a gradient scale from green (low incidents) to red (high fatalities). A summary row was also included to provide totals for incidents, fatal accidents, and fatalities, along with a source note for attribution.
+To build this table, I selected key variables on incidents, fatal
+accidents, and fatalities for the periods 1985-1999 and 2000-2014,
+filtering the data to highlight the 15 airlines with the highest total
+fatalities.
 
+Using gt(), I structured the table by adding a bold title, formatted
+headers, and spanning columns for the two time periods. Airline names
+were bolded for emphasis, and numerical values were simplified for
+better readability. To enhance insights, I applied color-coded
+conditional formatting, using a gradient scale from green (low
+incidents) to red (high fatalities). A summary row was also included to
+provide totals for incidents, fatal accidents, and fatalities, along
+with a source note for attribution.
 
-# Loading the data and necessary Libraries 
+# Loading the data and necessary Libraries
+
 ```{r}
 # Load libraries
 library(gt)
@@ -478,9 +493,6 @@ library(scales)
 library(sparkline)  # For inline visualizations
 
 ```
-
-
-
 
 ```{r}
 # Load airline safety dataset
@@ -499,8 +511,6 @@ airline_table <- airline_data %>%
   slice_head(n = 15)  # Show only the top 15 airlines for readability
 
 ```
-
-
 
 # Creating the Airline Safety Incidents (1985-2014) Table with gt
 
@@ -601,6 +611,3 @@ gt_table <- airline_table %>%
 # Print the table
 gt_table
 ```
-
-
-
