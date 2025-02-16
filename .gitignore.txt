@@ -1,0 +1,11 @@
+# Ignore system files
+NTUSER.*
+AppData/
+OneDrive/
+Desktop/
+Documents/
+Downloads/
+Saved Games/
+Videos/
+Pictures/
+Searches/
