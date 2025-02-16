@@ -5,6 +5,15 @@ date: "02/02/2025"
 output: html_document
 ---
 
+
+```{r}
+options(knitr.in.dir = FALSE)
+
+```
+
+
+
+
 # Data Source Description
 
 The National Artesunate for Severe Malaria Program Case Report Data (April - December 2019) provides deidentified patient data on individuals receiving intravenous (IV) artesunate, the first-line treatment for severe malaria. Collected through the Centers for Disease Control and Prevention (CDC), this dataset contains 197 observations and 119 clinical variables, detailing malaria diagnosis methods, organ dysfunction indicators, laboratory values, and treatment responses. Each patient is assigned a unique ParticipantID, which allows linkage to related datasets, including Artesunate Dosing Data, Follow-On Antimalarial Dosing Data, and Microscopy (Parasitemia) Data. The dataset, last updated on April 10, 2020, is publicly available on the CDC open data portal (https://data.cdc.gov/Global-Health/National-Artesunate-for-Severe-Malaria-Program-Cas/igaz-icki/about_data). Key variables include Dx (diagnosis method), IV_parasitemia (malaria confirmation), IV_shock (shock status), IV_ards (Acute Respiratory Distress Syndrome), IV_ARF (Acute Renal Failure), and IV_DIC (Disseminated Intravascular Coagulation). Additionally, it includes a Data Dictionary and a Guide to NASMP Datasets, offering comprehensive documentation for analysis.
