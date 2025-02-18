@@ -8,7 +8,6 @@ output: html_document
 
 ```{r}
 options(knitr.in.dir = FALSE)
-
 ```
 
 

@@ -5,11 +5,6 @@ date: "02/02/2025"
 output: html_document
 ---
 
-install.packages(c("httr", "jsonlite", "readr"), dependencies = TRUE)
-
-```{r setup, include=FALSE}
-knitr::opts_knit$set(root.dir = "C:/Users/ajose35/Desktop/L'ecole/MADA-course/AsmithJoseph-MADA-portfolio")
-```
 
 # Data Source Description
 
