@@ -23,7 +23,8 @@ website:
           - text: "Synthetic Data Exercise"
             file: synthetic-data-exercise/synthetic-data-exercise.qmd
           - text: "Mavoglurant PK Analysis"
-            file: fitting-exercise/mavoglurant-pk-analysis.qmd  
+            file: fitting-exercise/fitting-exercise.qmd
+
 
     right:
       - icon: github

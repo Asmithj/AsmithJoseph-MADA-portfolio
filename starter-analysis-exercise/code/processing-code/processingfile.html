@@ -260,7 +260,7 @@ Attaching package: 'dplyr'</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># path to data</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># note the use of the here() package and not absolute paths</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>data_location <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"starter-analysis-exercise"</span>,<span class="st">"data"</span>,<span class="st">"raw-data"</span>,<span class="st">"exampledata2.xlsx"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>data_location <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"starter-analysis-exercise"</span>,<span class="st">"data"</span>,<span class="st">"raw-data"</span>,<span class="st">"exampledata.xlsx"</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>rawdata <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(data_location)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -271,14 +271,12 @@ Attaching package: 'dplyr'</code></pre>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>codebook <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(data_location, <span class="at">sheet =</span><span class="st">"Codebook"</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(codebook)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 3
-  `Variable Name`    `Variable Definition`                      `Allowed Values`
-  &lt;chr&gt;              &lt;chr&gt;                                      &lt;chr&gt;           
-1 Height             "height in centimeters"                    "numeric value …
-2 Weight             "weight in kilograms"                      "numeric value …
-3 Gender             "identified gender (male/female/other)"    "M/F/O/NA"      
-4 Hair color         "black, brown, blonde, Gray, ginger, blon… "Blk/Brown/"    
-5 BMI Classification "Underweight: BMI &lt; 18.5\r\nNormal Weight… "Underweight\r\…</code></pre>
+<pre><code># A tibble: 3 × 3
+  `Variable Name` `Variable Definition`                 `Allowed Values`      
+  &lt;chr&gt;           &lt;chr&gt;                                 &lt;chr&gt;                 
+1 Height          height in centimeters                 numeric value &gt;0 or NA
+2 Weight          weight in kilograms                   numeric value &gt;0 or NA
+3 Gender          identified gender (male/female/other) M/F/O/NA              </code></pre>
 </div>
 </div>
 <p>Several ways of looking at the data</p>
@@ -286,44 +284,33 @@ Attaching package: 'dplyr'</code></pre>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(rawdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 14
-Columns: 6
-$ Height               &lt;chr&gt; "180", "175", "sixty", "178", "192", "6", "156", …
-$ Weight               &lt;dbl&gt; 80, 70, 60, 76, 90, 55, 90, 110, 54, 7000, NA, 45…
-$ Gender               &lt;chr&gt; "M", "O", "F", "F", "NA", "F", "O", "M", "N", "M"…
-$ `Hair Color`         &lt;chr&gt; "black", "brown", "blonde", "Gray", "ginger", "bl…
-$ BMI                  &lt;dbl&gt; 24.69, 22.80, NA, 23.90, 24.40, NA, 36.90, 39.40,…
-$ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal Wei…</code></pre>
+Columns: 3
+$ Height &lt;chr&gt; "180", "175", "sixty", "178", "192", "6", "156", "166", "155", …
+$ Weight &lt;dbl&gt; 80, 70, 60, 76, 90, 55, 90, 110, 54, 7000, NA, 45, 55, 50
+$ Gender &lt;chr&gt; "M", "O", "F", "F", "NA", "F", "O", "M", "N", "M", "F", "F", "M…</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rawdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    Height              Weight          Gender           Hair Color       
- Length:14          Min.   :  45.0   Length:14          Length:14         
- Class :character   1st Qu.:  55.0   Class :character   Class :character  
- Mode  :character   Median :  70.0   Mode  :character   Mode  :character  
-                    Mean   : 602.7                                        
-                    3rd Qu.:  90.0                                        
-                    Max.   :7000.0                                        
-                    NA's   :1                                             
-      BMI        BMI Classification
- Min.   :19.90   Length:14         
- 1st Qu.:22.50   Class :character  
- Median :24.15   Mode  :character  
- Mean   :26.09                     
- 3rd Qu.:25.22                     
- Max.   :39.40                     
- NA's   :4                         </code></pre>
+<pre><code>    Height              Weight          Gender         
+ Length:14          Min.   :  45.0   Length:14         
+ Class :character   1st Qu.:  55.0   Class :character  
+ Mode  :character   Median :  70.0   Mode  :character  
+                    Mean   : 602.7                     
+                    3rd Qu.:  90.0                     
+                    Max.   :7000.0                     
+                    NA's   :1                          </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rawdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 6
-  Height Weight Gender `Hair Color`   BMI `BMI Classification`
-  &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;               
-1 180        80 M      black         24.7 Normal Weight       
-2 175        70 O      brown         22.8 Normal Weight       
-3 sixty      60 F      blonde        NA   &lt;NA&gt;                
-4 178        76 F      Gray          23.9 Normal Weight       
-5 192        90 NA     ginger        24.4 Normal Weight       
-6 6          55 F      black         NA   &lt;NA&gt;                </code></pre>
+<pre><code># A tibble: 6 × 3
+  Height Weight Gender
+  &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt; 
+1 180        80 M     
+2 175        70 O     
+3 sixty      60 F     
+4 178        76 F     
+5 192        90 NA    
+6 6          55 F     </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(rawdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -340,7 +327,7 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Number of columns</td>
-<td style="text-align: left;">6</td>
+<td style="text-align: left;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">_______________________</td>
@@ -352,11 +339,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 </tr>
 <tr class="even">
 <td style="text-align: left;">character</td>
-<td style="text-align: left;">4</td>
+<td style="text-align: left;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">numeric</td>
-<td style="text-align: left;">2</td>
+<td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">________________________</td>
@@ -371,14 +358,14 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <p><strong>Variable type: character</strong></p>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 24%">
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
 <col style="width: 12%">
-<col style="width: 18%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 11%">
-<col style="width: 14%">
+<col style="width: 15%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -396,7 +383,7 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <tr class="odd">
 <td style="text-align: left;">Height</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">0</td>
@@ -406,31 +393,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <tr class="even">
 <td style="text-align: left;">Gender</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Hair Color</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BMI Classification</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">0.64</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3</td>
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>
@@ -438,17 +405,17 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <p><strong>Variable type: numeric</strong></p>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 11%">
-<col style="width: 15%">
-<col style="width: 7%">
-<col style="width: 9%">
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 3%">
 <col style="width: 5%">
 <col style="width: 5%">
-<col style="width: 6%">
+<col style="width: 5%">
 <col style="width: 6%">
 <col style="width: 7%">
-<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -472,25 +439,12 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: right;">0.93</td>
 <td style="text-align: right;">602.69</td>
 <td style="text-align: right;">1922.25</td>
-<td style="text-align: right;">45.0</td>
-<td style="text-align: right;">55.0</td>
-<td style="text-align: right;">70.00</td>
-<td style="text-align: right;">90.00</td>
-<td style="text-align: right;">7000.0</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">7000</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BMI</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">0.71</td>
-<td style="text-align: right;">26.09</td>
-<td style="text-align: right;">6.60</td>
-<td style="text-align: right;">19.9</td>
-<td style="text-align: right;">22.5</td>
-<td style="text-align: right;">24.15</td>
-<td style="text-align: right;">25.22</td>
-<td style="text-align: right;">39.4</td>
-<td style="text-align: left;">▇▇▁▁▃</td>
 </tr>
 </tbody>
 </table>
@@ -519,7 +473,7 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Number of columns</td>
-<td style="text-align: left;">6</td>
+<td style="text-align: left;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">_______________________</td>
@@ -531,11 +485,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 </tr>
 <tr class="even">
 <td style="text-align: left;">character</td>
-<td style="text-align: left;">3</td>
+<td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">numeric</td>
-<td style="text-align: left;">3</td>
+<td style="text-align: left;">2</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">________________________</td>
@@ -550,14 +504,14 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <p><strong>Variable type: character</strong></p>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 24%">
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
 <col style="width: 12%">
-<col style="width: 18%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 11%">
-<col style="width: 14%">
+<col style="width: 15%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -575,31 +529,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <tr class="odd">
 <td style="text-align: left;">Gender</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Hair Color</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BMI Classification</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">0.69</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3</td>
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>
@@ -607,17 +541,17 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <p><strong>Variable type: numeric</strong></p>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 10%">
-<col style="width: 15%">
-<col style="width: 7%">
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 17%">
 <col style="width: 8%">
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
+<col style="width: 9%">
+<col style="width: 3%">
+<col style="width: 8%">
+<col style="width: 4%">
+<col style="width: 4%">
 <col style="width: 6%">
+<col style="width: 7%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -641,11 +575,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: right;">1.00</td>
 <td style="text-align: right;">151.62</td>
 <td style="text-align: right;">46.46</td>
-<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">6</td>
 <td style="text-align: right;">154.00</td>
-<td style="text-align: right;">165.00</td>
-<td style="text-align: right;">175.00</td>
-<td style="text-align: right;">192.0</td>
+<td style="text-align: right;">165</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">192</td>
 <td style="text-align: left;">▁▁▁▂▇</td>
 </tr>
 <tr class="even">
@@ -654,25 +588,12 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: right;">0.92</td>
 <td style="text-align: right;">647.92</td>
 <td style="text-align: right;">2000.48</td>
-<td style="text-align: right;">45.0</td>
+<td style="text-align: right;">45</td>
 <td style="text-align: right;">54.75</td>
-<td style="text-align: right;">73.00</td>
-<td style="text-align: right;">90.00</td>
-<td style="text-align: right;">7000.0</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">7000</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BMI</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0.77</td>
-<td style="text-align: right;">26.09</td>
-<td style="text-align: right;">6.60</td>
-<td style="text-align: right;">19.9</td>
-<td style="text-align: right;">22.50</td>
-<td style="text-align: right;">24.15</td>
-<td style="text-align: right;">25.22</td>
-<td style="text-align: right;">39.4</td>
-<td style="text-align: left;">▇▇▁▁▃</td>
 </tr>
 </tbody>
 </table>
@@ -681,7 +602,7 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="processingfile2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="processingfile_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -704,7 +625,7 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Number of columns</td>
-<td style="text-align: left;">6</td>
+<td style="text-align: left;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">_______________________</td>
@@ -716,11 +637,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 </tr>
 <tr class="even">
 <td style="text-align: left;">character</td>
-<td style="text-align: left;">3</td>
+<td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">numeric</td>
-<td style="text-align: left;">3</td>
+<td style="text-align: left;">2</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">________________________</td>
@@ -735,14 +656,14 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <p><strong>Variable type: character</strong></p>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 24%">
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
 <col style="width: 12%">
-<col style="width: 18%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 11%">
-<col style="width: 14%">
+<col style="width: 15%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -760,31 +681,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <tr class="odd">
 <td style="text-align: left;">Gender</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Hair Color</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BMI Classification</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">0.69</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3</td>
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>
@@ -792,17 +693,17 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <p><strong>Variable type: numeric</strong></p>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 10%">
-<col style="width: 15%">
-<col style="width: 7%">
+<col style="width: 16%">
+<col style="width: 12%">
+<col style="width: 16%">
 <col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 4%">
+<col style="width: 8%">
+<col style="width: 4%">
+<col style="width: 4%">
 <col style="width: 6%">
 <col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -826,11 +727,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: right;">1.00</td>
 <td style="text-align: right;">165.23</td>
 <td style="text-align: right;">16.52</td>
-<td style="text-align: right;">133.0</td>
+<td style="text-align: right;">133</td>
 <td style="text-align: right;">155.00</td>
-<td style="text-align: right;">166.00</td>
-<td style="text-align: right;">178.00</td>
-<td style="text-align: right;">192.0</td>
+<td style="text-align: right;">166</td>
+<td style="text-align: right;">178</td>
+<td style="text-align: right;">192</td>
 <td style="text-align: left;">▂▇▆▆▃</td>
 </tr>
 <tr class="even">
@@ -839,25 +740,12 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: right;">0.92</td>
 <td style="text-align: right;">647.92</td>
 <td style="text-align: right;">2000.48</td>
-<td style="text-align: right;">45.0</td>
+<td style="text-align: right;">45</td>
 <td style="text-align: right;">54.75</td>
-<td style="text-align: right;">73.00</td>
-<td style="text-align: right;">90.00</td>
-<td style="text-align: right;">7000.0</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">7000</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BMI</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0.77</td>
-<td style="text-align: right;">26.09</td>
-<td style="text-align: right;">6.60</td>
-<td style="text-align: right;">19.9</td>
-<td style="text-align: right;">22.50</td>
-<td style="text-align: right;">24.15</td>
-<td style="text-align: right;">25.22</td>
-<td style="text-align: right;">39.4</td>
-<td style="text-align: left;">▇▇▁▁▃</td>
 </tr>
 </tbody>
 </table>
@@ -878,11 +766,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 </tr>
 <tr class="even">
 <td style="text-align: left;">Number of rows</td>
-<td style="text-align: left;">9</td>
+<td style="text-align: left;">11</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Number of columns</td>
-<td style="text-align: left;">6</td>
+<td style="text-align: left;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">_______________________</td>
@@ -894,11 +782,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 </tr>
 <tr class="even">
 <td style="text-align: left;">character</td>
-<td style="text-align: left;">3</td>
+<td style="text-align: left;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">numeric</td>
-<td style="text-align: left;">3</td>
+<td style="text-align: left;">2</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">________________________</td>
@@ -913,14 +801,14 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <p><strong>Variable type: character</strong></p>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 24%">
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
 <col style="width: 12%">
-<col style="width: 18%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 11%">
-<col style="width: 14%">
+<col style="width: 15%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -945,42 +833,22 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">0</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">Hair Color</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BMI Classification</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0</td>
-</tr>
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 11%">
-<col style="width: 15%">
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 8%">
 <col style="width: 7%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 5%">
 <col style="width: 6%">
 <col style="width: 7%">
-<col style="width: 6%">
-<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1002,40 +870,27 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: left;">Height</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">165.44</td>
-<td style="text-align: right;">17.85</td>
-<td style="text-align: right;">133.0</td>
-<td style="text-align: right;">155.0</td>
-<td style="text-align: right;">166.0</td>
-<td style="text-align: right;">178.00</td>
-<td style="text-align: right;">192.0</td>
-<td style="text-align: left;">▂▇▂▇▂</td>
+<td style="text-align: right;">167.09</td>
+<td style="text-align: right;">16.81</td>
+<td style="text-align: right;">133</td>
+<td style="text-align: right;">155.5</td>
+<td style="text-align: right;">166</td>
+<td style="text-align: right;">179</td>
+<td style="text-align: right;">192</td>
+<td style="text-align: left;">▂▇▅▇▅</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Weight</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">67.78</td>
-<td style="text-align: right;">17.31</td>
-<td style="text-align: right;">45.0</td>
-<td style="text-align: right;">54.0</td>
-<td style="text-align: right;">70.0</td>
-<td style="text-align: right;">80.00</td>
-<td style="text-align: right;">90.0</td>
-<td style="text-align: left;">▇▂▂▅▅</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BMI</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">24.61</td>
-<td style="text-align: right;">4.94</td>
-<td style="text-align: right;">19.9</td>
-<td style="text-align: right;">22.4</td>
-<td style="text-align: right;">23.9</td>
-<td style="text-align: right;">24.69</td>
-<td style="text-align: right;">36.9</td>
-<td style="text-align: left;">▇▇▁▁▂</td>
+<td style="text-align: right;">70.45</td>
+<td style="text-align: right;">20.65</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">54.5</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: left;">▇▂▃▃▂</td>
 </tr>
 </tbody>
 </table>
@@ -1055,11 +910,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 </tr>
 <tr class="even">
 <td style="text-align: left;">Number of rows</td>
-<td style="text-align: left;">9</td>
+<td style="text-align: left;">11</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Number of columns</td>
-<td style="text-align: left;">6</td>
+<td style="text-align: left;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">_______________________</td>
@@ -1070,71 +925,20 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">character</td>
-<td style="text-align: left;">2</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">factor</td>
 <td style="text-align: left;">1</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">numeric</td>
-<td style="text-align: left;">3</td>
-</tr>
 <tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">________________________</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">Group variables</td>
 <td style="text-align: left;">None</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: character</strong></p>
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 24%">
-<col style="width: 12%">
-<col style="width: 18%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 11%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">skim_variable</th>
-<th style="text-align: right;">n_missing</th>
-<th style="text-align: right;">complete_rate</th>
-<th style="text-align: right;">min</th>
-<th style="text-align: right;">max</th>
-<th style="text-align: right;">empty</th>
-<th style="text-align: right;">n_unique</th>
-<th style="text-align: right;">whitespace</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Hair Color</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BMI Classification</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0</td>
 </tr>
 </tbody>
 </table>
@@ -1165,24 +969,24 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: left;">M: 3, F: 2, O: 2, N: 1</td>
+<td style="text-align: left;">M: 4, F: 3, O: 2, N: 1</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 11%">
-<col style="width: 15%">
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 8%">
 <col style="width: 7%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 5%">
 <col style="width: 6%">
 <col style="width: 7%">
-<col style="width: 6%">
-<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1204,40 +1008,27 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: left;">Height</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">165.44</td>
-<td style="text-align: right;">17.85</td>
-<td style="text-align: right;">133.0</td>
-<td style="text-align: right;">155.0</td>
-<td style="text-align: right;">166.0</td>
-<td style="text-align: right;">178.00</td>
-<td style="text-align: right;">192.0</td>
-<td style="text-align: left;">▂▇▂▇▂</td>
+<td style="text-align: right;">167.09</td>
+<td style="text-align: right;">16.81</td>
+<td style="text-align: right;">133</td>
+<td style="text-align: right;">155.5</td>
+<td style="text-align: right;">166</td>
+<td style="text-align: right;">179</td>
+<td style="text-align: right;">192</td>
+<td style="text-align: left;">▂▇▅▇▅</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Weight</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">67.78</td>
-<td style="text-align: right;">17.31</td>
-<td style="text-align: right;">45.0</td>
-<td style="text-align: right;">54.0</td>
-<td style="text-align: right;">70.0</td>
-<td style="text-align: right;">80.00</td>
-<td style="text-align: right;">90.0</td>
-<td style="text-align: left;">▇▂▂▅▅</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BMI</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">24.61</td>
-<td style="text-align: right;">4.94</td>
-<td style="text-align: right;">19.9</td>
-<td style="text-align: right;">22.4</td>
-<td style="text-align: right;">23.9</td>
-<td style="text-align: right;">24.69</td>
-<td style="text-align: right;">36.9</td>
-<td style="text-align: left;">▇▇▁▁▂</td>
+<td style="text-align: right;">70.45</td>
+<td style="text-align: right;">20.65</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">54.5</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: left;">▇▂▃▃▂</td>
 </tr>
 </tbody>
 </table>
@@ -1257,11 +1048,11 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 </tr>
 <tr class="even">
 <td style="text-align: left;">Number of rows</td>
-<td style="text-align: left;">7</td>
+<td style="text-align: left;">9</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Number of columns</td>
-<td style="text-align: left;">6</td>
+<td style="text-align: left;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">_______________________</td>
@@ -1272,71 +1063,20 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">character</td>
-<td style="text-align: left;">2</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">factor</td>
 <td style="text-align: left;">1</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">numeric</td>
-<td style="text-align: left;">3</td>
-</tr>
 <tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">________________________</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">Group variables</td>
 <td style="text-align: left;">None</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: character</strong></p>
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 24%">
-<col style="width: 12%">
-<col style="width: 18%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 11%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">skim_variable</th>
-<th style="text-align: right;">n_missing</th>
-<th style="text-align: right;">complete_rate</th>
-<th style="text-align: right;">min</th>
-<th style="text-align: right;">max</th>
-<th style="text-align: right;">empty</th>
-<th style="text-align: right;">n_unique</th>
-<th style="text-align: right;">whitespace</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Hair Color</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BMI Classification</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0</td>
 </tr>
 </tbody>
 </table>
@@ -1367,24 +1107,24 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: left;">M: 3, F: 2, O: 2</td>
+<td style="text-align: left;">M: 4, F: 3, O: 2</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 11%">
-<col style="width: 15%">
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 8%">
 <col style="width: 7%">
-<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
 <col style="width: 6%">
 <col style="width: 7%">
-<col style="width: 6%">
-<col style="width: 7%">
-<col style="width: 6%">
-<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1406,40 +1146,27 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <td style="text-align: left;">Height</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">163.14</td>
-<td style="text-align: right;">16.82</td>
-<td style="text-align: right;">133.0</td>
-<td style="text-align: right;">155.00</td>
-<td style="text-align: right;">166.0</td>
-<td style="text-align: right;">176.50</td>
-<td style="text-align: right;">180.0</td>
-<td style="text-align: left;">▂▁▅▂▇</td>
+<td style="text-align: right;">165.67</td>
+<td style="text-align: right;">15.98</td>
+<td style="text-align: right;">133</td>
+<td style="text-align: right;">156</td>
+<td style="text-align: right;">166</td>
+<td style="text-align: right;">178</td>
+<td style="text-align: right;">183</td>
+<td style="text-align: left;">▂▁▃▃▇</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Weight</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">66.57</td>
-<td style="text-align: right;">16.85</td>
-<td style="text-align: right;">45.0</td>
-<td style="text-align: right;">52.50</td>
-<td style="text-align: right;">70.0</td>
-<td style="text-align: right;">78.00</td>
-<td style="text-align: right;">90.0</td>
-<td style="text-align: left;">▇▃▃▇▃</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BMI</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">24.95</td>
-<td style="text-align: right;">5.62</td>
-<td style="text-align: right;">19.9</td>
-<td style="text-align: right;">21.94</td>
-<td style="text-align: right;">23.9</td>
-<td style="text-align: right;">25.05</td>
-<td style="text-align: right;">36.9</td>
-<td style="text-align: left;">▇▇▁▁▂</td>
+<td style="text-align: right;">70.11</td>
+<td style="text-align: right;">21.25</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: left;">▇▂▃▂▂</td>
 </tr>
 </tbody>
 </table>
@@ -1456,14 +1183,14 @@ $ `BMI Classification` &lt;chr&gt; "Normal Weight", "Normal Weight", NA, "Normal
 <p>Finally, we save the clean data as RDS file. I suggest you save your processed and cleaned data as RDS or RDA/Rdata files. This preserves coding like factors, characters, numeric, etc. If you save as CSV, that information would get lost. However, CSV is better for sharing with others since it’s plain text. If you do CSV, you might want to write down somewhere what each variable is.</p>
 <p>See here for some suggestions on how to store your processed data: http://www.sthda.com/english/wiki/saving-data-into-r-data-format-rds-and-rdata</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>save_data_location <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"starter-analysis-exercise"</span>,<span class="st">"data"</span>,<span class="st">"processed-data"</span>,<span class="st">"processeddata2.rds"</span>)</span>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>save_data_location <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"starter-analysis-exercise"</span>,<span class="st">"data"</span>,<span class="st">"processed-data"</span>,<span class="st">"processeddata.rds"</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(processeddata, <span class="at">file =</span> save_data_location)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note the use of the <code>here</code> package and <code>here</code> command to specify a path relative to the main project directory, that is the folder that contains the <code>.Rproj</code> file. Always use this approach instead of hard-coding file paths that only exist on your computer.</p>
 </section>
 <section id="notes" class="level1">
 <h1>Notes</h1>
-<p>Removing any one observation with “faulty” or missing data is one approach. It’s often not the best. based on your question and your analysis approach, you might want to do cleaning differently (e.g.&nbsp;keep observations with some missing information).</p>
+<p>Removing anyone observation with “faulty” or missing data is one approach. It’s often not the best. based on your question and your analysis approach, you might want to do cleaning differently (e.g.&nbsp;keep observations with some missing information).</p>
 
 
 </section>
