@@ -22,7 +22,7 @@ website:
             file: presentation-exercise/presentation-exercise.qmd
           - text: "Synthetic Data Exercise"
             file: synthetic-data-exercise/synthetic-data-exercise.qmd
-          - text: "Mavoglurant PK Analysis"
+          - text: "Model Fiting Exercise"
             file: fitting-exercise/fitting-exercise.qmd
 
 
