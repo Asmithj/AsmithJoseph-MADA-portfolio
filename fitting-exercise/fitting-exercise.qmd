@@ -612,7 +612,7 @@ print(knn_class_roc_auc)
 
 ```
 
-## **Note/Interpretation**
+**Note/Interpretation**
 
 -   The KNN classification model (SEX \~ All Predictors) performs exceptionally well, with a ROC-AUC of 0.98 and accuracy of 95%, indicating excellent discrimination and high classification accuracy.
 -   This suggests that the model effectively predicts SEX based on variables like DOSE, AGE, Y, RACE, WT, and HT. However, the high accuracy may indicate overfitting, meaning the model might not generalize well to new data. Further cross-validation or tuning the number of neighbors (k) could help assess its robustness
