@@ -21,7 +21,9 @@ website:
           - text: "Presenting Data and Results"
             file: presentation-exercise/presentation-exercise.qmd
           - text: "Synthetic Data Exercise"
-            file: synthetic-data-exercise/synthetic-data-exercise.qmd 
+            file: synthetic-data-exercise/synthetic-data-exercise.qmd
+          - text: "Mavoglurant PK Analysis"
+            file: fitting-exercise/mavoglurant-pk-analysis.qmd  
 
     right:
       - icon: github
@@ -31,5 +33,6 @@ format:
   html:
     theme: cosmo
     highlight: monokai
-    css: styles.css  # Ensure this file exists
+    css: styles.css  # Ensure this file exists or remove it
     toc: false
+
