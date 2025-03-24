@@ -1,9 +1,9 @@
 project: 
   type: website
-  output-dir: docs
+  output-dir: docs  
 
 website:
-  title: "YOURNAME Data Analysis Portfolio"
+  title: "Asmith Joseph Data Analysis Portfolio"
   navbar:
     left:
       - text: "About Me"
@@ -14,12 +14,27 @@ website:
             file: starter-analysis-exercise/products/report/starter-analysis-report.qmd
           - text: "R Coding Exercise"
             file: coding-exercise/coding-exercise.qmd
+          - text: "Vaccine Adverse Event Analysis"
+            file: data-exercise/data-exercise.qmd
+          - text: "Exercise 5: Processing Data (CDC)"
+            file: cdcdata-exercise/cdcdata-exercise.qmd
+          - text: "Presenting Data and Results"
+            file: presentation-exercise/presentation-exercise.qmd
+          - text: "Synthetic Data Exercise"
+            file: synthetic-data-exercise/synthetic-data-exercise.qmd
+          - text: "Model Fitting Exercise"
+            file: fitting-exercise/fitting-exercise.qmd
+
+
+
     right:
-      - icon: github 
-        href: URL-TO-THIS-REPOSITORY-HERE        
+      - icon: github
+        href: "https://github.com/Asmithj/AsmithJoseph-MADA-portfolio"      
+
 format:
   html:
     theme: cosmo
-    highlight: zenburn
-    css: styles.css
-    toc: FALSE
+    highlight: monokai
+    css: styles.css  # Ensure this file exists or remove it
+    toc: false
+
