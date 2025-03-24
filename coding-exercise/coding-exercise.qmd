@@ -163,7 +163,6 @@ ggplot(PoppLife, aes(x = population, y = life_expectancy)) +
   ) +
   theme_minimal()
 
-
 ```
 
 ```{r}
