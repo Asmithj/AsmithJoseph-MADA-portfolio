@@ -12,7 +12,6 @@ editor:
 
 ```{rsetup, include=FALSE, message=FALSE, warning=FALSE}
 options(knitr.in.dir = FALSE)
-
 ```
 
 
