@@ -1,16 +1,17 @@
 ---
-title: "My website and data analysis portfolio"
+title: "Welcome to My Portfolio"
+format: html
 ---
 
-**Feel free to change the text below any way you want 😁!**
-
-# Hello
-
-### And hello again
-
-Welcome to **my website** and _data analysis portfolio._ 
+## Bonjour et Bienvenue !
 
 
-* Please use the `Menu Bar` above to look around.
-* Have fun!
+
+
+This is the portfolio of **Asmith Joseph**, showcasing my data analysis projects.
+
+
+- Check out the Projects in the menu
+- Explore my journey
+- Have fun!
 
