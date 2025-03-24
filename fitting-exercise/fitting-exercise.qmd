@@ -1,0 +1,625 @@
+---
+title: "Model Fitting Exercise"
+author: "Asmith Joseph"
+date: "02/26/2025"
+format: html
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+
+# Setup
+```{r}
+#load needed packages. make sure they are installed.
+library(here) #for data loading/saving
+library(dplyr)
+library(readr)
+library(skimr)
+library(ggplot2)
+```
+
+**Load the data**
+```{r}
+# Load the packages
+library(here)
+library(readr)
+
+# Define the file path using here()
+file_path <- here("fitting-exercise", "Mavoglurant_A2121_nmpk.csv")
+
+# Load the dataset
+Mavoglurant_A2121_nmpk <- read_csv(file_path)
+
+# Display first few rows
+head(Mavoglurant_A2121_nmpk)
+```
+
+# Data exploration
+
+```{r}
+# View dataset structure
+str(Mavoglurant_A2121_nmpk)
+
+```
+
+```{r}
+# Check column names
+colnames(Mavoglurant_A2121_nmpk)
+```
+
+```{r}
+# Summary statistics
+summary(Mavoglurant_A2121_nmpk)
+```
+
+```{r}
+# Count missing values per column
+colSums(is.na(Mavoglurant_A2121_nmpk))
+
+```
+
+**Creating visual to demonstrate DV Over Time for Each Individual, Faceted by Dose**
+
+```{r}
+library(ggplot2)
+
+# Creating figure of DV by time for each person by dose level
+ggplot(Mavoglurant_A2121_nmpk, aes(x = TIME, y = DV, group = ID)) +
+  geom_line(alpha = 0.7, color = "blue") +  # Adds individual lines
+  geom_point(size = 1, alpha = 0.5) +  # Adds observed data points
+  facet_wrap(~DOSE) +  # Facet by DOSE to create separate plots for each dose level
+  labs(title = "Individual Response Over Time by Dose Level",
+       x = "Time (hrs)",
+       y = "Dependent Variable (DV)") +
+  theme_minimal()
+
+```
+
+```{r}
+ggplot(Mavoglurant_A2121_nmpk, aes(x = TIME, y = DV, group = ID, color = as.factor(ID))) +
+  geom_line(alpha = 0.7) +
+  geom_point(size = 1, alpha = 0.5) +
+  facet_wrap(~DOSE) +
+  labs(title = "Individual Response Over Time by Dose Level",
+       x = "Time (hrs)",
+       y = "Dependent Variable (DV)",
+       color = "Individual ID") +
+  theme_minimal()
+
+```
+
+**Filtering the dataset to keep only observations where OCC = 1**
+
+```{r}
+
+library(dplyr)
+
+# Filter the dataset to keep only OCC = 1
+Mavoglurant_A2121_nmpk_OCC1 <- Mavoglurant_A2121_nmpk %>%
+  filter(OCC == 1)
+
+# Display first few rows
+head(Mavoglurant_A2121_nmpk_OCC1)
+```
+
+-   Doing a combination of the Baseline Observations with Summed Dependent Variable (DV) Values
+-   I removed observations where TIME = 0 to create a filtered dataset.
+-   Next, I computed the sum of DV for each individual (ID) using dplyr::summarize(), storing the result as a 120 x 2 data frame with columns ID and Y.
+-   I then extract only the observations where TIME = 0, resulting in a 120 x 17 data frame. +Finally, I ed the two datasets using left_join() on ID, creating a final 120 x 18 data frame that combines the TIME = 0 data with the summed DV values (Y).
+
+```{r}
+library(dplyr)
+
+# Remove rows where TIME == 0
+data_no_time0 <- Mavoglurant_A2121_nmpk %>%
+  filter(TIME != 0)
+
+
+
+# Summarize DV sum per ID
+sum_DV_per_ID <- data_no_time0 %>%
+  group_by(ID) %>%
+  summarize(Y = sum(DV, na.rm = TRUE))
+
+# Check result
+dim(sum_DV_per_ID)  # Expected: 120 x 2
+head(sum_DV_per_ID)
+
+
+
+# Keep only TIME == 0
+data_time0 <- Mavoglurant_A2121_nmpk %>%
+  filter(TIME == 0)
+
+# Check result
+dim(data_time0)  # Expected: 120 x 17
+head(data_time0)
+
+
+# Join data_time0 (120x17) with sum_DV_per_ID (120x2) using ID
+Mav.final_data <- left_join(data_time0, sum_DV_per_ID, by = "ID")
+
+# Check final result
+dim(Mav.final_data)  # Expected: 120 x 18
+head(Mav.final_data)
+
+
+
+
+```
+
+**Data Transformation Converting Factors and Selecting Key Variables**
+ - I transformed the dataset by converting RACE and SEX into factor variables to ensure proper categorical data handling. Then, I selected only the relevant variables: Y (sum of DV for each individual), DOSE, AGE, SEX, RACE, WT, and HT, creating a refined dataset for further analysis. This process helps streamline the data, ensuring that categorical variables are correctly classified while retaining only the essential information for modeling and interpretation.
+
+```{r}
+library(dplyr)
+
+# Convert RACE and SEX to factors and keep only selected variables
+Mav.final_data_selected <- Mav.final_data %>%
+  mutate(
+    RACE = as.factor(RACE),
+    SEX = as.factor(SEX)
+  ) %>%
+  select(Y, DOSE, AGE, SEX, RACE, WT, HT)
+
+# Check structure of the new dataset
+str(Mav.final_data_selected)
+
+# View first few rows
+head(Mav.final_data_selected)
+
+```
+
+```{r}
+# Create a summary table of final_data_selected
+
+library(gtsummary)
+
+Mav.final_data_selected %>%
+  tbl_summary()
+
+```
+
+# More Data exploration through figures & Tables
+
+-   Exploratory Data Analysis Summary Tables and plots were generated to explore relationships between total drug exposure (Y) and key predictors.
+-   Summary tables provided descriptive statistics, while scatterplots and boxplots visualized trends between Y, AGE, DOSE, and SEX, highlighting dose-response effects.
+-   Histograms and density plots examined variable distributions for skewness and anomalies. Lastly, a correlation matrix and scatterplot pairs identified significant predictors of Y, offering key insights into the dataset's structure.
+
+Tables
+
+```{r}
+
+library(gtsummary)
+library(skimr)
+
+# Summary table using gtsummary
+Mav.final_data_selected %>%
+  tbl_summary(
+    statistic = list(all_continuous() ~ "{mean} ({sd})", 
+                     all_categorical() ~ "{n} ({p}%)"),
+    digits = all_continuous() ~ 2
+  )
+
+# More detailed summary using skimr
+skim(Mav.final_data_selected)
+
+```
+
+Scatterplots & Boxplots
+
+```{r}
+library(ggplot2)
+
+ggplot(Mav.final_data_selected, aes(x = AGE, y = Y, color = SEX)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Total Drug Exposure (Y) vs. Age", x = "Age", y = "Total Drug (Y)") +
+  theme_minimal()
+
+```
+
+Density Plot of WT (Weight)
+
+```{r}
+ggplot(Mav.final_data_selected, aes(x = as.factor(DOSE), y = Y, fill = SEX)) +
+  geom_boxplot() +
+  labs(title = "Total Drug (Y) Distribution Across Dose Levels", x = "Dose Level", y = "Total Drug (Y)") +
+  theme_minimal()
+
+```
+
+Total Drug
+
+```{r}
+ggplot(Mav.final_data_selected, aes(x = Y)) +
+  geom_histogram(bins = 30, fill = "blue", alpha = 0.6) +
+  labs(title = "Distribution of Total Drug (Y)", x = "Total Drug (Y)", y = "Count") +
+  theme_minimal()
+
+```
+
+Density Plot of WT (Weight)
+
+```{r}
+ggplot(Mav.final_data_selected, aes(x = WT, fill = SEX)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Weight Distribution by Sex", x = "Weight (kg)", y = "Density") +
+  theme_minimal()
+
+```
+
+Relationships among continuous variables
+
+```{r}
+
+library(GGally)
+
+# Pairwise scatterplots and correlations
+ggpairs(Mav.final_data_selected, columns = c("Y", "DOSE", "AGE", "WT", "HT"))
+
+```
+
+### Exploratory Data Analysis (EDA) Note:
+
+## **Summary Table:**
+
+-   This table provides key descriptive statistics (N=198) for variables including Y, DOSE, AGE, SEX, RACE, WT, and HT, highlighting their median values and distributions. - Individual Response Over Time by Dose (3 Panels): Each panel displays the DV time course for a specific dose level (25, 37.5, 50), showing higher peaks for higher doses and notable inter-individual variability.
+-   Colored Individual Response Over Time: This plot again shows DV time profiles by dose level, color-coding each individual to emphasize the variability in response within each dose group.
+-   Scatterplot (Total Drug Y vs. Age by Sex): The scatterplot indicates a potential negative trend of total drug (Y) with increasing age, with sex differences visible in the distribution. - Boxplots (Total Drug Y by Dose Level and Sex): These boxplots illustrate how total drug exposure (Y) varies across different dose levels (25, 37.5, 50) and between sexes, showing higher medians at the highest dose.
+-   Histogram (Distribution of Total Drug Y): The histogram reveals the overall distribution of total drug (Y), centered around 3000–5000, with a slight skew toward higher values.
+-   Weight Distribution by Sex (Density Plot): The density plot compares weight distributions between sexes, suggesting one group has a generally higher weight range than the other.
+-   Correlation Matrix (Pairs Plot): This matrix highlights moderate correlations among WT, HT, and Y, while DOSE and AGE show weaker relationships with Y.
+
+# Model fitting
+---
+
+Model Fitting Summary In this section, I fit two linear regression models using the tidymodels framework to predict total drug exposure (Y). First, I built a simple linear model (Y \~ DOSE) to assess the effect of dosage alone. Next, I expanded to a multiple regression model (Y \~ DOSE + AGE + SEX + RACE + WT + HT) to evaluate additional predictors. I then computed RMSE and R² for both models to compare their performance. While the multiple model slightly improved prediction accuracy, both models had low R² values, suggesting that important factors influencing Y are missing, warranting further exploration of nonlinear models or alternative predictors.
+
+```{r}
+# Load necessary libraries
+library(tidymodels)
+library(dplyr)
+
+```
+
+Defining the Data for Modeling
+
+```{r}
+# Ensure categorical variables are factors
+Mav.final_data_selected <- Mav.final_data_selected %>%
+  mutate(
+    SEX = as.factor(SEX),
+    RACE = as.factor(RACE)
+  )
+
+# Split data into training (80%) and testing (20%)
+set.seed(123)  # For reproducibility
+data_split <- initial_split(Mav.final_data_selected, prop = 0.8)
+train_data <- training(data_split)
+test_data <- testing(data_split)
+
+```
+
+Fitting a Simple Linear Model (Y \~ DOSE)
+
+```{r}
+# Define the linear model
+simple_model <- linear_reg() %>%
+  set_engine("lm")
+
+# Define the recipe (formula-based)
+simple_recipe <- recipe(Y ~ DOSE, data = train_data)
+
+# Bundle model and recipe into a workflow
+simple_workflow <- workflow() %>%
+  add_model(simple_model) %>%
+  add_recipe(simple_recipe)
+
+# Fit the model to the training data
+simple_fit <- simple_workflow %>% fit(data = train_data)
+
+# Print model summary
+tidy(simple_fit$fit$fit)
+
+```
+
+## **Note/Interpretation:**
+
+-   The simple linear regression model predicts total drug exposure (Y) using DOSE as the only predictor. +The intercept (β₀ = 4008.11) suggests a baseline drug exposure when DOSE = 0, while the slope (β₁ = 6.83) indicates that each unit increase in DOSE results in a small, statistically insignificant increase in Y (p = 0.40).
+-   The p-value suggests that DOSE alone is not a significant predictor of Y, implying that other factors like AGE, SEX, WT, or HT may better explain variability in total drug exposure.
+-   A multiple regression model incorporating these variables may improve predictive power.
+
+**Fit a Multiple Linear Model (Y \~ All Predictors)**
+
+```{r}
+# Define the recipe including all predictors
+full_recipe <- recipe(Y ~ DOSE + AGE + SEX + RACE + WT + HT, data = train_data)
+
+# Bundle the full model into a workflow
+full_workflow <- workflow() %>%
+  add_model(simple_model) %>%
+  add_recipe(full_recipe)
+
+# Fit the full model to the training data
+full_fit <- full_workflow %>% fit(data = train_data)
+
+# Print model summary
+tidy(full_fit$fit$fit)
+
+```
+
+## **Note/Interpretation:**
+
+-   Multiple Linear Regression Model Summary This model predicts total drug exposure (Y) using multiple predictors: DOSE, AGE, SEX, RACE, WT, and HT.
+-   The intercept (β₀ = 5692.48) represents the baseline drug exposure when all predictors are at zero. +The DOSE coefficient (β₁ = 10.05) suggests a positive effect, but it is not statistically significant (p = 0.21). Other predictors, including AGE, SEX, and RACE, also have high p-values, indicating weak individual associations with Y.
+-   Weight (WT, p = 0.052) is the closest to significance, suggesting it may have some predictive influence.
+-   The large standard errors for some predictors indicate high variability, potentially due to multicollinearity or insufficient data variation.
+-   Overall, while adding predictors slightly adjusts the model, none appear to be strong independent predictors of Y, suggesting further feature selection or alternative modeling approaches may be beneficial.
+
+**Compute RMSE & R² for Both Models**
+
+```{r}
+# Define function to compute performance metrics
+compute_metrics <- function(model_fit, test_data) {
+  predictions <- predict(model_fit, new_data = test_data) %>%
+    bind_cols(test_data)  # Merge predictions with test data
+
+  # Compute RMSE and R²
+  metrics <- predictions %>%
+    metrics(truth = Y, estimate = .pred) %>%
+    filter(.metric %in% c("rmse", "rsq"))
+
+  return(metrics)
+}
+
+# Compute metrics for both models
+simple_metrics <- compute_metrics(simple_fit, test_data)
+full_metrics <- compute_metrics(full_fit, test_data)
+
+# Print results
+print("Performance Metrics for Simple Model (Y ~ DOSE)")
+print(simple_metrics)
+
+print("Performance Metrics for Full Model (Y ~ All Predictors)")
+print(full_metrics)
+
+```
+
+Model Performance Comparison (Simple vs. Multiple Regression) The multiple regression model slightly outperforms the simple model (Y \~ DOSE), with a lower RMSE (1213.57 vs. 1245.70) and a higher R² (3.19% vs. 0.67%), but both models show poor predictive power. The high RMSE suggests large prediction errors, while the low R² values indicate that neither DOSE nor the additional predictors explain much of the variance in Y. This suggests that important factors are missing, and alternative approaches, such as feature selection, nonlinear modeling, or interaction terms, may be needed for better predictions.
+
+# Fitting a Logistic Regression Model for a Categorical Outcome (SEX)
+
+In this section, I fit two logistic regression models where SEX (binary outcome: Male/Female) is the dependent variable. While predicting SEX from DOSE and other predictors may not have a clear scientific basis.
+
+I will: - a) Fit a simple logistic regression model predicting SEX using DOSE alone. - b) Fit a multiple logistic regression model predicting SEX using all predictors (DOSE, AGE, Y, RACE, WT, HT). c) Evaluate both models using accuracy and ROC-AUC (Receiver Operating Characteristic - Area Under the Curve).
+
+**Data preparation for Logistic Regression**
+
+```{r}
+# Ensure SEX is a factor (binary categorical outcome)
+Mav.final_data_selected <- Mav.final_data_selected %>%
+  mutate(
+    SEX = as.factor(SEX),  # Ensure SEX is a factor
+    RACE = as.factor(RACE) # Keep RACE as a factor
+  )
+
+# Split data into training (80%) and testing (20%)
+set.seed(123)  # For reproducibility
+data_split <- initial_split(Mav.final_data_selected, prop = 0.8, strata = SEX)
+train_data <- training(data_split)
+test_data <- testing(data_split)
+
+```
+
+**Fit a Simple Logistic Model (SEX \~ DOSE)**
+
+```{r}
+# Define a logistic regression model
+logistic_model <- logistic_reg() %>%
+  set_engine("glm") %>%
+  set_mode("classification")
+
+# Define the recipe (formula-based)
+simple_recipe <- recipe(SEX ~ DOSE, data = train_data)
+
+# Bundle model and recipe into a workflow
+simple_workflow <- workflow() %>%
+  add_model(logistic_model) %>%
+  add_recipe(simple_recipe)
+
+# Fit the model to the training data
+simple_fit <- simple_workflow %>% fit(data = train_data)
+
+# Print model summary
+tidy(simple_fit$fit$fit)
+
+```
+
+## **Note/Interpretation:**
+
+-   Logistic Regression Summary (SEX \~ DOSE) The intercept (-1.98, p = 0.011) suggests that the baseline probability of SEX (likely Male) at DOSE = 0 is statistically significant. However, the DOSE coefficient (0.0012, p = 0.95) indicates that DOSE has no meaningful effect on predicting SEX, as the p-value is very high.
+-   This confirms that drug dosage is independent of gender, and additional predictors may be needed for better classification.
+
+**Fit a Multiple Logistic Model (SEX \~ All Predictors)**
+
+```{r}
+# Define the recipe including all predictors
+full_recipe <- recipe(SEX ~ DOSE + AGE + Y + RACE + WT + HT, data = train_data)
+
+# Bundle the full model into a workflow
+full_workflow <- workflow() %>%
+  add_model(logistic_model) %>%
+  add_recipe(full_recipe)
+
+# Fit the full model to the training data
+full_fit <- full_workflow %>% fit(data = train_data)
+
+# Print model summary
+tidy(full_fit$fit$fit)
+
+```
+
+## **Note/Interpretation**
+
+-   Logistic Regression Summary (SEX \~ All Predictors) This model predicts SEX using multiple predictors (DOSE, AGE, Y, RACE, WT, HT).
+-   The intercept (42.40, p \< 0.001) is statistically significant, but most predictors, including DOSE (p = 0.90), AGE (p = 0.12), and Y (p = 0.72), are not significant, indicating they have little effect on predicting SEX.
+-   The only significant predictor is HT (p = 0.0018), suggesting that height may be somewhat informative for classifying SEX. However, overall, the model's weak predictor significance suggests poor classification power, and alternative approaches may be needed.
+
+Compute Accuracy & ROC-AUC for Both Models
+
+```{r}
+compute_metrics <- function(model_fit, test_data) {
+  # Generate class predictions
+  class_preds <- predict(model_fit, new_data = test_data, type = "class") %>%
+    bind_cols(test_data) %>%
+    rename(.pred_class = .pred_class)  # Ensure column name is correct
+
+  # Generate probability predictions
+  prob_preds <- predict(model_fit, new_data = test_data, type = "prob") %>%
+    bind_cols(test_data)
+
+  # Compute ROC-AUC (Assuming "1" is the positive class)
+  roc_auc_score <- roc_auc(prob_preds, truth = SEX, .pred_1)
+
+  # Compute Accuracy
+  accuracy_score <- accuracy(class_preds, truth = SEX, estimate = .pred_class)
+
+  # Combine results
+  metrics <- bind_rows(roc_auc_score, accuracy_score)
+
+  return(metrics)
+}
+
+# Compute metrics for both models
+simple_metrics <- compute_metrics(simple_fit, test_data)
+full_metrics <- compute_metrics(full_fit, test_data)
+
+# Print results
+print("Performance Metrics for Simple Model (SEX ~ DOSE)")
+print(simple_metrics)
+
+print("Performance Metrics for Full Model (SEX ~ All Predictors)")
+print(full_metrics)
+
+
+
+```
+
+## **Note/Interpretation**
+
+-   Logistic Model Performance Comparison The simple logistic model (SEX \~ DOSE) performs poorly (ROC-AUC = 0.44), indicating that DOSE alone does not predict SEX. In contrast, the full model (SEX \~ All Predictors) shows high accuracy (95%) and strong discrimination (ROC-AUC = 0.97), suggesting that variables like HT, WT, or RACE contribute significantly to predicting SEX. However, the high accuracy may indicate overfitting, requiring further validation.
+
+# K-Nearest Neighbors (KNN) Model Using Tidymodels
+
+To further explore the dataset, we will fit a K-Nearest Neighbors (KNN) model to both: The continuous outcome (Y) and The categorical outcome (SEX) I will then compare the KNN model’s performance with the previous linear and logistic regression models.
+
+**Preparing the Data to Ensure categorical variables are correctly formatted and split the data into training and testing sets**
+
+```{r}
+# Convert categorical variables to factors
+Mav.final_data_selected <- Mav.final_data_selected %>%
+  mutate(
+    SEX = as.factor(SEX),
+    RACE = as.factor(RACE)
+  )
+
+# Split data into training (80%) and testing (20%)
+set.seed(123)
+data_split <- initial_split(Mav.final_data_selected, prop = 0.8)
+train_data <- training(data_split)
+test_data <- testing(data_split)
+
+```
+
+# Fit a KNN Model for the Continuous Outcome (Y)
+
+I will use KNN regression to predict Y (total drug exposure) using all predictors
+
+```{r}
+# Define KNN model
+knn_reg_model <- nearest_neighbor(neighbors = 5) %>%
+  set_engine("kknn") %>%
+  set_mode("regression")
+
+# Define recipe for regression (normalize only numeric predictors)
+knn_reg_recipe <- recipe(Y ~ DOSE + AGE + SEX + RACE + WT + HT, data = train_data) %>%
+  step_normalize(all_numeric_predictors()) # Normalize only numeric predictors
+
+# Create workflow
+knn_reg_workflow <- workflow() %>%
+  add_model(knn_reg_model) %>%
+  add_recipe(knn_reg_recipe)
+
+# Fit the model
+knn_reg_fit <- knn_reg_workflow %>% fit(data = train_data)
+# Predict and compute RMSE & R-squared
+knn_reg_metrics <- knn_reg_fit %>%
+  predict(new_data = test_data) %>%
+  bind_cols(test_data) %>%
+  metrics(truth = Y, estimate = .pred) %>%
+  filter(.metric %in% c("rmse", "rsq"))
+
+print("Performance Metrics for KNN Regression Model (Y ~ All Predictors)")
+print(knn_reg_metrics)
+
+```
+
+## **Note/Interpretation**
+
+-   KNN Regression Model Performance (Y \~ All Predictors) The K-Nearest Neighbors (KNN) regression model shows a high RMSE (1393.16) and a very low R² (0.00027), indicating that the model performs poorly at predicting Y.
+-   The high RMSE suggests large prediction errors, while the near-zero R² means the predictors explain almost none of the variance in Y.
+-   This suggests that KNN may not be a suitable method for modeling this dataset, possibly due to the high-dimensional space or insufficient relevant patterns in the predictors.
+
+# Fit a KNN Model for the Categorical Outcome (SEX)
+
+I will use KNN classification to predict SEX using all predictors.
+
+```{r}
+# Define KNN model for classification
+knn_class_model <- nearest_neighbor(neighbors = 5) %>%
+  set_engine("kknn") %>%
+  set_mode("classification")
+
+# Define recipe for classification (convert factors and normalize only numeric variables)
+knn_class_recipe <- recipe(SEX ~ DOSE + AGE + Y + RACE + WT + HT, data = train_data) %>%
+  step_dummy(RACE) %>%  # Convert RACE to dummy variables
+  step_normalize(all_numeric_predictors()) # Normalize only numeric predictors
+
+# Create workflow
+knn_class_workflow <- workflow() %>%
+  add_model(knn_class_model) %>%
+  add_recipe(knn_class_recipe)
+
+# Fit the model
+knn_class_fit <- knn_class_workflow %>% fit(data = train_data)
+
+# Predict and compute accuracy & ROC-AUC
+knn_class_metrics <- knn_class_fit %>%
+  predict(new_data = test_data, type = "class") %>%
+  bind_cols(test_data) %>%
+  metrics(truth = SEX, estimate = .pred_class) %>%
+  filter(.metric %in% c("accuracy"))
+
+# Compute ROC-AUC
+knn_class_roc_auc <- knn_class_fit %>%
+  predict(new_data = test_data, type = "prob") %>%
+  bind_cols(test_data) %>%
+  roc_auc(truth = SEX, .pred_1)
+
+print("Performance Metrics for KNN Classification Model (SEX ~ All Predictors)")
+print(knn_class_metrics)
+print(knn_class_roc_auc)
+
+```
+
+**Note/Interpretation**
+
+-   The KNN classification model (SEX \~ All Predictors) performs exceptionally well, with a ROC-AUC of 0.98 and accuracy of 95%, indicating excellent discrimination and high classification accuracy.
+-   This suggests that the model effectively predicts SEX based on variables like DOSE, AGE, Y, RACE, WT, and HT. However, the high accuracy may indicate overfitting, meaning the model might not generalize well to new data. Further cross-validation or tuning the number of neighbors (k) could help assess its robustness
+
+# Conclusions of the Mavoglurant PK Analysis
+---
+
+This analysis examined the pharmacokinetics of Mavoglurant, focusing on the relationship between total drug exposure (Y) and key predictors. DOSE was not a strong predictor of Y, as linear regression models showed low explanatory power. Logistic regression revealed that HT was a significant factor in predicting SEX, while DOSE had little impact. KNN performed well for classification (ROC-AUC = 0.98) but poorly for regression (R² ≈ 0), suggesting that Y may require alternative modeling approaches. Future work should explore nonlinear models, feature engineering, and hyperparameter tuning to improve predictive performance.
