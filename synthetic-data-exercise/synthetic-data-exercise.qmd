@@ -1,0 +1,306 @@
+---
+title: "Synthetic Data Exercise"
+author: "Asmith Joseph"
+date: "02/11/2025"
+output: html_document
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+# Introduction of the TBpregnancy Synthetic Dataset
+
+The TBpregnancy dataset is a synthetic dataset designed to study the pharmacokinetic (PK) properties of antiretroviral (ARV) and anti-tuberculosis (TB) drugs in pregnant and postpartum women.
+The dataset was generated to model real-world drug metabolism patterns and assess how pregnancy impacts drug clearance, exposure (AUC), and birth outcomes.
+The data simulates clinical trial observations and incorporates known physiological changes during pregnancy that affect drug absorption, distribution, metabolism, and elimination.
+
+Additionally, the dataset examines how pregnancy affects drug metabolism through demographic, pharmacokinetic, and clinical variables.
+It includes age, BMI, trimester (1st, 2nd, 3rd, postpartum), and drug type (ARV or anti-TB), along with Cmax, AUC, clearance (CL), half-life (T½), and protein binding.
+Clinical outcomes include CD4 count (for ARV users), viral load, ALT levels, and birth outcomes (normal vs. adverse).
+Key research questions explore pregnancy’s effect on AUC and clearance, differences in ARV vs. anti-TB metabolism, factors influencing adverse birth outcomes, and inter-individual variability in drug metabolism.
+
+# Generating Synthetic Data of pharmacokinetic (PK) data for Antiretroviral (ARV) and Anti-Tuberculosis (TB) drugs during pregnancy and postpartum
+
+```{r}
+# Load required libraries
+library(ggplot2)
+library(dplyr)
+
+# Set seed for reproducibility
+set.seed(123)
+
+# Number of participants
+n <- 300  
+
+# Generate participant IDs
+participant_id <- 1:n  
+
+# Pregnancy periods (1st, 2nd, 3rd trimester, Postpartum)
+trimester <- sample(c("1st Trimester", "2nd Trimester", "3rd Trimester", "Postpartum"), 
+                    size = n, replace = TRUE, prob = c(0.25, 0.25, 0.25, 0.25))
+
+# Drug Type (ARV or Anti-TB)
+drug_type <- sample(c("ARV", "Anti-TB"), size = n, replace = TRUE)
+
+# Generate demographic data
+age <- sample(18:45, size = n, replace = TRUE)  # Age between 18-45 years
+bmi <- ifelse(trimester == "Postpartum", 
+              rnorm(n, mean = 26, sd = 3), 
+              rnorm(n, mean = 30, sd = 3))  # Higher BMI in pregnancy
+
+# Gestational Age (weeks) for pregnancy cases
+gestational_age <- ifelse(trimester == "Postpartum", NA, sample(12:40, size = n, replace = TRUE))
+
+# Dose (mg), adjusted for pregnancy
+dose <- ifelse(trimester == "Postpartum", 
+               rnorm(n, mean = 600, sd = 50), 
+               rnorm(n, mean = 650, sd = 50))  # Slightly increased dose in pregnancy
+
+# Generate pharmacokinetic data
+cmax <- ifelse(trimester == "Postpartum", 
+               rnorm(n, mean = 5, sd = 1), 
+               rnorm(n, mean = 4, sd = 1))  # Lower in pregnancy
+
+auc <- ifelse(trimester == "Postpartum", 
+              rnorm(n, mean = 45, sd = 5), 
+              rnorm(n, mean = 35, sd = 5))  # Reduced drug exposure in pregnancy
+
+half_life <- ifelse(trimester == "Postpartum", 
+                    rnorm(n, mean = 8, sd = 1), 
+                    rnorm(n, mean = 7, sd = 1))  # Shorter in pregnancy
+
+clearance <- ifelse(trimester == "Postpartum", 
+                    rnorm(n, mean = 10, sd = 2), 
+                    rnorm(n, mean = 12, sd = 2))  # Higher clearance in pregnancy
+
+# Protein Binding (%)
+protein_binding <- rnorm(n, mean = 85, sd = 5)  # Between 80-90%
+
+# CD4 Count (HIV patients, ARV only)
+cd4_count <- ifelse(drug_type == "ARV", 
+                    ifelse(trimester == "Postpartum", rnorm(n, mean = 500, sd = 100), rnorm(n, mean = 400, sd = 100)), 
+                    NA)  # Only for ARV users
+
+# Viral Load (log10 copies/mL) - inverse of CD4 count
+viral_load <- ifelse(drug_type == "ARV", 
+                     5 - (cd4_count / 200), 
+                     NA)  # Only for ARV users
+
+# Liver Enzyme Levels (ALT, IU/L) - indicator of liver function
+alt_levels <- rnorm(n, mean = 25, sd = 10)  # Between 15-35 IU/L
+
+# Birth Outcome (0 = Normal, 1 = Adverse) influenced by drug exposure
+prob_adverse_outcome <- 1 / (1 + exp(-(-1 + 0.05 * clearance - 0.1 * auc + 0.01 * alt_levels)))
+birth_outcome <- rbinom(n, size = 1, prob = prob_adverse_outcome)
+
+# Create the dataset
+TBpregnancy <- data.frame(ParticipantID = participant_id, 
+                 Age = age,
+                 BMI = bmi,
+                 GestationalAge = gestational_age,
+                 Trimester = trimester, 
+                 DrugType = drug_type, 
+                 Dose_mg = dose,
+                 Cmax = cmax, 
+                 AUC = auc, 
+                 HalfLife = half_life, 
+                 Clearance = clearance, 
+                 ProteinBinding = protein_binding,
+                 CD4Count = cd4_count,
+                 ViralLoad = viral_load,
+                 ALT_Levels = alt_levels,
+                 BirthOutcome = birth_outcome)
+
+# View first few rows
+head(TBpregnancy)
+
+```
+
+# Exploratory of the Dataset
+
+```{r}
+summary(TBpregnancy)
+
+
+str(TBpregnancy)
+```
+
+# Visualizations of the dataset
+
+```{r}
+# Boxplot of AUC (Drug Exposure) across pregnancy stages
+ggplot(TBpregnancy, aes(x = Trimester, y = AUC, fill = Trimester)) +
+  geom_boxplot() +
+  theme_minimal() +
+  ggtitle("Drug Exposure (AUC) Across Pregnancy and Postpartum")
+
+# Scatter plot: Clearance vs. AUC
+ggplot(TBpregnancy, aes(x = Clearance, y = AUC, color = Trimester)) +
+  geom_point() +
+  theme_minimal() +
+  ggtitle("Clearance vs. Drug Exposure (AUC)")
+
+# Birth Outcome Distribution
+ggplot(TBpregnancy, aes(x = factor(BirthOutcome), fill = factor(BirthOutcome))) +
+  geom_bar() +
+  theme_minimal() +
+  labs(x = "Birth Outcome (0 = Normal, 1 = Adverse)", y = "Count", title = "Distribution of Birth Outcomes")
+
+```
+
+# Fitting Regression Models
+
+I want to explore this question: Does Pregnancy Affect Drug Exposure (AUC)?
+
+```{r}
+lm_model <- lm(AUC ~ Trimester + DrugType + BMI, data = TBpregnancy)
+summary(lm_model)  # Expect AUC to be lower in pregnancy
+
+```
+
+Interpretation The linear regression model examines the effect of trimester, drug type, and BMI on AUC (drug exposure).
+- The intercept (36.78, p \< 0.001) represents the estimated AUC in the first trimester for anti-TB drugs, assuming BMI is zero.
+- Postpartum significantly increases AUC by 10.85 units (p \< 0.001), indicating higher drug exposure after pregnancy.
+- The second trimester shows a marginally significant increase (1.40, p = 0.061), while the third trimester has no meaningful effect (p = 0.637).
+- ARV drugs tend to reduce AUC (-0.81), but this effect is not significant (p = 0.120).
+BMI has a negligible effect on AUC (p = 0.496).
+
+The model explains 51.5% of the variance in AUC (R² = 0.515), and the overall model is highly significant (p \< 0.001), confirming that trimester is the primary driver of AUC changes.
+
+# Fitting Logistic Regression to Predict Birth Outcomes
+
+```{r}
+glm_model <- glm(BirthOutcome ~ AUC + Clearance + ALT_Levels + Trimester, data = TBpregnancy, family = binomial)
+summary(glm_model)  # Expect higher clearance & ALT levels to increase risk of adverse birth outcomes
+
+```
+
+Interpretattion: This logistic regression model assesses the relationship between AUC (drug exposure), Clearance, ALT levels, and Trimester on the probability of adverse birth outcomes.
+- The intercept (3.82, p = 0.312) suggests the baseline log-odds of an adverse birth outcome when all predictors are at their reference levels.
+- Higher AUC significantly reduces the risk of adverse birth outcomes (-0.201, p = 0.0218), indicating that increased drug exposure is protective.
+- Clearance (0.092, p = 0.5958) and ALT levels (-0.0388, p = 0.2995) are not significant predictors, suggesting that drug metabolism and liver function have limited impact in this model.
+- The third trimester shows a marginally lower risk (-1.91, p = 0.091), while postpartum has an extreme coefficient (-15.43), likely due to data imbalance.
+
+The model improves prediction compared to the null model (lower residual deviance: 63.95 vs. null deviance: 80.85), and the overall fit is reasonable (AIC = 77.95), but additional covariates or interaction terms may refine predictions.
+
+# Linear Regression: Predict Drug Exposure (AUC)
+
+```{r}
+# Linear Model: AUC as the dependent variable
+lm_auc <- lm(AUC ~ Trimester + BMI + DrugType + Clearance + ProteinBinding, data = TBpregnancy)
+summary(lm_auc)  # Expect Trimester and Clearance to be significant
+
+```
+
+Interpretation This linear regression model examines the effect of Trimester, BMI, Drug Type, Clearance, and Protein Binding on AUC (drug exposure).
+- The intercept (44.68, p \< 0.001) represents the baseline AUC when all categorical variables are at their reference levels.
+- Postpartum is significantly associated with a 10.47-unit increase in AUC (p \< 0.001), confirming that drug exposure is higher after pregnancy.
+- The second trimester shows a marginally significant increase (1.41, p = 0.0598), while the third trimester has no significant effect (p = 0.6585).
+- Drug type (ARV vs. Anti-TB) slightly reduces AUC (-0.85, p = 0.1043), but the effect is not statistically significant.
+BMI (-0.063, p = 0.4583), Clearance (-0.168, p = 0.1869), and Protein Binding (-0.067, p = 0.2157) do not significantly influence AUC.
+
+The model explains 52.1% of the variance in AUC (R² = 0.5207), indicating a moderate fit, and the overall model is highly significant (p \< 0.001), confirming that trimester remains the strongest predictor of AUC changes.
+
+# 2 Logistic Regression to Predict Adverse Birth Outcome
+
+```{r}
+# Logistic Regression: Predicting BirthOutcome
+glm_birth <- glm(BirthOutcome ~ AUC + Clearance + ALT_Levels + Trimester + DrugType, 
+                 data = TBpregnancy, family = binomial)
+summary(glm_birth)  # Expect Clearance & ALT levels to increase risk
+
+```
+
+Interpretation This logistic regression model evaluates the impact of AUC, Clearance, ALT Levels, Trimester, and Drug Type on the probability of adverse birth outcomes.
+- The intercept (4.29, p = 0.2888) represents the baseline log-odds of an adverse birth outcome when all predictors are at their reference levels.
+- AUC is the only significant predictor (-0.2058, p = 0.0209), indicating that higher drug exposure significantly reduces the risk of adverse birth outcomes.
+- Clearance (0.0799, p = 0.6507) and ALT levels (-0.0411, p = 0.2844) do not significantly influence birth outcomes.
+- Trimester has no significant impact, although the third trimester shows a marginally protective effect (-1.88, p = 0.0977).
+- The postpartum coefficient (-15.39) is extreme and non-significant (p = 0.9937), likely due to data imbalance.
+- Drug type (ARV vs. Anti-TB) does not significantly influence birth outcomes (-0.2642, p = 0.7253).
+
+The model improves prediction compared to the null model (residual deviance: 63.82 vs. null deviance: 80.85), and AUC remains the strongest predictor of birth outcomes.
+However, the AIC (79.82) suggests that additional predictors may improve the model’s fit.
+
+# Random Forest of Non-Linear Model for Birth Outcomes
+
+```{r}
+# Load required libraries
+library(randomForest)
+library(ggplot2)
+library(dplyr)
+
+# Convert categorical variables (ensuring classification mode)
+TBpregnancy$Trimester <- as.factor(TBpregnancy$Trimester)
+TBpregnancy$DrugType <- as.factor(TBpregnancy$DrugType)
+TBpregnancy$BirthOutcome <- as.factor(TBpregnancy$BirthOutcome)  # Ensuring classification mode
+
+# Train a Random Forest classification model
+set.seed(123)
+rf_model <- randomForest(BirthOutcome ~ AUC + Clearance + ALT_Levels + BMI + Age + ProteinBinding, 
+                         data = TBpregnancy, ntree = 500, importance = TRUE)
+
+# Extract variable importance (correctly using "MeanDecreaseGini" for classification models)
+var_imp <- as.data.frame(importance(rf_model))  # Extract importance values
+var_imp$Variable <- rownames(var_imp)  # Add variable names
+var_imp <- var_imp %>% arrange(desc(MeanDecreaseGini))  # Sort by importance
+
+# Create a color-coded variable importance plot
+ggplot(var_imp, aes(x = reorder(Variable, MeanDecreaseGini), y = MeanDecreaseGini, fill = MeanDecreaseGini)) +
+  geom_bar(stat = "identity", width = 0.7, color = "black") +  # Adds border for clarity
+  coord_flip() +
+  scale_fill_gradient(low = "#00BFC4", high = "#F8766D") +  # Blue to red gradient (low to high importance)
+  theme_minimal() +
+  labs(title = "Variable Importance in Predicting Birth Outcomes",
+       x = "Predictor Variables", y = "Mean Decrease in Gini",
+       fill = "Importance") +
+  theme(text = element_text(size = 14),
+        plot.title = element_text(hjust = 0.5, face = "bold"),
+        legend.position = "right")
+
+
+```
+
+# Simulate Repeated Measures
+
+```{r}
+# Expand the dataset: Each participant has 3 time points
+set.seed(123)
+TBpregnancy_long <- TBpregnancy %>%
+  slice(rep(1:n(), each = 3)) %>%  # Repeat each row 3 times
+  mutate(Timepoint = rep(1:3, times = n))  # Assign time points
+
+# Introduce slight variations in AUC and Clearance per timepoint
+TBpregnancy_long <- TBpregnancy_long %>%
+  mutate(AUC = AUC + rnorm(n() , mean = 0, sd = 2),  # Small variations
+         Clearance = Clearance + rnorm(n(), mean = 0, sd = 0.5))
+
+# Check the structure
+head(TBpregnancy_long)
+
+```
+
+# Mixed-Effects Model: Accounting for Individual Differences
+
+```{r}
+library(lme4)
+
+# Fit a mixed model for AUC with random intercept per Participant
+mixed_model <- lmer(AUC ~ Trimester + Clearance + (1 | ParticipantID), data = TBpregnancy_long)
+summary(mixed_model)
+
+```
+
+Interpretation of the last model This linear mixed model (LMM) examines the effect of Trimester and Clearance on AUC (drug exposure), while accounting for individual variability through random effects for ParticipantID.
+- The random intercept variance (19.501, SD = 4.416) indicates substantial differences in AUC between individuals, whereas residual variance (3.923, SD = 1.981) reflects within-individual fluctuations.
+- The postpartum period is significantly associated with a 10.80-unit increase in AUC (p \< 0.001), confirming that drug exposure rises after pregnancy.
+- The second trimester shows a marginally significant increase in AUC (+1.49, p ≈ 0.05), while the third trimester has no meaningful effect.
+Clearance (-0.056, p = 0.55) does not significantly influence AUC, suggesting that other metabolic factors may play a stronger role.
+- The large variation across participants highlights the need for individualized drug monitoring during pregnancy and postpartum.
+
+# Key Results & Findings
+
+-   Pregnancy significantly reduces drug exposure (AUC), with postpartum showing a strong rebound (+10.8, p \< 0.001), confirming higher drug levels after delivery.
+-   The second trimester shows a marginal increase in AUC (p ≈ 0.05), while the third trimester has no meaningful effect.
+-   Higher AUC is protective against adverse birth outcomes (-0.2058, p = 0.0218), while drug clearance does not show a significant effect.
+-   A linear mixed model (LMM) revealed substantial inter-individual variability in drug metabolism (ParticipantID variance = 19.501), highlighting the need for personalized drug monitoring during pregnancy.
