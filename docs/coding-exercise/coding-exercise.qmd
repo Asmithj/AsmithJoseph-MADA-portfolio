@@ -55,7 +55,7 @@ library(dplyr)
 
 #I use the `str()` function to examine the structure of each object and the `summary()` function to get descriptive statistics.
 
-### Code and Results
+### Code and Results.
 ```
 
 ```{r}
