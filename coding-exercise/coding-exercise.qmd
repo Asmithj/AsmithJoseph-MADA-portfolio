@@ -2,8 +2,26 @@
 title: "R Coding Exercise"
 author: "Asmith Joseph"
 date: "01/21/2025"
-output: html_document
+format: html
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
