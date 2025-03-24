@@ -2,11 +2,14 @@
 title: "Presentation Exercise"
 author: "Asmith Joseph"
 date: "02/11/2025"
-output: html_document
+format: html
 editor: 
   markdown: 
-    wrap: 72
+    wrap: sentence
 ---
+
+
+
 
 # Introduction
 
@@ -35,15 +38,14 @@ Full article for more details
 The data was pulled from [FiveThirtyEight
 Data](https://data.fivethirtyeight.com/).
 
-```{r}
+```{r replicate-graph, echo=FALSE}
+library(here)
 # Original graph: 
-knitr::include_graphics("C:\\Users\\ajose35\\Desktop\\Ecole\\MADA-course\\AsmithJoseph-MADA-portfolio\\presentation-exercise\\Original graph.png")
+knitr::include_graphics(here("presentation-exercise", "Original graph.png"))
 
 
-# Replicate Graph 
-knitr::include_graphics("C:\\Users\\ajose35\\Desktop\\Ecole\\MADA-course\\AsmithJoseph-MADA-portfolio\\presentation-exercise\\Replicate Graph.png")
 
-
+knitr::include_graphics(here("presentation-exercise", "Replicate Graph.png"))
 ```
 
 # Initial AI Prompt

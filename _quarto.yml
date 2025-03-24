@@ -18,7 +18,8 @@ website:
             file: synthetic-data-exercise/synthetic-data-exercise.qmd
           - text: "Exercise 5: Processing Data (CDC)"
             file: cdcdata-exercise/cdcdata-exercise.qmd
-            
+          - text: "Presentation Exercise"
+            file: presentation-exercise/presentation-exercise.qmd
     right:
       - icon: github
         href: "https://github.com/Asmithj/AsmithJoseph-MADA-portfolio"
