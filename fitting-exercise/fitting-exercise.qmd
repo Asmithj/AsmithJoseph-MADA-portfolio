@@ -40,7 +40,6 @@ head(Mavoglurant_A2121_nmpk)
 ```{r}
 # View dataset structure
 str(Mavoglurant_A2121_nmpk)
-
 ```
 
 ```{r}
