@@ -247,9 +247,16 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "My website and data analysis portfolio",
+    "title": "Welcome to My Portfolio",
     "section": "",
-    "text": "Feel free to change the text below any way you want 😁!\n\nHello\n\nAnd hello again\nWelcome to my website and data analysis portfolio.\n\nPlease use the Menu Bar above to look around.\nHave fun!"
+    "text": "This is the portfolio of Asmith Joseph, showcasing my data analysis projects.\n\nCheck out the Projects in the menu\nExplore my journey\nHave fun!"
+  },
+  {
+    "objectID": "index.html#bonjour-et-bienvenue",
+    "href": "index.html#bonjour-et-bienvenue",
+    "title": "Welcome to My Portfolio",
+    "section": "",
+    "text": "This is the portfolio of Asmith Joseph, showcasing my data analysis projects.\n\nCheck out the Projects in the menu\nExplore my journey\nHave fun!"
   },
   {
     "objectID": "starter-analysis-exercise/code/analysis-code/readme.html",
