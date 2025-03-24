@@ -1,1 +1,1 @@
-🔗 **Visit my portfolio website:** [Asmithj.github.io/AsmithJoseph-MADA-portfolio](https://asmithj.github.io/AsmithJoseph-MADA-portfolio/)
+🔗 **Visit my portfolio website:** https://github.com/Asmithj/AsmithJoseph-MADA-portfolio.git
