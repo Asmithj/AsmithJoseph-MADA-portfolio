@@ -20,6 +20,7 @@ website:
             file: cdcdata-exercise/cdcdata-exercise.qmd
           - text: "Presentation Exercise"
             file: presentation-exercise/presentation-exercise.qmd
+
     right:
       - icon: github
         href: "https://github.com/Asmithj/AsmithJoseph-MADA-portfolio"
