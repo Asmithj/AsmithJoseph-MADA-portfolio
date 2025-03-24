@@ -1,6 +1,9 @@
-project: 
+project:
   type: website
-  output-dir: docs  
+  output-dir: docs
+  resources:
+    - starter-analysis-exercise/products/report/starter-analysis-report.qmd
+    - coding-exercise/coding-exercise.qmd
 
 website:
   title: "Asmith Joseph Data Analysis Portfolio"
@@ -12,10 +15,11 @@ website:
         menu:
           - text: "Starter Analysis Exercise"
             file: starter-analysis-exercise/products/report/starter-analysis-report.qmd
-
+          - text: "R Coding Exercise"
+            file: coding-exercise/coding-exercise.qmd
     right:
       - icon: github
-        href: "https://github.com/Asmithj/AsmithJoseph-MADA-portfolio"      
+        href: "https://github.com/Asmithj/AsmithJoseph-MADA-portfolio"
 
 format:
   html:

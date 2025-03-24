@@ -1,0 +1,361 @@
+---
+title: "R Coding Exercise"
+author: "Asmith Joseph"
+date: "01/21/2025"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Installing the dslabs package because I did not have it in my library
+# MJ: code isn't rendering with this line so I made it a comment
+#install.packages("dslabs")
+
+```
+
+```{r}
+# Loading the dslabs package
+library(dslabs)
+
+```
+
+```{r}
+# Using the help function page to assist in obtaining the gapminder dataset from the dslabs package
+help("gapminder")
+
+# loading the dslabs package and gapminder dataset
+library(dslabs)
+data("gapminder")
+
+# Using the  str() to view the structure of the dataset
+str(gapminder)
+
+# Using the  summary() to obtain a statistical summary of the dataset
+summary(gapminder)
+
+# Using the class() to check the type of object gapminder is consist of 
+class(gapminder)
+
+```
+
+```{r}
+#ading the dplyr package into R session so i can  make its functions available. This package ispart of the tidyverse and is specifically designed for data manipulation and transformation, which will assist in providing fuctions to better work with data frames. 
+library(dplyr)
+```
+
+```{r}
+## in the code below we are exploring some of the categories the  of African Data from the gapminder dataset located in the dslabs package in Rstudio
+
+#I started by creating two new objects from the `africadata` dataset:
+#- **`InfantLife`**: This object contains only the columns `infant_mortality` and `life_expectancy`.
+#- **`PoppLife`**: This object contains only the columns `population` and `life_expectancy`.
+
+#I use the `str()` function to examine the structure of each object and the `summary()` function to get descriptive statistics.
+
+### Code and Results
+```
+
+```{r}
+
+# We want to Filter only African countries and assign to a new object new object/variable called africadata. So this code is doing that task. 
+africadata <- gapminder %>%
+  filter(continent == "Africa")
+
+# We want to View the structure of the africadata object. The str() command is doing that task.
+str(africadata)
+
+# Here we are abtaining a summary of the africadata object.
+summary(africadata)
+
+```
+
+```{r}
+# using the Africadata object containing only infant_mortality and life_expectancy, I am creating two new object called InfantLife
+InfantLife <- africadata %>%
+  select(infant_mortality, life_expectancy)
+
+#using the Africadata object containing only population, life_expectancy, I am creating two new object called PoppLife Create 
+PoppLife <- africadata %>%
+  select(population, life_expectancy)
+
+# Verifying the first few rows of both objects to verify
+head(InfantLife)
+head(PoppLife)
+
+
+# I want to View the structure of the InfantLife and  PoppLife to ensure the number of rows and columns . The str() command is doing that task.
+str(InfantLife)
+str(PoppLife)
+
+# Using the summary() function  to obtain a statistical summary of the InfantLife object. the summary will give a detailed idea of  (min, median, max, etc.)
+summary(InfantLife)
+
+# Using the summary() function  to obtain a statistical summary of the PoppLife objec. the summary will give a detailed idea of  (min, median, max, etc).
+summary(PoppLife)
+```
+
+```{r}
+# I originally ran the code for the plot and I received theses error msg:Warning: Removed 226 rows containing missing values or values outside the scale range (geom_point()).Warning: Removed 51 rows containing missing values or values outside the scale range (geom_point()). so in order revolve the missing rows/values outside of the plot so took those measures - codes below-> 
+
+                                                                                                                                                           # First I Checked for missing values in the infant_mortality and life_expectancy columns
+sum(is.na(InfantLife$infant_mortality))  # Count missing values in infant_mortality
+sum(is.na(InfantLife$life_expectancy))   # Count missing values in life_expectancy
+
+# Second I Checked for missing values in the population and life_expectancy columns
+sum(is.na(PoppLife$population))          # Count missing values in population
+sum(is.na(PoppLife$life_expectancy))     # Count missing values in life_expectancy
+
+# Third I removed the rows with missing values in InfantLife
+InfantLife <- na.omit(InfantLife)
+
+# Remove rows with missing values in PoppLife
+PoppLife <- na.omit(PoppLife)
+
+
+# I then verified the range of infant_mortality and life_expectancy
+range(InfantLife$infant_mortality, na.rm = TRUE)
+range(InfantLife$life_expectancy, na.rm = TRUE)
+
+# I also verified the range of population and life_expectancy
+range(PoppLife$population, na.rm = TRUE)
+range(PoppLife$life_expectancy, na.rm = TRUE)
+
+
+# I Filtered out extreme values for better visualization
+InfantLife <- InfantLife %>%
+  filter(infant_mortality <= 200)  # Example: Focus on infant mortality ≤ 200
+
+PoppLife <- PoppLife %>%
+  filter(population > 0)  # Ensure population is positive
+
+
+```
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+
+# Remove missing values from datasets
+InfantLife <- na.omit(InfantLife)
+PoppLife <- na.omit(PoppLife)
+
+# Plot 1: Life expectancy as a function of infant mortality
+ggplot(InfantLife, aes(x = infant_mortality, y = life_expectancy)) +
+  geom_point(color = "pink") +  # Plot points
+  labs(
+    title = "Life Expectancy vs Infant Mortality",
+    x = "Infant Mortality (per 1000 live births)",
+    y = "Life Expectancy (years)"
+  ) +
+  theme_minimal()
+
+# Plot 2: Life expectancy as a function of population size (log scale for x-axis)
+ggplot(PoppLife, aes(x = population, y = life_expectancy)) +
+  geom_point(color = "blue") +  # Plot points
+  scale_x_log10() +  # Set the x-axis to a log scale
+  labs(
+    title = "Life Expectancy vs Population Size (Log Scale)",
+    x = "Population (log scale)",
+    y = "Life Expectancy (years)"
+  ) +
+  theme_minimal()
+
+
+```
+
+```{r}
+# Taking a look at a sample of the africadata dataset
+head(africadata)
+
+# Checking data for a specific country (Nigeria)
+africadata %>%
+  filter(country == "Nigeria") %>%
+  select(country, year, infant_mortality, life_expectancy, population)
+
+```
+
+```{r}
+#There is a clear negative correlation in the Life Expectancy vs Infant Mortality plot: as infant mortality increases, life expectancy decreases. This reflects how poor healthcare, sanitation, and poverty impact life expectancy. The streaks in the plot occur because the dataset includes repeated measurements for each country across multiple years. Over time, as a country’s infant mortality rate and life expectancy change, the points form smooth, line-like patterns.
+#In the Life Expectancy vs Population Size plot, we observe a positive correlation: countries with larger populations tend to have higher life expectancies. Larger populations are often associated with better infrastructure, stronger economies, and advanced healthcare. The x-axis uses a logarithmic scale to display the wide range of population sizes better, preventing smaller populations from being compressed. Streaks also appear here, reflecting population growth over time and overlapping trends for countries with similar trajectories.
+#These streaks arise because each country has multiple rows in the dataset, one for each year, with metrics like life expectancy, infant mortality, and population changing gradually. For example, Nigeria has 57 rows of data from 1960 onward.
+#This illustrates how Nigeria’s population grows steadily while its life expectancy and infant mortality rates change gradually. These patterns repeat for other countries, forming the streaks observed in both plots.
+```
+
+```{r}
+#More data processing
+# Checking which years have missing values for infant_mortality
+missing_by_year <- africadata %>%
+  group_by(year) %>%
+  summarize(missing_values = sum(is.na(infant_mortality)))  # Count missing values per year
+
+# checking to see the years with missing data
+print(missing_by_year)
+
+# Filtering data for the year 2000
+africa_2000 <- africadata %>%
+  filter(year == 2000)
+
+# Checking the structure and summary of the new object
+str(africa_2000)
+summary(africa_2000)
+
+```
+
+```{r}
+#More plotting
+#  Life Expectancy vs Infant Mortality (Year 2000) --> Plot 1
+ggplot(africa_2000, aes(x = infant_mortality, y = life_expectancy)) +
+  geom_point(color = "pink", alpha = 0.7) +  # Plot points with transparency
+  labs(
+    title = "Life Expectancy vs Infant Mortality (Year 2000)",
+    x = "Infant Mortality (per 1000 live births)",
+    y = "Life Expectancy (years)"
+  ) +
+  theme_minimal()
+
+#  Life Expectancy vs Population Size (Year 2000) --> Plot 2
+ggplot(africa_2000, aes(x = population, y = life_expectancy)) +
+  geom_point(color = "blue", alpha = 0.7) +  # Plot points with transparency
+  scale_x_log10() +  # Use a log scale for population
+  labs(
+    title = "Life Expectancy vs Population Size (Year 2000)",
+    x = "Population (log scale)",
+    y = "Life Expectancy (years)"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+#Simple model fits
+#  Life Expectancy as the outcome, Infant Mortality as the predictor --> Fit 1
+fit1 <- lm(life_expectancy ~ infant_mortality, data = africa_2000)
+
+# Printing the summary of model Fit 1
+summary(fit1)
+
+#  Life Expectancy as the outcome, Population Size as the predictor --> Fit 2
+fit2 <- lm(life_expectancy ~ population, data = africa_2000)
+
+# Printing summary of model Fit 2
+summary(fit2)
+
+```
+
+```{r}
+## Linear Models and Results
+
+#I fit two linear regression models to quantify the relationships between life expectancy and two predictors: infant mortality and population size. Based on the output this is what I observed 
+
+### The 1st model: Life Expectancy vs Infant Mortality
+#- The slope (\( \beta_1 = -0.189 \)) shows that for every additional infant death per 1,000 live births, life expectancy decreases by approximately 0.19 years.
+#- The \ (p \)-value (\ (2.83 \times 10^ {-8} \)) indicates this relationship is highly significant.
+#- The \ (R^2 = 0.47 \) shows that 47% of the variability in life expectancy is explained by infant mortality.
+
+
+
+### 2nd Model: Life Expectancy vs Population Size
+#- The slope (\ (\beta_1 = 2.76 \times 10^ {-8} \)) is negligible, and the \ (p \)-value (\( 0.616 \)) indicates no significant relationship.
+#- The \ (R^2 = 0.0052 \) confirms that population size does not explain variability in life expectancy.
+
+
+
+### Conclusion
+# Infant mortality is a strong and significant predictor of life expectancy, while population size shows no meaningful relationship. These results highlight the importance of addressing healthcare and living conditions to improve life expectancy rather than focusing on population size.
+
+```
+
+# Part 2
+
+This section contributed by Murphy John.
+
+## Setup
+
+```{r}
+# load dataset "olives"
+olive <- dslabs::olive
+
+# view olive structure
+str(olive)
+
+# view olive summary
+summary(olive)
+
+# get region levels
+unique(olive$region)
+
+# get area levels
+unique(olive$area)
+```
+
+The `olive` dataset contains information on the composition in percentage of eight fatty acids (palmitic, palmitoleic, stearic, oleic, linoleic, linolenic, arachidic, eicosenoic) found in the lipid fraction of 572 Italian olive oils. Olive oils are categorized by general region (Northern Italy, Sardinia, Southern Italy) and area of Italy.
+
+## Data processing
+
+Suppose we want to look at the breakdown of eicosenoic composition by region. First, create a new dataset with only the `region` and `eicosenoic` variables.
+
+```{r}
+# condense the data to include only information about eicosenoic and region
+olive_red1 <- olive %>%
+  select(region, eicosenoic)
+```
+
+## Data exploration
+
+Make a plot of `eicosenoic` by region.
+
+```{r}
+# plot eicosenoic by region
+plot(olive_red1$region, olive_red1$eicosenoic)
+```
+
+There appears to be distinct differences in eicosenic by region. Fit a linear regression model using `region` as a predictor of `eicosenoic`.
+
+```{r}
+# fit regression model using region as a predictor of eicosenoic
+fit1 <- lm(eicosenoic ~ region, data = olive_red1)
+
+# summarize model
+summary(fit1)
+```
+
+The coefficient estimate for the Sardinia region is $-0.00035$ with a corresponding p-value of $0.966$, which suggests that olive oil from this region does not differ from the reference region level, Northern Italy, in `eicisenoic` composition.
+
+The coefficient estimate for the region Southern Italy is $0.253$ with a corresponding p-value of $<0.001$, which suggests that olive oil from this region has increased `eicisenoic` composition over the reference region level, Northern Italy.
+
+Now, look at eicosenoic composition by oleic composition, stratified by region.
+
+```{r}
+# create a dataset with region, oleic, and eicosenoic
+olive_red2 <- olive %>%
+  select(region, oleic, eicosenoic)
+
+plot(olive_red2$oleic, olive$eicosenoic, col = olive$region)
+legend("topleft", 
+       legend = unique(olive$region), 
+       col = unique(olive$region), 
+       pch=1,
+       cex = 0.7)
+```
+
+There are distinct clusters by region observed in the data. Specifically, in olive oil from Southern Italy, there seems to be increased eicosenic composition over Sardinia and Northern Italy. Additionally, there appears to be a positive association between oleic composition and eicoenic composition in Southern Italy.
+
+Fit a regression model using `oleic` as a predictor of `eicosenoic` in the region of Southern Italy.
+
+```{r}
+# filter data to include only oil from Southern Italy
+olive_red3 <- olive_red2 %>%
+  filter(region == "Southern Italy")
+
+# fit regression model using oleic as a predictor of eicosenoic in oil from Southern Italy
+fit2 <- lm(eicosenoic ~ oleic, data = olive_red3)
+
+# summarize model
+summary(fit2)
+```
+
+The coefficient estimate for `oleic` composition is $0.009$ with a corresponding p-value of $<0.001$, which suggests that in olive oil from Southern Italy, there is a small positive association between `oleic` composition and `eicisenoic` composition.
