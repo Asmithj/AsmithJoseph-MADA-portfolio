@@ -2,11 +2,12 @@
 title: "Synthetic Data Exercise"
 author: "Asmith Joseph"
 date: "02/11/2025"
-output: html_document
+format: html
 editor: 
   markdown: 
     wrap: sentence
 ---
+
 
 # Introduction of the TBpregnancy Synthetic Dataset
 
