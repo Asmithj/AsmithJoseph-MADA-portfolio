@@ -1,7 +1,7 @@
 ---
-title: "Manuscript/Report Template for a Data Analysis Project"
+title: "Starter Analysis Exercise"
 subtitle: ""
-author: Your Name
+author: Asmith Joseph
 date: today
 format:
   html:
@@ -11,11 +11,6 @@ format:
 bibliography: ../dataanalysis-template-references.bib
 csl: ../apa.csl
 ---
-
-The structure below is one possible setup for a data analysis project (including the course project). For a manuscript, adjust as needed. 
-You don't need to have exactly these sections, but the content covering those sections should be addressed.
-
-This uses MS Word as output format. [See here](https://quarto.org/docs/output-formats/ms-word.html) for more information. You can switch to other formats, like html or pdf. See [the Quarto documentation](https://quarto.org/) for other formats.
 
 
 ```{r, echo=FALSE, message=FALSE}
@@ -40,6 +35,7 @@ _Provide enough background on your topic that others can understand the why and 
 
 ## Description of data and data source
 _Describe what the data is, what it contains, where it is from, etc. Eventually this might be part of a methods section._
+The dataset comprises variables related to individuals' physical characteristics, such as height, weight, gender, hair color, and calculated Body Mass Index (BMI) with its classification. Each variable is accompanied by a definition and a range of allowed values as per the codebook.
 
 ## Questions/Hypotheses to be addressed
 _State the research questions you plan to answer with this analysis._
