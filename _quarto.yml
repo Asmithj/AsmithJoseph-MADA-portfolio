@@ -16,7 +16,8 @@ website:
             file: coding-exercise/coding-exercise.qmd
           - text: "Synthetic Data Exercise"
             file: synthetic-data-exercise/synthetic-data-exercise.qmd
-            
+          - text: "Exercise 5: Processing Data (CDC)"
+            file: cdcdata-exercise/cdcdata-exercise.qmd
             
     right:
       - icon: github

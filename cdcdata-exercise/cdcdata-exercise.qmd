@@ -1,0 +1,331 @@
+---
+title: "Exercise 5: Processing Data (CDC)"
+author: "Asmith Joseph"
+date: "02/02/2025"
+format: html
+---
+
+
+```{rsetup, include=FALSE, message=FALSE, warning=FALSE}
+options(knitr.in.dir = FALSE)
+
+```
+
+
+
+
+# Data Source Description
+
+The National Artesunate for Severe Malaria Program Case Report Data (April - December 2019) provides deidentified patient data on individuals receiving intravenous (IV) artesunate, the first-line treatment for severe malaria. Collected through the Centers for Disease Control and Prevention (CDC), this dataset contains 197 observations and 119 clinical variables, detailing malaria diagnosis methods, organ dysfunction indicators, laboratory values, and treatment responses. Each patient is assigned a unique ParticipantID, which allows linkage to related datasets, including Artesun ate Dosing Data, Follow-On Antimalarial Dosing Data, and Microscopy (Parasitemia) Data. The dataset, last updated on April 10, 2020, is publicly available on the CDC open data portal (https://data.cdc.gov/Global-Health/National-Artesunate-for-Severe-Malaria-Program-Cas/igaz-icki/about_data). Key variables include Dx (diagnosis method), IV_parasitemia (malaria confirmation), IV_shock (shock status), IV_ards (Acute Respiratory Distress Syndrome), IV_ARF (Acute Renal Failure), and IV_DIC (Disseminated Intravascular Coagulation). Additionally, it includes a Data Dictionary and a Guide to NASMP Datasets, offering comprehensive documentation for analysis.
+
+# Explanations of Downloading and saving the dataset. See below for the code!
+
+To work with this dataset, the first step is I download the dataset from the CDC Open Data Portal in CSV format. This is done by defining the dataset’s URL and using R’s read_csv() function to import it into a dataframe. Once the data is loaded, the head() function is used to preview the first few rows, and the View() function allows for manual inspection in RStudio’s data viewer. After confirming that the dataset has been successfully retrieved, the next step is to save it locally for easier access. To do this, a local file path is specified, ensuring that the dataset is stored in a designated folder on the computer. The write_csv() function is then used to save the dataframe as a CSV file in the specified directory.
+
+# Downloading the data.
+
+```{r}
+#Installing necessary libraries to read the OData Atom XML feed (It is a is a structured XML document used for exposing and consuming data via OData APIs)
+# Installing necessary libraries to read the OData Atom XML feed
+
+# Load libraries
+library(httr)
+library(jsonlite)
+library(readr)
+
+# Define CSV URL
+csv_url <- "https://data.cdc.gov/api/views/igaz-icki/rows.csv"
+
+# Read CSV into a dataframe
+cdcMalaria <- read_csv(csv_url)
+
+# View the first few rows
+head(cdcMalaria)
+
+View(cdcMalaria)
+
+```
+
+```{r}
+# Load necessary libraries
+library(httr)
+library(jsonlite)
+library(readr)
+library(here)
+
+# Define the CSV URL
+csv_url <- "https://data.cdc.gov/api/views/igaz-icki/rows.csv"
+
+# Define local path
+local_path <- here::here("cdc_data.csv")
+
+# Download the dataset only if it doesn't exist to avoid re-downloading
+if (!file.exists(local_path)) {
+    download.file(csv_url, local_path, mode = "wb")  # `mode = "wb"` ensures proper file handling
+}
+
+# Read the CSV file
+df <- read_csv(local_path)
+
+# Print first few rows
+head(df)
+
+
+```
+
+# Explanations of Exploratory/Descriptive Data Analysis. See below for the code!
+
+To explore the dataset, I begin by loading necessary libraries such as dplyr, ggplot2, readr, and tidyr to facilitate data manipulation and visualization. The initial data exploration involves viewing the first few rows using head(cdcMalaria), checking the structure with str(cdcMalaria), and generating summary statistics with summary(cdcMalaria). Next, I create summary tables for categorical variables, selecting relevant columns such as "Dx" and "FO_appropriate" and computing the percentage distribution of each category using a function that groups the data and calculates proportions. For continuous variables, a summary table is generated that includes mean, standard deviation, minimum, quartiles (25%, 50%, 75%), and maximum values, while handling missing data by excluding NA values. Moving on to visualizations, bar charts are generated for categorical variables, where ggplot2 is used to plot distributions with bars representing percentages of each category. Similarly, histograms with density curves are created for continuous variables to visualize their distributions, with bins set to 20 and a density line overlayed in red. Since the dataset contains multiple numeric variables, only the first five continuous variables are plotted to keep visualizations manageable.
+
+# Data exploration through tables
+
+```{r}
+# Loading the necessary libraries 
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyr)
+
+
+# Viewing the first few rows
+head(cdcMalaria)
+
+# Checking the structure of the dataset
+str(cdcMalaria)
+
+# Summary statistics
+summary(cdcMalaria)
+```
+
+# Summary Tables
+
+```{r}
+# Selecting categorical variables/Distribution of Categorical Variables %
+categorical_vars <- c("Dx", "FO_appropriate")
+
+# Function to compute percentage distribution
+categorical_summary <- function(df, var) {
+  df %>%
+    group_by(.data[[var]]) %>%
+    summarise(Count = n(), Percentage = (n() / nrow(df)) * 100)
+}
+
+# Computing summary for each categorical variable
+cat_summary_list <- lapply(categorical_vars, function(var) categorical_summary(cdcMalaria, var))
+
+# Printing categorical summaries
+cat_summary_list
+
+```
+
+# Summary Statistics for Continuous Variables
+
+```{r}
+# Selecting continuous variables
+# Summary Statistics for Continuous Variables with Missing Value Handling
+continuous_vars <- cdcMalaria %>%
+  select(where(is.numeric)) %>%
+  summarise_all(list(
+    mean = ~mean(., na.rm = TRUE),
+    sd = ~sd(., na.rm = TRUE),
+    min = ~min(., na.rm = TRUE),
+    q25 = ~quantile(., 0.25, na.rm = TRUE),
+    median = ~median(., na.rm = TRUE),
+    q75 = ~quantile(., 0.75, na.rm = TRUE),
+    max = ~max(., na.rm = TRUE)
+  ))
+
+# Printing summary table
+print(continuous_vars)
+
+```
+
+# Visualizations/Bar Charts for Categorical Variables
+
+```{r}
+# Function to plot categorical variable distribution
+plot_categorical <- function(df, var) {
+  ggplot(df, aes(x = .data[[var]])) +
+    geom_bar(aes(y = (..count..) / sum(..count..)), fill = "blue", alpha = 0.7) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    labs(title = paste("Distribution of", var), y = "Percentage", x = var) +
+    theme_minimal()
+}
+
+# Generating bar charts
+for (var in categorical_vars) {
+  print(plot_categorical(cdcMalaria, var))
+}
+
+```
+
+# Histograms for Continuous Variables
+
+```{r}
+# Function to plot histogram and density curve
+plot_histogram <- function(df, var) {
+  ggplot(df, aes(x = .data[[var]])) +
+    geom_histogram(aes(y = ..density..), bins = 20, fill = "lightblue", alpha = 0.7) +
+    geom_density(color = "red", size = 1) +
+    labs(title = paste("Distribution of", var), x = var, y = "Density") +
+    theme_minimal()
+}
+
+# Select numeric variables from the original dataset
+numeric_vars <- names(cdcMalaria %>% select(where(is.numeric)))
+
+# Plot first 5 continuous variables
+for (var in numeric_vars[1:5]) {  # Use column names from the original dataset
+  print(plot_histogram(cdcMalaria, var))
+}
+```
+
+############################################## 
+
+## This part was contributed by Murtaza Yaqubi.
+
+It’s a good practice to install and load the necessary packages for analysis.
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+
+```
+
+### Generating synthetic data frame.
+
+I created a synthetic data frame to replicate the analysis of the dataset above. To achieve this, I used the results of the original analysis to attempt to replicate the original dataset with its corresponding results. I began by setting a seed for reproducibility. Next, I defined the number of observations before introducing the codes for the variables in the data frame. The data frame contains two categorical variables and five continuous variables. These variables are Patient_ID, Condition, TreatmentGiven, BreathCount, Fever, Tachycardia, and Hypoglycemia.
+
+```{r}
+# Set seed for reproducibility
+set.seed(123)
+
+# Define number of observations
+n <- 197
+
+# Generate synthetic dataset
+HealthSynthetic <- data.frame(
+  # Unique Patient ID
+  Patient_ID = 1:n,
+  
+  # Categorical Variables (pneumonia and bronchitis)
+  Condition = sample(c("Pneumonia", "Bronchitis"), n, replace = TRUE, prob = c(0.2487, 0.7513)),
+  
+  TreatmentGiven = sample(c(0, 1, NA), n, replace = TRUE, prob = c(0.1269, 0.7919, 0.0812)),
+  
+  # Continuous Variables (breath count, fever, tachycardia, hypoglycemia)
+  BreathCount = round(rnorm(n, mean = 13.98141, sd = 11.31289)),
+  
+  Fever = sample(c(0, 1, NA), n, replace = TRUE, prob = c(0.90, 0.05, 0.05)), 
+  
+  Tachycardia = sample(c(0, 1, NA), n, replace = TRUE, prob = c(0.50, 0.45, 0.05)),  
+  
+  Hypoglycemia = sample(c(0, 1, NA), n, replace = TRUE, prob = c(0.75, 0.20, 0.05))  
+)
+
+# View the first few rows
+head(HealthSynthetic)
+
+
+
+# Summary statistics
+summary(HealthSynthetic)
+
+# Check structure
+str(HealthSynthetic)
+
+```
+
+### Summary statistics:
+
+I generated the summary statistics for both categorical and continuous variables by leveraging loop functions. This approach allowed me to efficiently apply the same set of operations to multiple variables without repeating large chunks of code, thus streamlining the analysis process and minimizing the risk of errors.
+
+```{r}
+library(tidyverse)
+
+# Before producing summary tables, I have to convert "Condition" and "TreatmentGiven" to factors from characters.   
+HealthSynthetic <- HealthSynthetic %>% 
+  mutate(Condition = as.factor(Condition), TreatmentGiven = as.factor(TreatmentGiven))
+
+# Categorical Variables Summary
+categorical_vars <- c("Condition", "TreatmentGiven")
+
+categorical_summary <- function(df, var) {
+  df %>%
+    group_by(.data[[var]]) %>%
+    summarise(Count = n(), Percentage = (n() / nrow(df)) * 100)
+}
+
+# Compute summaries for categorical variables
+cat_summary_list <- lapply(categorical_vars, function(var) categorical_summary(HealthSynthetic, var))
+
+# Print categorical summaries
+names(cat_summary_list) <- categorical_vars
+print(cat_summary_list)
+
+# Continuous Variables Summary
+continuous_vars <- c("Patient_ID", "BreathCount", "Fever", "Tachycardia", "Hypoglycemia")
+
+continuous_summary <- HealthSynthetic %>%
+  select(where(is.numeric)) %>%  # Select only numeric variables
+  summarise_all(list(
+    mean = ~mean(., na.rm = TRUE),
+    sd = ~sd(., na.rm = TRUE),
+    min = ~min(., na.rm = TRUE),
+    q25 = ~quantile(., 0.25, na.rm = TRUE),
+    median = ~median(., na.rm = TRUE),
+    q75 = ~quantile(., 0.75, na.rm = TRUE),
+    max = ~max(., na.rm = TRUE)
+  ))
+
+# Print continuous summary
+print(continuous_summary)
+
+
+```
+
+### Plotting the data:
+
+I used loop functions to generate bar plots for both categorical and continuous variables, enabling me to efficiently apply the same plotting logic to multiple variables without duplicating code. This approach streamlined the visualization process and made the code more compact and manageable.
+
+```{r}
+# Function to plot categorical variable distribution
+plot_categorical <- function(df, var) {
+  ggplot(df, aes(x = as.factor(.data[[var]]))) +
+    geom_bar(aes(y = (..count..) / sum(..count..)), fill = "purple", alpha = 0.8) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    labs(title = paste("Distribution of", var), y = "Percentage", x = var) +
+    theme_minimal()
+}
+
+# Categorical variables
+categorical_vars <- c("Condition", "TreatmentGiven")
+
+# Generating bar charts
+for (var in categorical_vars) {
+  print(plot_categorical(HealthSynthetic, var))
+}
+
+
+# Function to plot histogram and density curve
+plot_histogram <- function(df, var) {
+  ggplot(df, aes(x = .data[[var]])) +
+    geom_histogram(aes(y = ..density..), bins = 20, fill = "steelblue", alpha = 0.7) +
+    geom_density(color = "orange", size = 1) +
+    labs(title = paste("Distribution of", var), x = var, y = "Density") +
+    theme_minimal()
+}
+
+# Continuous variables
+numeric_vars <- names(HealthSynthetic %>% select(where(is.numeric)))
+
+
+# Plot continuous variables
+for (var in numeric_vars) {  
+  print(plot_histogram(HealthSynthetic, var))
+}
+
+```
+
+Note: The reason my synthetic data frame appears almost identical to the original dataset is that I used the results of the original dataset to create my synthetic data frame. My objective was to replicate the original dataset’s results as closely as possible. I utilized ChatGpt to assist me in this process. It involved numerous trials and errors, along with prompting, to achieve the desired outcome. Additionally, I gained valuable insights from Asmith’s code during this exercise. Notably, I was introduced to a looping function that I copied for my analysis, which not only made my code look cleaner but also eliminated the need to add large chunks of code. I found looping functions particularly useful in plotting and creating a summary table for the variables of interest in this exercise.
