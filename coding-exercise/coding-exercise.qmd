@@ -131,7 +131,6 @@ InfantLife <- InfantLife %>%
 PoppLife <- PoppLife %>%
   filter(population > 0)  # Ensure population is positive
 
-
 ```
 
 ```{r}

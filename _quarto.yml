@@ -1,9 +1,6 @@
 project:
   type: website
   output-dir: docs
-  resources:
-    - starter-analysis-exercise/products/report/starter-analysis-report.qmd
-    - coding-exercise/coding-exercise.qmd
 
 website:
   title: "Asmith Joseph Data Analysis Portfolio"
