@@ -10,7 +10,7 @@ editor:
 
 # Introduction of the TBpregnancy Synthetic Dataset
 
-The TBpregnancy dataset is a synthetic dataset designed to study the pharmacokinetic (PK) properties of antiretroviral (ARV) and anti-tuberculosis (TB) drugs in pregnant and postpartum women.
+The TB pregnancy dataset is a synthetic dataset designed to study the pharmacokinetic (PK) properties of antiretroviral (ARV) and anti-tuberculosis (TB) drugs in pregnant and postpartum women.
 The dataset was generated to model real-world drug metabolism patterns and assess how pregnancy impacts drug clearance, exposure (AUC), and birth outcomes.
 The data simulates clinical trial observations and incorporates known physiological changes during pregnancy that affect drug absorption, distribution, metabolism, and elimination.
 
@@ -113,7 +113,6 @@ TBpregnancy <- data.frame(ParticipantID = participant_id,
 
 # View first few rows
 head(TBpregnancy)
-
 ```
 
 # Exploratory of the Dataset
