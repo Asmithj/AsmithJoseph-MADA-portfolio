@@ -35,6 +35,7 @@ To work with this dataset, the first step is I download the dataset from the CDC
 library(httr)
 library(jsonlite)
 library(readr)
+library(lme4)
 
 # Define CSV URL
 csv_url <- "https://data.cdc.gov/api/views/igaz-icki/rows.csv"
@@ -45,7 +46,7 @@ cdcMalaria <- read_csv(csv_url)
 # View the first few rows
 head(cdcMalaria)
 
-View(cdcMalaria)
+head(cdcMalaria)
 
 ```
 
