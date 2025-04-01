@@ -1142,7 +1142,7 @@ ggplot(combined_preds, aes(x = Y, y = .pred, color = Data, shape = Data)) +
 
 ```
 In reviewing the scatterplot of predicted versus observed values for our full model, I observed that the training data (represented by blue triangles) and the test data (shown as pink circles) are well intermingled. This intermingling suggests that the model generalizes appropriately to new data and does not suffer from obvious overfitting. However, I also noted that for higher observed values, the model consistently underpredicts, as many data points fall below the diagonal reference line, indicating a systematic bias in those regions. The predictions tend to be confined between 3000 and 5000, even though the observed values span a broader range. This limited spread implies that the model struggles to capture the full variability of the data, particularly at the extremes.
-<br>
+
 Overall, while the similar dispersion between the training and test sets is encouraging, the evident underprediction at higher values underscores the need for further refinement—perhaps by incorporating additional predictors, exploring nonlinear relationships, or considering alternative modeling strategies—to improve the model’s predictive performance.
 
 
