@@ -9,7 +9,13 @@ editor:
 ---
 
 
+
+
+
 # Set up: load packages and data* 
+
+
+
 ```{r}
 # Load necessary packages
 library(dplyr)
@@ -42,7 +48,13 @@ print(colnames(clean_data))
 
 
 
+
+
+
 # Preliminaries
+
+
+
 ```{r}
 
 # Set a random number seed for reproducibility
@@ -55,6 +67,9 @@ rds_file_path <- file.path(output_folder, "clean_data.rds")
 # Load the clean data from the RDS file
 clean_data <- readRDS(rds_file_path)
 ```
+
+
+
 After loading my necessary packages—tidymodels for modeling, ggplot2 for plotting, and here for handling file paths in a reproducible way. Then, I set the random seed to 1234 so that any random processes (like data splitting) are reproducible. Finally, I load my data from the RDS file that I saved earlier using the defined folder and file paths.
 
 
@@ -62,6 +77,9 @@ After loading my necessary packages—tidymodels for modeling, ggplot2 for plott
 
 
 # Recoding the RACE Variable: Merging Categories 7 and 88 into Category 3
+
+
+
 
 ```{r}
 # --- Recoding the RACE Variable: Merging Categories 7 and 88 into Category 3 ---
@@ -101,7 +119,13 @@ print(colnames(Mav.final_data_selected))
 
 
 
+
+
+
 # Pairwise correlations
+
+
+
 ```{r}
 # Select continuous variables from my clean data
 continuous_data <- Mav.final_data_selected %>% 
@@ -120,6 +144,9 @@ corrplot(cor_matrix,
          diag = FALSE)           
 
 ```
+
+
+
 I generated the correlation plot for the continuous variables (Y, DOSE, AGE, WT, and HT) using the corrplot package, and my analysis shows that none of the variables are excessively correlated. Specifically, the correlations involving Y are relatively small, and although weight and height have a moderate correlation (about 0.58), it is well below the threshold of 0.9. 
 <br>
 Additionally, the relationships between DOSE and the other predictors are minimal, and age only shows modest associations with weight and height. Overall, since no correlation exceeds an absolute value of 0.9, I conclude that multicollinearity is not a significant concern in this dataset.
@@ -127,6 +154,9 @@ Additionally, the relationships between DOSE and the other predictors are minima
 
 # Feature engineering*
 Below is the code I wrote to compute BMI, where I assume weight (WT) is in kilograms and height (HT) is in meters. I add a new variable called BMI using the formula BMI = weight / (height)^2.
+
+
+
 ```{r}
 Mav.final_data_selected <- Mav.final_data_selected %>%
   mutate(BMI = WT / (HT^2))
@@ -142,6 +172,9 @@ ggplot(Mav.final_data_selected, aes(x = BMI)) +
   labs(title = "Histogram of BMI", x = "BMI", y = "Frequency") +
   theme_minimal()
 ```
+
+
+
 I observed that the BMI histogram spans roughly from 18 to 33, with a main peak in the mid-to-upper 20s and a smaller bump near 30. This tells me that the sample includes a mix of individuals with normal weight and those who are leaning toward overweight.
 
 
@@ -155,6 +188,9 @@ I observed that the BMI histogram spans roughly from 18 to 33, with a main peak 
 
 
 # Model Building
+
+
+
 ```{r}
 # Create 10-fold cross-validation folds using all of the data
 cv_folds <- vfold_cv(Mav.final_data_selected, v = 10)
@@ -193,6 +229,9 @@ ggplot(linear_preds, aes(x = Y, y = .pred)) +
   theme_minimal()
 
 ```
+
+
+
 I can see that most points are scattered around the 45° line, but the model tends to underpredict at higher observed values. This suggests that while the linear regression captures some of the variation, it struggles to accurately fit larger Y values.
 
 
@@ -202,6 +241,9 @@ I can see that most points are scattered around the 45° line, but the model ten
 
 
 *Model 2: LASSO Regression*
+
+
+
 ```{r}
 ## Model 2: LASSO Regression
 
@@ -250,11 +292,17 @@ ggplot(lasso_preds, aes(x = Y, y = .pred)) +
 
 
 ```
+
+
+
 The LASSO model predictions are scattered around the diagonal but still underpredict higher Y values, similar to the earlier linear model. Overall, while the model captures some variation, it struggles to accurately predict at the upper end of the range.
 
 
 
 *Model 3: Random Forest*
+
+
+
 ```{r}
 ## Model 3: Random Forest
 # Specify a random forest model with tunable mtry and min_n, using 500 trees
@@ -296,6 +344,9 @@ ggplot(rf_preds, aes(x = Y, y = .pred)) +
 
 
 ```
+
+
+
 I set the random seed to 1234 for reproducibility and built three models on the full dataset using cross-validation. First, I fit a linear regression (lm) with predictors DOSE, AGE, SEX, RACE, WT, and HT and computed its RMSE. Next, I built a LASSO model using glmnet with a penalty of 0.1 and mixture = 1, which yielded nearly identical results to the linear model due to minimal coefficient shrinkage. Finally, I fitted a random forest using ranger (seed = 1234), which produced a much lower RMSE (around 362) and predictions closer to the 45° line, though it risks overfitting.
 <br>
 Cross-validation for Preprocessor1_Model1 showed one configuration with an RMSE of about 1029 (SE ≈ 97) and R² ≈ 0.344 (SE ≈ 0.087), explaining 34% of the variance, versus another configuration with an RMSE of about 1221 (SE ≈ 64) and R² ≈ 0.062 (SE ≈ 0.019), indicating a poorer fit. Overall, these results highlight the importance of model tuning in achieving better predictive performance.
@@ -308,6 +359,9 @@ Cross-validation for Preprocessor1_Model1 showed one configuration with an RMSE 
 
 ## Model Fitting  
 Below is the code I wrote to fit my three models—a linear regression using all predictors, a LASSO regression (with penalty = 0.1), and a random forest—using the entire dataset (no train/test split) and then making predictions and computing the RMSE for each model. I also generate an observed versus predicted plot for each model.
+
+
+
 ```{r}
 # Set seed for reproducibility
 set.seed(1234)
@@ -338,7 +392,13 @@ ggplot(lm_predictions, aes(x = Y, y = .pred)) +
 ```
 
 
+
+
+
 *Model 2: LASSO Regression*
+
+
+
 ```{r}
 # Model 2: LASSO Regression (penalty = 0.1, mixture = 1 for LASSO)
 lasso_recipe <- recipe(Y ~ DOSE + AGE + SEX + RACE + WT + HT, 
@@ -358,7 +418,13 @@ lasso_fit <- lasso_workflow %>% fit(data = Mav.final_data_selected)
 
 
 
+
+
+
 *Model 3: Random Forest using ranger*
+
+
+
 ```{r}
 
 # Model 3: Random Forest using ranger (with seed = 1234)
@@ -385,6 +451,9 @@ ggplot(rf_predictions, aes(x = Y, y = .pred)) +
 
 ```
 
+
+
+
 I encountered an error because glmnet expects a numeric matrix, so I needed to convert my factor variables (SEX and RACE) into dummy variables. I fixed this by adding the step_dummy(all_nominal_predictors()) in my recipe. Then, when selecting the best penalty, I used the named argument metric = "rmse" in the select_best() function to avoid the error about the extra argument. This updated code now properly tunes the LASSO model.
 <br>
 I found that my linear model produced an RMSE of about 1183, while the random forest model achieved a much lower RMSE of around 582. When I examined the observed versus predicted plots, I noticed that the linear model’s predictions were more scattered around the diagonal—indicating larger residuals—whereas the random forest’s predictions clustered closely along the 45° line. This tells me that the random forest captures much more of the variability in Y and yields more accurate predictions than the linear model.
@@ -393,6 +462,9 @@ I found that my linear model produced an RMSE of about 1183, while the random fo
 
 # Tuning the models
 The code I wrote to tune both the LASSO and random forest models using the apparent resamples, followed by my explanation of the results.
+
+
+
 ```{r}
 
 
@@ -467,6 +539,9 @@ rf_tune <- tune_grid(
 autoplot(rf_tune)
 
 ```
+
+
+
 In the LASSO plot, I observed that the lowest penalty values (around 1e-5) yield the best performance—lowest RMSE and highest R²—indicating that LASSO behaves almost like an ordinary linear model when barely regularized. As the penalty increases, the RMSE worsens and R² drops due to stronger coefficient shrinkage. In the random forest plot, the best performance occurs with higher mtry values and lower min_n, suggesting that considering more predictors per split and allowing smaller terminal nodes improves fit, although this may increase overfitting risk.
 
 
@@ -474,6 +549,9 @@ In the LASSO plot, I observed that the lowest penalty values (around 1e-5) yield
 
 
 # Tuning with CV
+
+
+
 ```{r}
 # Reset seed and create 5-fold cross-validation repeated 5 times (25 resamples)
 set.seed(1234)
@@ -505,6 +583,9 @@ rf_tune_cv <- tune_grid(
 autoplot(rf_tune_cv)
 
 ```
+
+
+
 In the LASSO plot (top), the best performance occurs at low penalty values (around 1e-4 to 1e-3), where the RMSE is roughly 1236 and the R² is highest. As the penalty increases, the model’s coefficients shrink more aggressively, driving up the RMSE and lowering R². This aligns with how LASSO behaves like an ordinary linear model at very small penalties, and becomes more constrained (and thus less accurate here) as the penalty grows.
 
 In the random forest plot (bottom), higher values of mtry (number of predictors sampled at each split) and smaller minimal node sizes (min_n) yield the lowest RMSE (around 1080) and the highest R² (about 0.27). This indicates that a more flexible forest, which considers more predictors per split and allows smaller terminal nodes, better fits the data under these tuning conditions—though such flexibility also heightens the risk of overfitting.
@@ -512,6 +593,7 @@ In the random forest plot (bottom), higher values of mtry (number of predictors 
 
 # Conclusion
 Based on my results, the linear model and low-penalty LASSO perform similarly with moderate errors and some underprediction at high values while the random forest achieves a much lower RMSE and its predictions align closely with the 45° line, indicating better capture of data variability despite its complexity. Including the output graphs is useful for visual demonstration, but summarizing key metrics with a representative plot can suffice if brevity is needed.
+
 
 
 
