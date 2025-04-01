@@ -1147,6 +1147,7 @@ Overall, while the similar dispersion between the training and test sets is enco
 
 
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -1155,14 +1156,60 @@ Overall, while the similar dispersion between the training and test sets is enco
 
 
 
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.show="hold"}
+# Verify that the clean data includes the SEX variable
+str(Mav.final_data_selected)
+print(colnames(Mav.final_data_selected))
+
+Mav.final_data_selected <- Mav.final_data_selected %>%
+  mutate(
+    SEX = as.factor(SEX)
+  )
+
+# Specify the output folder path (adjust to your system)
+output_folder <- here::here("ml-models-exercise")
+
+
+# Define the full file path for the RDS file
+rds_file_path <- file.path(output_folder, "clean_data.rds")
 
 
 
+# Save the clean data into the RDS file
+saveRDS(Mav.final_data_selected, file = "C:/Users/ajose35/Desktop/MADA-course/AsmithJoseph-MADA-portfolio/ml-models-exercise/clean_data.rds")
+
+```
 
 
+```{r}
+# Recreate the clean data to include the RACE variable
+Mav.final_data_selected <- Mav.final_data %>%
+  mutate(
+    RACE = as.factor(RACE),
+    SEX  = as.factor(SEX)
+  ) %>%
+  select(Y, DOSE, AGE, SEX, RACE, WT, HT)
+
+# Now, recode RACE by combining categories 7 and 88 into "3"
+Mav.final_data_selected <- Mav.final_data_selected %>%
+  mutate(
+    RACE = as.character(RACE),
+    RACE = ifelse(RACE %in% c("7", "88"), "3", RACE),
+    RACE = factor(RACE, levels = c("1", "2", "3"))
+  )
 
 
+Mav.final_data_selected <- Mav.final_data_selected %>%
+  mutate(
+    RACE = as.character(RACE),
+    RACE = ifelse(RACE %in% c("7", "88"), "3", RACE),
+    RACE = factor(RACE, levels = c("1", "2", "3"))
+  )
 
+str(Mav.final_data_selected)
+print(colnames(Mav.final_data_selected))
+
+```
 
 
 
