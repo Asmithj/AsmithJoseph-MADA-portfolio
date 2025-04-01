@@ -8,6 +8,16 @@ editor:
     wrap: sentence
 ---
 
+
+
+
+
+
+
+
+
+
+
 # Setup
 
 ```{r}
@@ -1098,3 +1108,61 @@ In this plot, each observation’s true value is on the x-axis, while the model�
 The pink circles (median) and purple points (mean) generally cluster between 3000 and 5000, even though observed values range beyond 6000, indicating a tendency to underpredict higher outcomes.
 The vertical bars, representing the 89% confidence intervals, widen notably at larger observed values, reflecting increased uncertainty in that range.
 The diagonal reference line highlights how closely (or loosely) each prediction aligns with the actual measurement, and many points lie below it at higher observed values, confirming that the model systematically underestimates at the upper end of Y.
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Part 3 - Final evaluation using test data/Final evaluation using test data
+
+```{r}
+# Generate predictions on the training data
+train_preds <- predict(full_fit, new_data = train_data) %>% 
+  bind_cols(train_data) %>% 
+  mutate(Data = "Train")
+
+# Generate predictions on the test data
+test_preds <- predict(full_fit, new_data = test_data) %>% 
+  bind_cols(test_data) %>% 
+  mutate(Data = "Test")
+
+# Combine the predictions
+combined_preds <- bind_rows(train_preds, test_preds)
+
+# Plot Predicted vs. Observed for both Train and Test data
+ggplot(combined_preds, aes(x = Y, y = .pred, color = Data, shape = Data)) +
+  geom_point(size = 3, alpha = 0.7) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  labs(title = "Predicted vs. Observed Values for Full Model",
+       x = "Observed Total Drug Exposure (Y)",
+       y = "Predicted Total Drug Exposure (Y)") +
+  theme_minimal()
+
+```
+In reviewing the scatterplot of predicted versus observed values for our full model, I observed that the training data (represented by blue triangles) and the test data (shown as pink circles) are well intermingled. This intermingling suggests that the model generalizes appropriately to new data and does not suffer from obvious overfitting. However, I also noted that for higher observed values, the model consistently underpredicts, as many data points fall below the diagonal reference line, indicating a systematic bias in those regions. The predictions tend to be confined between 3000 and 5000, even though the observed values span a broader range. This limited spread implies that the model struggles to capture the full variability of the data, particularly at the extremes.
+<br>
+Overall, while the similar dispersion between the training and test sets is encouraging, the evident underprediction at higher values underscores the need for further refinement—perhaps by incorporating additional predictors, exploring nonlinear relationships, or considering alternative modeling strategies—to improve the model’s predictive performance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
