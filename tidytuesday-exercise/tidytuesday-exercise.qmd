@@ -82,7 +82,7 @@ summary(care_state)
 
 
 
-*summary table of missing values for each column*
+**Summary table of missing values for each column**
 ```{r}
 missing_summary <- care_state %>% 
   summarise_all(~ sum(is.na(.)))
@@ -91,7 +91,7 @@ print(missing_summary)
 ```
 
 
-*Frequency Table for Categorical Variables*
+**Frequency Table for Categorical Variables**
 ```{r}
 if("state" %in% colnames(care_state)){
   state_freq <- care_state %>%
@@ -105,7 +105,7 @@ if("state" %in% colnames(care_state)){
 
 
 
-*4. Visualizing Numeric Variables*
+**Visualizing Numeric Variables**
 ```{r}
 numeric_columns <- care_state %>% 
   select_if(is.numeric) %>% 
@@ -128,7 +128,7 @@ for(col in numeric_columns){
 
 
 
-*Observations by State for Each Condition*
+**Observations by State for Each Condition**
 ```{r}
 # Convert state abbreviations to full, lowercase state names
 abbr_to_state <- setNames(tolower(state.name), state.abb)
@@ -162,7 +162,7 @@ ggplot(map_data_condition, aes(x = long, y = lat, group = group)) +
 
 
 
-*frequency table showing the count for each condition* 
+**Frequency table showing the count for each condition**
 ```{r}
 # Create a frequency table for all conditions
 condition_freq <- care_state %>%
@@ -179,24 +179,24 @@ print(condition_freq)
 
 
 # Part 3: Full Analysis 
-*Formulate a Research Question*
+**Formulate a Research Question**
  - Hypothesis: States with higher adherence to septic shock care bundles (both the 3-Hour and 6-Hour Bundles) exhibit better overall sepsis care quality.
 
-*Research Question :*
+**Research Question:**
 - Do states with higher adherence to septic shock care protocols (3-Hour and 6-Hour bundles) have better sepsis care quality as reflected in a synthetic quality score?
 
-*Outcome (Dependent Variable):*
+**Outcome (Dependent Variable):**
 - Synthetic Sepsis Quality Score.
 - This variable is created by combining the adherence counts (for both bundles) and adding some random variation to simulate an overall quality measure.
 
-*Predictors (Independent Variables):*
+**Predictors (Independent Variables):**
 - Count of Septic Shock 3-Hour Bundle Adherence
 - Count of Septic Shock 6-Hour Bundle Adherence
  
  
 
 
-*Create Synthetic state_summary*
+**Create Synthetic state_summary**
 ```{r}
 # creating a synthetic state_summary.
 # This synthetic data assumes one observation per state (50 states) with two predictors:
@@ -218,7 +218,7 @@ print(state_summary)
 ```
 
 
-*Pre-process and Clean the Data*
+**Pre-process and Clean the Data**
 ```{r}
 state_clean <- state_summary %>% 
   drop_na()
@@ -236,7 +236,7 @@ print(state_clean)
 
 
 
-*Split into Training and Testing Sets*
+**Split into Training and Testing Sets**
 ```{r}
 # Set seed for reproducibility
 set.seed(123)
@@ -262,7 +262,7 @@ In this part of my analysis, I set out to examine whether states with higher adh
 
 # Part 3a: Three different model types
 
-*Setup (Load Libraries and Create CV Folds)*
+**Setup (Load Libraries and Create CV Folds)**
 ```{r}
 set.seed(123)
 
@@ -483,7 +483,7 @@ I compared three different models using 5-fold CV. The linear regression model y
 
 
 
-*Dot-and-whisker plot: Comparison of Model Performance Metrics*
+**Dot-and-whisker plot: Comparison of Model Performance Metrics**
 ```{r}
 library(ggplot2)
 
@@ -511,7 +511,7 @@ I decided to go with the random forest model overall. Although linear regression
 
 # Part 5: Final Test Data Evaluation: Performance, Residuals, and Uncertainty
 
-*Final Random Forest Model Predictions on Test Data*
+**Final Random Forest Model Predictions on Test Data**
 ```{r}
 # Generate predictions on the test data using the final random forest model and bind them to test_data
 final_rf_test_preds <- predict(final_rf_model, test_data) %>%
@@ -529,7 +529,7 @@ print(test_metrics)
 The final evaluation of the random forest model on the test data reveals an RMSE of 0.878, meaning that, on average, the model's predictions deviate from the actual values by about 0.88 units. The MAE is 0.737, indicating that the typical absolute error in the predictions is roughly 0.74 units. However, the model's R² value is only 0.113, which means that the model explains just 11% of the variability in the test data. Overall, while the error metrics suggest a moderate level of prediction error, the low R² value highlights that the model has limited predictive power and significant room for improvement.
 
 
-*Calculate and Append Residuals*
+**Calculate and Append Residuals**
 ```{r}
 # Compute the residuals and add them as a new column
 final_rf_test_preds <- final_rf_test_preds %>%
@@ -560,7 +560,7 @@ The residual analysis confirmed that there were significant deviations between p
 
 
 
-*Summary Table of Model Performance*
+**Summary Table of Model Performance**
 ```{r}
 # Create the summary table as a tibble
 model_performance <- tribble(
