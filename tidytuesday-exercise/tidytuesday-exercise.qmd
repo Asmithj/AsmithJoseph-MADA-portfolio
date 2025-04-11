@@ -168,7 +168,6 @@ condition_freq <- care_state %>%
 
 # Print the frequency table
 print(condition_freq)
-
 ```
 
 
