@@ -120,7 +120,6 @@ for(col in numeric_columns){
       theme_minimal()
   )
 }
-
 ```
 
 
