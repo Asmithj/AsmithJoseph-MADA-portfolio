@@ -38,7 +38,6 @@ care_state <- read_csv(raw_url)
 
 # Display the first few rows of the data
 head(care_state)
-
 ```
 
 
